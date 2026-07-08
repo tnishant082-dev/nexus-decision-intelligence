@@ -1,0 +1,7 @@
+role Region_Ops
+	modelPermission: read
+
+	tablePermission DimRegion = DimRegion[MarketCode] = LOOKUPVALUE(RlsUserMap[MarketCode], RlsUserMap[UserPrincipalName], USERPRINCIPALNAME())
+
+	annotation PBI_Id = d9f7bc09aab042eba009684aabe0c592
+

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Reset",
+  "name": "bmReset",
+  "explorationState": {
+    "version": "1.0",
+    "activeSection": "ReportSection_p01",
+    "sections": {
+      "ReportSection_p01": {
+        "visualContainers": {
+          "p01_title": {},
+          "p01_caption": {},
+          "p01_refresh": {},
+          "p01_home": {},
+          "p01_reset": {},
+          "p01_drill_0": {},
+          "p01_drill_1": {},
+          "p01_slicer_date": {},
+          "p01_slicer_market": {},
+          "p01_slicer_segment": {},
+          "p01_bm_0": {},
+          "p01_bm_1": {},
+          "p01_bm_2": {},
+          "p01_nav_3": {},
+          "p01_nav_4": {},
+          "p01_nav_5": {},
+          "p01_rail_p01": {},
+          "p01_rail_p02": {},
+          "p01_rail_p03": {},
+          "p01_rail_p04": {},
+          "p01_rail_p05": {},
+          "p01_rail_p06": {},
+          "p01_rail_p07": {},
+          "p01_rail_p08": {},
+          "p01_rail_p09": {},
+          "p01_rail_p10": {},
+          "p01_rail_p11": {},
+          "p01_rail_p12": {},
+          "p01_kpi_0": {},
+          "p01_kpi_1": {},
+          "p01_kpi_2": {},
+          "p01_kpi_3": {},
+          "p01_kpi_4": {},
+          "p01_kpi_5": {},
+          "p01_health": {},
+          "p01_otif": {},
+          "p01_late": {},
+          "p01_invdays": {},
+          "p01_vrisk": {},
+          "p01_ontime": {},
+          "p01_trend": {},
+          "p01_exceptions": {},
+          "p01_map": {},
+          "p01_ship": {},
+          "p01_vendor": {}
+        }
+      }
+    }
+  }
+}

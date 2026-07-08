@@ -1,0 +1,15 @@
+expression pCuratedFolder = "E:\\DS-Command-Cente\\data\\curated" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 37fb585e-8554-46f8-bd84-78154199c4ff
+
+	annotation PBI_ResultType = Text
+
+expression RangeStart = #datetime(2015, 1, 1, 0, 0, 0) meta [IsParameterQuery=true, Type="DateTime", IsParameterQueryRequired=true]
+	lineageTag: 039e6d65-1691-4eea-9a05-daf8c3e0daa3
+
+	annotation PBI_ResultType = DateTime
+
+expression RangeEnd = #datetime(2018, 3, 1, 0, 0, 0) meta [IsParameterQuery=true, Type="DateTime", IsParameterQueryRequired=true]
+	lineageTag: 5a12827b-4a0a-4007-bf43-45c1801248ab
+
+	annotation PBI_ResultType = DateTime
+

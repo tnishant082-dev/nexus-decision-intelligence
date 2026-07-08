@@ -1,0 +1,30 @@
+table 'Metric Basis'
+	lineageTag: b2e177f8-4f7b-4552-86b4-87f049a7d4bb
+
+	calculationGroup
+		precedence: 10
+
+		calculationItem Net = SELECTEDMEASURE()
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem Gross = IF(SELECTEDMEASURENAME() = "Revenue", [Gross Sales], SELECTEDMEASURE())
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem Returns-only = IF(CONTAINSSTRING(SELECTEDMEASURENAME(), "Return") || SELECTEDMEASURENAME() = "Return Value", SELECTEDMEASURE(), [Return Value])
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+	column 'Metric Basis'
+		dataType: string
+		lineageTag: bb6e7385-bd57-4bef-b0df-8ce3befe23b4
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: 98668625-407c-4416-9f1e-4080ec0fc12e
+		sourceColumn: Ordinal
+

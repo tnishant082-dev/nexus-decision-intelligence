@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json",
+  "pageOrder": [
+    "ReportSection_p01",
+    "ReportSection_p02",
+    "ReportSection_p03",
+    "ReportSection_p04",
+    "ReportSection_p05",
+    "ReportSection_p06",
+    "ReportSection_p07",
+    "ReportSection_p08",
+    "ReportSection_p09",
+    "ReportSection_p10",
+    "ReportSection_p11",
+    "ReportSection_p12",
+    "ReportSection_dt_order",
+    "ReportSection_dt_customer",
+    "ReportSection_dt_product",
+    "ReportSection_dt_vendor",
+    "ReportSection_dt_shipment",
+    "ReportSection_dt_warehouse",
+    "ReportSection_dt_region",
+    "ReportSection_tt_kpi",
+    "ReportSection_tt_trend",
+    "ReportSection_tt_map",
+    "ReportSection_tt_vendor",
+    "ReportSection_tt_exception"
+  ],
+  "activePageName": "ReportSection_p01"
+}

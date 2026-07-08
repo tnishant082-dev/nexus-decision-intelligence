@@ -1,0 +1,113 @@
+table FactProcurement
+	lineageTag: 7c70faa6-ba25-418e-b449-f7534382ab48
+
+	column PoLineKey
+		dataType: int64
+		isHidden
+		lineageTag: ecd0241e-b7f5-4155-8a7f-5c27660f6d0f
+		summarizeBy: none
+		sourceColumn: PoLineKey
+
+	column PoDateKey
+		dataType: int64
+		isHidden
+		lineageTag: 3bd40c11-32e4-494a-8849-c8029cb901b1
+		summarizeBy: none
+		sourceColumn: PoDateKey
+
+	column PromisedDateKey
+		dataType: int64
+		isHidden
+		lineageTag: b9b01e86-1eb9-40b2-8cd9-211f296b8f85
+		summarizeBy: none
+		sourceColumn: PromisedDateKey
+
+	column PoTs
+		dataType: dateTime
+		isHidden
+		lineageTag: e80ad206-8994-486e-82fb-51b10d34a8bc
+		summarizeBy: none
+		sourceColumn: PoTs
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		lineageTag: bdb5ee42-5a0c-4796-b4cd-4845ffc3dcfb
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: a9cdecb5-8933-46bc-9b49-7e962fc08057
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: 188fdf1a-6790-4d9f-8fde-dca26d71bdbd
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: 2f0ec62c-7e7f-4f7e-bb01-f9d83d3420ab
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column PoNumber
+		dataType: string
+		lineageTag: 5449af31-80bf-4394-95db-110ac6728520
+		summarizeBy: none
+		sourceColumn: PoNumber
+
+	column OrderedUnits
+		dataType: double
+		lineageTag: 0f131841-1ce0-4b44-946e-4cc9a35cdd09
+		summarizeBy: none
+		sourceColumn: OrderedUnits
+
+	column ReceivedUnits
+		dataType: double
+		lineageTag: 78edca90-62f8-4610-ba2e-8f897eb277a5
+		summarizeBy: none
+		sourceColumn: ReceivedUnits
+
+	column PoValue
+		dataType: double
+		lineageTag: 2489b97e-7909-45a1-9f43-80dcb38beaee
+		summarizeBy: none
+		sourceColumn: PoValue
+
+	column SlaDays
+		dataType: int64
+		lineageTag: ee8fc47c-2195-4c1b-9473-e7d3468707c2
+		summarizeBy: none
+		sourceColumn: SlaDays
+
+	column IsOnTimeReceipt
+		dataType: boolean
+		lineageTag: fea4723f-15f9-4229-90ff-48a4dd419fd9
+		summarizeBy: none
+		sourceColumn: IsOnTimeReceipt
+
+	column SourceClass
+		dataType: string
+		lineageTag: 82eeee31-4be1-4fbe-93d8-a84a3dec365c
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	partition FactProcurement = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_procurement.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"po_line_key", "PoLineKey"}, {"po_date_key", "PoDateKey"}, {"promised_date_key", "PromisedDateKey"}, {"po_ts", "PoTs"}, {"product_key", "ProductKey"}, {"vendor_key", "VendorKey"}, {"warehouse_key", "WarehouseKey"}, {"source_system_key", "SourceSystemKey"}, {"po_number", "PoNumber"}, {"ordered_units", "OrderedUnits"}, {"received_units", "ReceivedUnits"}, {"po_value", "PoValue"}, {"sla_days", "SlaDays"}, {"is_on_time_receipt", "IsOnTimeReceipt"}, {"source_class", "SourceClass"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"PoLineKey", Int64.Type}, {"PoDateKey", Int64.Type}, {"PromisedDateKey", Int64.Type}, {"PoTs", type datetime}, {"ProductKey", Int64.Type}, {"VendorKey", Int64.Type}, {"WarehouseKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"PoNumber", type text}, {"OrderedUnits", type number}, {"ReceivedUnits", type number}, {"PoValue", type number}, {"SlaDays", Int64.Type}, {"IsOnTimeReceipt", type logical}, {"SourceClass", type text}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [PoTs] = null or ([PoTs] >= RangeStart and [PoTs] < RangeEnd))
+				in
+				    Filtered
+

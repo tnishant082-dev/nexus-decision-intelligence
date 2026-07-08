@@ -1,0 +1,220 @@
+table FactShipments
+	lineageTag: 6c649e52-06a0-4a63-a52e-4c2e9565e9c6
+
+	column ShipmentKey
+		dataType: int64
+		isHidden
+		lineageTag: aed07e45-67f1-4615-b527-6eab0ee679a9
+		summarizeBy: none
+		sourceColumn: ShipmentKey
+
+	column OrderId
+		dataType: int64
+		lineageTag: 3498cc4a-3c7c-48a1-9f63-ab5e38f7a8f6
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column OrderDateKey
+		dataType: int64
+		isHidden
+		lineageTag: b8d4d8ca-5499-4c31-a87d-276a4a7d7c49
+		summarizeBy: none
+		sourceColumn: OrderDateKey
+
+	column ShipDateKey
+		dataType: int64
+		isHidden
+		lineageTag: 2102cfc8-9559-4b36-ba09-06a435038a88
+		summarizeBy: none
+		sourceColumn: ShipDateKey
+
+	column OrderTs
+		dataType: dateTime
+		isHidden
+		lineageTag: cf7399f3-6fd3-44ac-b636-eb71439b70f6
+		summarizeBy: none
+		sourceColumn: OrderTs
+
+	column ShipTs
+		dataType: dateTime
+		isHidden
+		lineageTag: b5cbe06e-3768-40c6-ad04-4c19ef471d0a
+		summarizeBy: none
+		sourceColumn: ShipTs
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		lineageTag: 547fa375-8d22-4392-90d7-6f76f5d81737
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column RegionKey
+		dataType: int64
+		isHidden
+		lineageTag: 2bba1c74-2155-4ee7-a65c-3a94233567e6
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: 6c082157-2f81-4af0-a6ab-f8eac87e009f
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column TransportModeKey
+		dataType: int64
+		isHidden
+		lineageTag: 79ef76de-eafa-4625-8f10-3f8504b67655
+		summarizeBy: none
+		sourceColumn: TransportModeKey
+
+	column CarrierKey
+		dataType: int64
+		isHidden
+		lineageTag: 00ae9e5c-8759-4978-be01-fb92e4bafdbc
+		summarizeBy: none
+		sourceColumn: CarrierKey
+
+	column DeliveryStatusKey
+		dataType: int64
+		isHidden
+		lineageTag: 42342bf0-8fa1-4895-b550-75ac5c9ea967
+		summarizeBy: none
+		sourceColumn: DeliveryStatusKey
+
+	column OrderStatusKey
+		dataType: int64
+		isHidden
+		lineageTag: 188de858-2221-46fd-8ad3-2dd0b549e50c
+		summarizeBy: none
+		sourceColumn: OrderStatusKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: 206adae0-4064-4825-b32b-16cd8b84aed8
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column DaysShipReal
+		dataType: int64
+		lineageTag: 24534e26-e9b2-485d-9ab1-90f21b802804
+		summarizeBy: none
+		sourceColumn: DaysShipReal
+
+	column DaysShipScheduled
+		dataType: int64
+		lineageTag: b261ada0-e09d-4e27-a3ed-c5f4078969cc
+		summarizeBy: none
+		sourceColumn: DaysShipScheduled
+
+	column DaysDelay
+		dataType: int64
+		lineageTag: bbf9f79d-8f59-4f94-ac92-ea3c874928d9
+		summarizeBy: none
+		sourceColumn: DaysDelay
+
+	column LateDeliveryRisk
+		dataType: boolean
+		lineageTag: a4bcc972-6049-4a44-936a-8b54c6cf4bac
+		summarizeBy: none
+		sourceColumn: LateDeliveryRisk
+
+	column IsLate
+		dataType: boolean
+		lineageTag: 7dc52348-e06e-4e46-8713-496c8a45403d
+		summarizeBy: none
+		sourceColumn: IsLate
+
+	column IsOnTime
+		dataType: boolean
+		lineageTag: 81f9f6f1-89aa-4ad1-9473-d36751f4e7b1
+		summarizeBy: none
+		sourceColumn: IsOnTime
+
+	column IsAdvance
+		dataType: boolean
+		lineageTag: 414e8c6f-3c54-48c0-8872-f70bdda65eda
+		summarizeBy: none
+		sourceColumn: IsAdvance
+
+	column IsCanceledShip
+		dataType: boolean
+		lineageTag: 895caa43-56ca-46e9-974e-25f87b81251d
+		summarizeBy: none
+		sourceColumn: IsCanceledShip
+
+	column IsInFull
+		dataType: boolean
+		lineageTag: c8df6b4d-91bc-4ea8-aa16-13e98965926b
+		summarizeBy: none
+		sourceColumn: IsInFull
+
+	column IsOtif
+		dataType: boolean
+		lineageTag: 865ccd7f-6706-4248-bcc2-9193e2566d1e
+		summarizeBy: none
+		sourceColumn: IsOtif
+
+	column IsPerfectOrder
+		dataType: boolean
+		lineageTag: 885a65f5-8a01-4e44-b85f-9ddd5ed75ed7
+		summarizeBy: none
+		sourceColumn: IsPerfectOrder
+
+	column LineCount
+		dataType: int64
+		lineageTag: ef17731e-e4f2-4b20-9c2c-a07f6e1abf18
+		summarizeBy: none
+		sourceColumn: LineCount
+
+	column UnitCount
+		dataType: int64
+		lineageTag: 1c6abcb8-3791-4808-b436-93ecbeb90c41
+		summarizeBy: none
+		sourceColumn: UnitCount
+
+	column NetSalesAmount
+		dataType: double
+		lineageTag: d9b5f6a8-5265-4703-8763-5c7c0410aeca
+		summarizeBy: none
+		sourceColumn: NetSalesAmount
+
+	column FreightCost
+		dataType: double
+		lineageTag: 2cc34dac-d158-4644-b6cd-55f6b05928b3
+		summarizeBy: none
+		sourceColumn: FreightCost
+
+	column DelayCost
+		dataType: double
+		lineageTag: 96771bdc-7387-43fb-a231-f2d6c86a6e77
+		summarizeBy: none
+		sourceColumn: DelayCost
+
+	column Co2Kg
+		dataType: double
+		lineageTag: 00674ca8-dd80-4ff4-8383-0e4c9d6f51c0
+		summarizeBy: none
+		sourceColumn: Co2Kg
+
+	column DistanceKmProxy
+		dataType: double
+		lineageTag: b8d813f0-fb43-4f97-b27f-1f9221aa369a
+		summarizeBy: none
+		sourceColumn: DistanceKmProxy
+
+	partition FactShipments = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_shipments.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"shipment_key", "ShipmentKey"}, {"order_id", "OrderId"}, {"order_date_key", "OrderDateKey"}, {"ship_date_key", "ShipDateKey"}, {"order_ts", "OrderTs"}, {"ship_ts", "ShipTs"}, {"customer_key", "CustomerKey"}, {"region_key", "RegionKey"}, {"warehouse_key", "WarehouseKey"}, {"transport_mode_key", "TransportModeKey"}, {"carrier_key", "CarrierKey"}, {"delivery_status_key", "DeliveryStatusKey"}, {"order_status_key", "OrderStatusKey"}, {"source_system_key", "SourceSystemKey"}, {"days_ship_real", "DaysShipReal"}, {"days_ship_scheduled", "DaysShipScheduled"}, {"days_delay", "DaysDelay"}, {"late_delivery_risk", "LateDeliveryRisk"}, {"is_late", "IsLate"}, {"is_on_time", "IsOnTime"}, {"is_advance", "IsAdvance"}, {"is_canceled_ship", "IsCanceledShip"}, {"is_in_full", "IsInFull"}, {"is_otif", "IsOtif"}, {"is_perfect_order", "IsPerfectOrder"}, {"line_count", "LineCount"}, {"unit_count", "UnitCount"}, {"net_sales_amount", "NetSalesAmount"}, {"freight_cost", "FreightCost"}, {"delay_cost", "DelayCost"}, {"co2_kg", "Co2Kg"}, {"distance_km_proxy", "DistanceKmProxy"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"ShipmentKey", Int64.Type}, {"OrderId", Int64.Type}, {"OrderDateKey", Int64.Type}, {"ShipDateKey", Int64.Type}, {"OrderTs", type datetime}, {"ShipTs", type datetime}, {"CustomerKey", Int64.Type}, {"RegionKey", Int64.Type}, {"WarehouseKey", Int64.Type}, {"TransportModeKey", Int64.Type}, {"CarrierKey", Int64.Type}, {"DeliveryStatusKey", Int64.Type}, {"OrderStatusKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"DaysShipReal", Int64.Type}, {"DaysShipScheduled", Int64.Type}, {"DaysDelay", Int64.Type}, {"LateDeliveryRisk", type logical}, {"IsLate", type logical}, {"IsOnTime", type logical}, {"IsAdvance", type logical}, {"IsCanceledShip", type logical}, {"IsInFull", type logical}, {"IsOtif", type logical}, {"IsPerfectOrder", type logical}, {"LineCount", Int64.Type}, {"UnitCount", Int64.Type}, {"NetSalesAmount", type number}, {"FreightCost", type number}, {"DelayCost", type number}, {"Co2Kg", type number}, {"DistanceKmProxy", type number}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [ShipTs] = null or ([ShipTs] >= RangeStart and [ShipTs] < RangeEnd))
+				in
+				    Filtered
+

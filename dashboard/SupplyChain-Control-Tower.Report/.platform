@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "SupplyChain-Control-Tower"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "43b0bd73-5877-445b-bfef-a2f20c9aaa91"
+  }
+}

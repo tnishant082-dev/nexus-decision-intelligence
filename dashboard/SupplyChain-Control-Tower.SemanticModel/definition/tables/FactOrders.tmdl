@@ -1,0 +1,220 @@
+table FactOrders
+	lineageTag: 86f58c0c-dc06-4d14-bc0f-c0df4892b94a
+
+	column OrderLineKey
+		dataType: int64
+		isHidden
+		lineageTag: ee83640d-dd60-487c-8a37-700816311a5f
+		summarizeBy: none
+		sourceColumn: OrderLineKey
+
+	column OrderItemId
+		dataType: int64
+		lineageTag: 9bab06f7-ff5a-4ee7-822c-bb58682ab25c
+		summarizeBy: none
+		sourceColumn: OrderItemId
+
+	column OrderId
+		dataType: int64
+		lineageTag: 636d7156-c9d6-4985-9b93-93508188cf01
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column OrderDateKey
+		dataType: int64
+		isHidden
+		lineageTag: acdfe62d-4615-4ef1-8b49-cf573452add5
+		summarizeBy: none
+		sourceColumn: OrderDateKey
+
+	column OrderTs
+		dataType: dateTime
+		isHidden
+		lineageTag: 9113baba-a612-43a9-a6c8-d92f353caca6
+		summarizeBy: none
+		sourceColumn: OrderTs
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		lineageTag: 3d1ee1ad-4dde-40f0-8fc6-93030e62cd7f
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		lineageTag: 2ad842e6-dd94-4fab-8b84-d306430254f0
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+	column RegionKey
+		dataType: int64
+		isHidden
+		lineageTag: aefd6f8e-e041-4d51-bb20-19ee2ed98141
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: 99ed693a-c857-4021-838f-0fcf0b8e2b48
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: ae8da1d8-c1ad-459f-91aa-3fd49742ba20
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column TransportModeKey
+		dataType: int64
+		isHidden
+		lineageTag: 48582e79-e58e-454a-b32b-ed57bc899879
+		summarizeBy: none
+		sourceColumn: TransportModeKey
+
+	column CarrierKey
+		dataType: int64
+		isHidden
+		lineageTag: 699b54d0-a699-4cfb-baae-bf5a39639824
+		summarizeBy: none
+		sourceColumn: CarrierKey
+
+	column OrderStatusKey
+		dataType: int64
+		isHidden
+		lineageTag: dbfd6bff-993a-4614-8903-de50a707aa35
+		summarizeBy: none
+		sourceColumn: OrderStatusKey
+
+	column PaymentTypeKey
+		dataType: int64
+		isHidden
+		lineageTag: 4e9aa4f9-0e5a-456d-a1db-78821da8c29a
+		summarizeBy: none
+		sourceColumn: PaymentTypeKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: e3bebdd1-7d36-46b3-ab81-8cd5b96c40cc
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column Quantity
+		dataType: int64
+		lineageTag: 24406cbc-bd35-4d06-b1c3-2d858d7a2b22
+		summarizeBy: none
+		sourceColumn: Quantity
+
+	column UnitPrice
+		dataType: double
+		lineageTag: f4765b17-133f-4415-98f8-76f727b39021
+		summarizeBy: none
+		sourceColumn: UnitPrice
+
+	column GrossSales
+		dataType: double
+		lineageTag: 12a7e545-c89f-42fc-bb80-5f7781c0fe5c
+		summarizeBy: none
+		sourceColumn: GrossSales
+
+	column DiscountAmount
+		dataType: double
+		lineageTag: 0a567050-6f00-4104-933c-f37dbe96c6e6
+		summarizeBy: none
+		sourceColumn: DiscountAmount
+
+	column DiscountRate
+		dataType: double
+		lineageTag: 8313499e-ad40-4db9-bc46-07c4f03c4f27
+		summarizeBy: none
+		sourceColumn: DiscountRate
+
+	column NetSales
+		dataType: double
+		lineageTag: 90d8ce9c-ad0c-480c-8645-5fe51cfe85c4
+		summarizeBy: none
+		sourceColumn: NetSales
+
+	column LineProfit
+		dataType: double
+		lineageTag: 285eb37c-14dc-4799-b973-fbdd1cacd349
+		summarizeBy: none
+		sourceColumn: LineProfit
+
+	column ProfitRatio
+		dataType: double
+		lineageTag: 67b29729-3179-4ec8-84e3-ca5a7d3e196f
+		summarizeBy: none
+		sourceColumn: ProfitRatio
+
+	column CogsAmount
+		dataType: double
+		lineageTag: 8a7956d9-07cb-4104-ac37-78874c4ad9e1
+		summarizeBy: none
+		sourceColumn: CogsAmount
+
+	column DaysShipReal
+		dataType: int64
+		lineageTag: 1795eaa7-7ae4-4261-98d2-95b5619050b9
+		summarizeBy: none
+		sourceColumn: DaysShipReal
+
+	column IsCanceled
+		dataType: boolean
+		lineageTag: cd82f540-9b08-43e0-a9b5-6f6b52f675fc
+		summarizeBy: none
+		sourceColumn: IsCanceled
+
+	column IsFraud
+		dataType: boolean
+		lineageTag: 1a7c42bb-2936-4dd5-bd20-02d45c472ec3
+		summarizeBy: none
+		sourceColumn: IsFraud
+
+	column IsRevenue
+		dataType: boolean
+		lineageTag: 5749d35c-f458-4081-a6ee-bba7530b0dc6
+		summarizeBy: none
+		sourceColumn: IsRevenue
+
+	column IsLate
+		dataType: boolean
+		lineageTag: 17fe00b8-0713-48f9-9295-515d7f8fd281
+		summarizeBy: none
+		sourceColumn: IsLate
+
+	column IsOnTime
+		dataType: boolean
+		lineageTag: 82992ade-dae8-4443-a97f-4e14655c95f8
+		summarizeBy: none
+		sourceColumn: IsOnTime
+
+	column IsOtif
+		dataType: boolean
+		lineageTag: 39cdca7e-8f50-4400-b223-05f1bc66526f
+		summarizeBy: none
+		sourceColumn: IsOtif
+
+	column IsPerfectOrder
+		dataType: boolean
+		lineageTag: b51122ca-cafb-4533-839a-a55225bafd30
+		summarizeBy: none
+		sourceColumn: IsPerfectOrder
+
+	partition FactOrders = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_orders.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"order_line_key", "OrderLineKey"}, {"order_item_id", "OrderItemId"}, {"order_id", "OrderId"}, {"order_date_key", "OrderDateKey"}, {"order_ts", "OrderTs"}, {"customer_key", "CustomerKey"}, {"product_key", "ProductKey"}, {"region_key", "RegionKey"}, {"warehouse_key", "WarehouseKey"}, {"vendor_key", "VendorKey"}, {"transport_mode_key", "TransportModeKey"}, {"carrier_key", "CarrierKey"}, {"order_status_key", "OrderStatusKey"}, {"payment_type_key", "PaymentTypeKey"}, {"source_system_key", "SourceSystemKey"}, {"quantity", "Quantity"}, {"unit_price", "UnitPrice"}, {"gross_sales", "GrossSales"}, {"discount_amount", "DiscountAmount"}, {"discount_rate", "DiscountRate"}, {"net_sales", "NetSales"}, {"line_profit", "LineProfit"}, {"profit_ratio", "ProfitRatio"}, {"cogs_amount", "CogsAmount"}, {"days_ship_real", "DaysShipReal"}, {"is_canceled", "IsCanceled"}, {"is_fraud", "IsFraud"}, {"is_revenue", "IsRevenue"}, {"is_late", "IsLate"}, {"is_on_time", "IsOnTime"}, {"is_otif", "IsOtif"}, {"is_perfect_order", "IsPerfectOrder"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"OrderLineKey", Int64.Type}, {"OrderItemId", Int64.Type}, {"OrderId", Int64.Type}, {"OrderDateKey", Int64.Type}, {"OrderTs", type datetime}, {"CustomerKey", Int64.Type}, {"ProductKey", Int64.Type}, {"RegionKey", Int64.Type}, {"WarehouseKey", Int64.Type}, {"VendorKey", Int64.Type}, {"TransportModeKey", Int64.Type}, {"CarrierKey", Int64.Type}, {"OrderStatusKey", Int64.Type}, {"PaymentTypeKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"Quantity", Int64.Type}, {"UnitPrice", type number}, {"GrossSales", type number}, {"DiscountAmount", type number}, {"DiscountRate", type number}, {"NetSales", type number}, {"LineProfit", type number}, {"ProfitRatio", type number}, {"CogsAmount", type number}, {"DaysShipReal", Int64.Type}, {"IsCanceled", type logical}, {"IsFraud", type logical}, {"IsRevenue", type logical}, {"IsLate", type logical}, {"IsOnTime", type logical}, {"IsOtif", type logical}, {"IsPerfectOrder", type logical}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [OrderTs] = null or ([OrderTs] >= RangeStart and [OrderTs] < RangeEnd))
+				in
+				    Filtered
+

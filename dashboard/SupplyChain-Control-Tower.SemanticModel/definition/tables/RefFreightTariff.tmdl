@@ -1,0 +1,37 @@
+table RefFreightTariff
+	lineageTag: 713e59e2-b715-434d-9b61-849297583643
+
+	column ModeCode
+		dataType: string
+		lineageTag: 89efd31e-acc4-4b13-acc0-8930679317e6
+		summarizeBy: none
+		sourceColumn: ModeCode
+
+	column CostPerShipment
+		dataType: double
+		lineageTag: bf574b0b-8d92-443b-b305-b422497af721
+		summarizeBy: none
+		sourceColumn: CostPerShipment
+
+	column CostPerUnit
+		dataType: double
+		lineageTag: 7208e8ef-993d-4b78-8aba-1b66b15a6187
+		summarizeBy: none
+		sourceColumn: CostPerUnit
+
+	column DelayCostPerDay
+		dataType: double
+		lineageTag: ae166e75-a828-4c20-b2b6-c14eca57cf2d
+		summarizeBy: none
+		sourceColumn: DelayCostPerDay
+
+	partition RefFreightTariff = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\ref_freight_tariff.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"mode_code", "ModeCode"}, {"cost_per_shipment", "CostPerShipment"}, {"cost_per_unit", "CostPerUnit"}, {"delay_cost_per_day", "DelayCostPerDay"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"ModeCode", type text}, {"CostPerShipment", type number}, {"CostPerUnit", type number}, {"DelayCostPerDay", type number}})
+				in
+				    Typed
+

@@ -1,0 +1,38 @@
+table DimPaymentType
+	lineageTag: 072a9dc4-bf3e-4329-9e0b-5d400fb443a9
+
+	column PaymentTypeKey
+		dataType: int64
+		isHidden
+		lineageTag: 553065bd-d434-48ea-adc6-53ed0d85bc78
+		summarizeBy: none
+		sourceColumn: PaymentTypeKey
+
+	column PaymentType
+		dataType: string
+		lineageTag: 70b1a489-994a-418f-a151-47333e0f2bea
+		summarizeBy: none
+		sourceColumn: PaymentType
+
+	column IsCash
+		dataType: boolean
+		lineageTag: fd45302a-25f6-43c5-a423-7f22866ff2d0
+		summarizeBy: none
+		sourceColumn: IsCash
+
+	column IsTransfer
+		dataType: boolean
+		lineageTag: cbf53120-fc3b-4e41-ac2a-a544d83c627e
+		summarizeBy: none
+		sourceColumn: IsTransfer
+
+	partition DimPaymentType = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_payment_type.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"payment_type_key", "PaymentTypeKey"}, {"payment_type", "PaymentType"}, {"is_cash", "IsCash"}, {"is_transfer", "IsTransfer"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"PaymentTypeKey", Int64.Type}, {"PaymentType", type text}, {"IsCash", type logical}, {"IsTransfer", type logical}})
+				in
+				    Typed
+

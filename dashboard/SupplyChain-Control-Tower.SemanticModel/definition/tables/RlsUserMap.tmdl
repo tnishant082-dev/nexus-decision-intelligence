@@ -1,0 +1,45 @@
+table RlsUserMap
+	lineageTag: 13f8cd9e-a709-4a66-8227-c96dd6abfacc
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: 823eeb06-4e7d-47c8-9b86-0e27fb4374fc
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+	column RoleCode
+		dataType: string
+		lineageTag: 3cff4c1e-a0d9-4b24-a629-5f1d31b40582
+		summarizeBy: none
+		sourceColumn: RoleCode
+
+	column MarketCode
+		dataType: string
+		lineageTag: 626f3194-3fc2-4d7c-ba1e-66a1f169fd87
+		summarizeBy: none
+		sourceColumn: MarketCode
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: e5468c4e-d5e3-4caa-9d14-a24c53e32bb7
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: 0ffabe6e-f73b-43b6-bf0d-abb9a979fe65
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	partition RlsUserMap = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\rls_user_map.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"user_principal_name", "UserPrincipalName"}, {"role_code", "RoleCode"}, {"market_code", "MarketCode"}, {"warehouse_key", "WarehouseKey"}, {"vendor_key", "VendorKey"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"UserPrincipalName", type text}, {"RoleCode", type text}, {"MarketCode", type text}, {"WarehouseKey", Int64.Type}, {"VendorKey", Int64.Type}})
+				in
+				    Typed
+

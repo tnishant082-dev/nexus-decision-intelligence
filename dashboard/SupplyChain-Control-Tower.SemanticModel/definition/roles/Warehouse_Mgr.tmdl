@@ -1,0 +1,7 @@
+role Warehouse_Mgr
+	modelPermission: read
+
+	tablePermission DimWarehouse = DimWarehouse[WarehouseKey] = LOOKUPVALUE(RlsUserMap[WarehouseKey], RlsUserMap[UserPrincipalName], USERPRINCIPALNAME())
+
+	annotation PBI_Id = 4e0322d73cbe4603a900b6dfd445a68e
+

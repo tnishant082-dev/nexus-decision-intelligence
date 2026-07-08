@@ -1,0 +1,52 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["pCuratedFolder","RangeStart","RangeEnd","DimDate","DimProduct","DimCustomer","DimRegion","DimWarehouse","DimVendor","DimCarrier","DimTransportMode","DimOrderStatus","DimDeliveryStatus","DimPaymentType","DimSourceSystem","FactOrders","FactShipments","FactInventory","FactReturns","FactProcurement","FactVendorPerformance","LastRefresh","RlsUserMap","RefFreightTariff","RefEmissionFactor","RefLaneDistance"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DimDate
+ref table DimProduct
+ref table DimCustomer
+ref table DimRegion
+ref table DimWarehouse
+ref table DimVendor
+ref table DimCarrier
+ref table DimTransportMode
+ref table DimOrderStatus
+ref table DimDeliveryStatus
+ref table DimPaymentType
+ref table DimSourceSystem
+ref table FactOrders
+ref table FactShipments
+ref table FactInventory
+ref table FactReturns
+ref table FactProcurement
+ref table FactVendorPerformance
+ref table LastRefresh
+ref table RlsUserMap
+ref table RefFreightTariff
+ref table RefEmissionFactor
+ref table RefLaneDistance
+ref table _Measures
+ref table 'Metric Basis'
+ref table 'Time Intelligence'
+ref table 'Variance View'
+ref table fp_Metric
+ref table fp_Dimension
+
+ref role Exec_Global
+ref role Region_Ops
+ref role Warehouse_Mgr
+ref role Finance_Global
+ref role Procurement
+ref role Analyst_Read
+

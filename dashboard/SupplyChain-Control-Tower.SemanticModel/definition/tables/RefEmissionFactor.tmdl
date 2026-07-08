@@ -1,0 +1,31 @@
+table RefEmissionFactor
+	lineageTag: 72168b82-54f6-4082-9fb9-cf0ff0b2b16a
+
+	column ModeCode
+		dataType: string
+		lineageTag: 7aa073fc-1401-4099-9f0a-ce82263c2ff2
+		summarizeBy: none
+		sourceColumn: ModeCode
+
+	column GCo2PerTkm
+		dataType: double
+		lineageTag: 1ee8c43e-48a6-41d8-8eeb-8ec9d40826ab
+		summarizeBy: none
+		sourceColumn: GCo2PerTkm
+
+	column AvgWeightKgPerUnit
+		dataType: double
+		lineageTag: b0694836-6ed3-4217-9a7d-1c01e68387ff
+		summarizeBy: none
+		sourceColumn: AvgWeightKgPerUnit
+
+	partition RefEmissionFactor = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\ref_emission_factor.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"mode_code", "ModeCode"}, {"g_co2_per_tkm", "GCo2PerTkm"}, {"avg_weight_kg_per_unit", "AvgWeightKgPerUnit"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"ModeCode", type text}, {"GCo2PerTkm", type number}, {"AvgWeightKgPerUnit", type number}})
+				in
+				    Typed
+

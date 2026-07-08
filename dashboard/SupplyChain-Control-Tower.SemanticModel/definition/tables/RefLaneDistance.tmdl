@@ -1,0 +1,31 @@
+table RefLaneDistance
+	lineageTag: 956bc852-2020-4f26-a4b2-fc6ae4db482c
+
+	column OriginMarket
+		dataType: string
+		lineageTag: fcf72982-c0e0-4ace-8996-ee347271bffa
+		summarizeBy: none
+		sourceColumn: OriginMarket
+
+	column DestMarket
+		dataType: string
+		lineageTag: 6ec37b65-f044-41c3-87ae-72e4aa53f242
+		summarizeBy: none
+		sourceColumn: DestMarket
+
+	column DistanceKm
+		dataType: double
+		lineageTag: b3a48e2d-5626-4abf-9ca7-035ad08c4d5b
+		summarizeBy: none
+		sourceColumn: DistanceKm
+
+	partition RefLaneDistance = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\ref_lane_distance.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"origin_market", "OriginMarket"}, {"dest_market", "DestMarket"}, {"distance_km", "DistanceKm"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"OriginMarket", type text}, {"DestMarket", type text}, {"DistanceKm", type number}})
+				in
+				    Typed
+

@@ -1,0 +1,170 @@
+relationship 23f0ea2c-c76b-41c4-96ae-9f98cd30401a
+	fromColumn: FactOrders.OrderDateKey
+	toColumn: DimDate.DateKey
+
+relationship 2c2ed077-546f-4c4c-bea5-a0f2f4c38d7b
+	fromColumn: FactShipments.ShipDateKey
+	toColumn: DimDate.DateKey
+
+relationship 05902de7-97d1-4479-9ef4-8725d068480c
+	isActive: false
+	fromColumn: FactShipments.OrderDateKey
+	toColumn: DimDate.DateKey
+
+relationship cd3fac17-c49a-4c94-88f1-b6032f003830
+	fromColumn: FactInventory.DateKey
+	toColumn: DimDate.DateKey
+
+relationship d49cd6d3-4564-4ccb-b352-31068e7a6318
+	fromColumn: FactReturns.ReturnDateKey
+	toColumn: DimDate.DateKey
+
+relationship ef763629-b20b-4b13-8890-58a748947117
+	fromColumn: FactProcurement.PoDateKey
+	toColumn: DimDate.DateKey
+
+relationship b087df0d-9554-4a7b-b78b-848a83db5a03
+	isActive: false
+	fromColumn: FactProcurement.PromisedDateKey
+	toColumn: DimDate.DateKey
+
+relationship 03d7c33d-fdf2-411f-8bde-7d120c1bf50e
+	fromColumn: FactVendorPerformance.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 214657e4-f06f-46b4-b2e1-01d72f2708ef
+	fromColumn: FactOrders.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship ce50e43d-c905-408d-932b-e4b7293be80e
+	fromColumn: FactInventory.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship 5412c61f-3dab-42db-86de-05041b866134
+	fromColumn: FactReturns.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship c1c0699b-d74d-4c08-bb16-ed2327ed3dd0
+	fromColumn: FactProcurement.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship 416860f0-ac89-4414-aae4-6c563e4227e5
+	fromColumn: FactOrders.CustomerKey
+	toColumn: DimCustomer.CustomerKey
+
+relationship 0386f49b-7dbd-4a88-8031-60ad5cda179c
+	fromColumn: FactShipments.CustomerKey
+	toColumn: DimCustomer.CustomerKey
+
+relationship 41169d83-0362-42d6-9eb5-4a04c9f0aea4
+	fromColumn: FactReturns.CustomerKey
+	toColumn: DimCustomer.CustomerKey
+
+relationship 7a176def-2653-49ba-8569-c381d5465fe2
+	fromColumn: FactOrders.RegionKey
+	toColumn: DimRegion.RegionKey
+
+relationship 26901411-e26b-4044-b8b4-d130b278fa3b
+	fromColumn: FactShipments.RegionKey
+	toColumn: DimRegion.RegionKey
+
+relationship a0a1582e-b19a-4e5c-ba8a-136e17519d29
+	fromColumn: FactReturns.RegionKey
+	toColumn: DimRegion.RegionKey
+
+relationship 64832535-d952-467f-8b16-9747169873c1
+	fromColumn: FactOrders.WarehouseKey
+	toColumn: DimWarehouse.WarehouseKey
+
+relationship 5d343bc7-658f-4892-b30f-ee4ac97ff8ef
+	fromColumn: FactShipments.WarehouseKey
+	toColumn: DimWarehouse.WarehouseKey
+
+relationship cea8628d-6cd2-4188-9de4-44154ba1b16d
+	fromColumn: FactInventory.WarehouseKey
+	toColumn: DimWarehouse.WarehouseKey
+
+relationship 56f04e60-56a6-41c7-9ded-99a72bc99949
+	fromColumn: FactReturns.WarehouseKey
+	toColumn: DimWarehouse.WarehouseKey
+
+relationship 3dbada2e-34c4-4ffe-a075-842299572d2f
+	fromColumn: FactProcurement.WarehouseKey
+	toColumn: DimWarehouse.WarehouseKey
+
+relationship 54ad0de2-a240-49ee-bace-087cd7792aaa
+	fromColumn: FactOrders.VendorKey
+	toColumn: DimVendor.VendorKey
+
+relationship 852cc8f3-a944-46a5-9091-843f786451f2
+	fromColumn: FactInventory.VendorKey
+	toColumn: DimVendor.VendorKey
+
+relationship afd857c7-70de-41a7-896f-47b07351f29f
+	fromColumn: FactReturns.VendorKey
+	toColumn: DimVendor.VendorKey
+
+relationship 0574e119-fe1c-4107-b2b9-d812378940ae
+	fromColumn: FactProcurement.VendorKey
+	toColumn: DimVendor.VendorKey
+
+relationship b794aa21-141d-4a20-bc2d-ea6a96648a44
+	fromColumn: FactVendorPerformance.VendorKey
+	toColumn: DimVendor.VendorKey
+
+relationship f4cb156c-4cf9-4568-8a42-d66ef38531a3
+	fromColumn: FactOrders.CarrierKey
+	toColumn: DimCarrier.CarrierKey
+
+relationship 61dbe935-ee3c-433b-bee8-1014ef31217d
+	fromColumn: FactShipments.CarrierKey
+	toColumn: DimCarrier.CarrierKey
+
+relationship 21e99f98-ce80-4e13-a5cb-63c7214e3b88
+	fromColumn: FactOrders.TransportModeKey
+	toColumn: DimTransportMode.TransportModeKey
+
+relationship b9d8f72f-da45-49f3-8ee5-fa49bade3321
+	fromColumn: FactShipments.TransportModeKey
+	toColumn: DimTransportMode.TransportModeKey
+
+relationship 6739fb96-653e-4f85-ae48-fc74ff2ad7ff
+	fromColumn: FactOrders.OrderStatusKey
+	toColumn: DimOrderStatus.OrderStatusKey
+
+relationship 73874601-e211-4363-9f0f-024218d89938
+	fromColumn: FactShipments.OrderStatusKey
+	toColumn: DimOrderStatus.OrderStatusKey
+
+relationship 6b235138-1f91-4b73-932b-491734147c8d
+	fromColumn: FactShipments.DeliveryStatusKey
+	toColumn: DimDeliveryStatus.DeliveryStatusKey
+
+relationship 29f451d3-9a18-4b06-9e39-247202e86a51
+	fromColumn: FactOrders.PaymentTypeKey
+	toColumn: DimPaymentType.PaymentTypeKey
+
+relationship c10c777e-23a8-467c-91d9-9b77b52755f6
+	fromColumn: FactOrders.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+
+relationship 7da96d6e-5ce4-4fb6-a2e2-db2973a1309a
+	fromColumn: FactShipments.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+
+relationship 42146e5d-a433-4ea7-bc04-988f9a4a3058
+	fromColumn: FactReturns.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+
+relationship afef1042-2004-4e56-88f0-83b17b258532
+	fromColumn: FactInventory.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+
+relationship 714c4cca-bb09-44bf-8a40-8c7321212be0
+	fromColumn: FactProcurement.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+
+relationship dfd125e1-6ea2-4e10-ac43-a6329d8b6061
+	fromColumn: FactVendorPerformance.SourceSystemKey
+	toColumn: DimSourceSystem.SourceSystemKey
+

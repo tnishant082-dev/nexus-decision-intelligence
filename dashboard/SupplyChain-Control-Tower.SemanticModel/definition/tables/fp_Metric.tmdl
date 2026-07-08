@@ -1,0 +1,63 @@
+table fp_Metric
+	lineageTag: 957f1547-08f4-4179-89ba-c9f1329c23d2
+
+	column fp_Metric
+		dataType: string
+		lineageTag: 0a460897-88ef-4d4a-ab67-3c575f00f32f
+		sourceColumn: [Value1]
+		sortByColumn: 'fp_Metric Order'
+
+		relatedColumnDetails
+			groupByColumn: 'fp_Metric Fields'
+
+	column 'fp_Metric Fields'
+		dataType: string
+		isHidden
+		lineageTag: 9bfa2ddb-0462-482a-a730-38fa56f86758
+		sourceColumn: [Value2]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "kind": 2,
+				  "version": 3
+				}
+
+	column 'fp_Metric Order'
+		dataType: int64
+		isHidden
+		lineageTag: 44d114bf-63c3-435e-b2ba-e967ce6d3863
+		sourceColumn: [Value3]
+
+	partition fp_Metric = calculated
+		mode: import
+		source =
+				{
+				    ("Revenue", NAMEOF('_Measures'[Revenue]), 1),
+				    ("Profit", NAMEOF('_Measures'[Profit]), 2),
+				    ("Order Volume", NAMEOF('_Measures'[Order Volume]), 3),
+				    ("Cost to Serve", NAMEOF('_Measures'[Cost to Serve]), 4),
+				    ("Working Capital", NAMEOF('_Measures'[Working Capital]), 5),
+				    ("Inventory Value", NAMEOF('_Measures'[Inventory Value]), 6),
+				    ("OTIF %", NAMEOF('_Measures'[OTIF %]), 7),
+				    ("Fill Rate", NAMEOF('_Measures'[Fill Rate]), 8),
+				    ("Perfect Order %", NAMEOF('_Measures'[Perfect Order %]), 9),
+				    ("Stockout Rate", NAMEOF('_Measures'[Stockout Rate]), 10),
+				    ("Inventory Turnover", NAMEOF('_Measures'[Inventory Turnover]), 11),
+				    ("Inventory Days", NAMEOF('_Measures'[Inventory Days]), 12),
+				    ("Backorder Rate", NAMEOF('_Measures'[Backorder Rate]), 13),
+				    ("Lead Time", NAMEOF('_Measures'[Lead Time]), 14),
+				    ("Lead Time Variance", NAMEOF('_Measures'[Lead Time Variance]), 15),
+				    ("Vendor Reliability", NAMEOF('_Measures'[Vendor Reliability]), 16),
+				    ("Vendor SLA %", NAMEOF('_Measures'[Vendor SLA %]), 17),
+				    ("Vendor Quality Score", NAMEOF('_Measures'[Vendor Quality Score]), 18),
+				    ("Vendor Risk Score", NAMEOF('_Measures'[Vendor Risk Score]), 19),
+				    ("Transportation Cost", NAMEOF('_Measures'[Transportation Cost]), 20),
+				    ("Cost Per Shipment", NAMEOF('_Measures'[Cost Per Shipment]), 21),
+				    ("Delivery Delay Rate", NAMEOF('_Measures'[Delivery Delay Rate]), 22),
+				    ("Route Performance Score", NAMEOF('_Measures'[Route Performance Score]), 23),
+				    ("Control Tower Health Score", NAMEOF('_Measures'[Control Tower Health Score]), 24),
+				    ("CO2 Tonnes", NAMEOF('_Measures'[CO2 Tonnes]), 25)
+				}
+
+	annotation PBI_Id = {"T":"F","N":"fp_Metric"}
+
