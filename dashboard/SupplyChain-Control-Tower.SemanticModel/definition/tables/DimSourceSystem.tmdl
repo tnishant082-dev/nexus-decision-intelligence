@@ -1,0 +1,32 @@
+table DimSourceSystem
+	lineageTag: 9bf64f0b-379e-4a30-994b-c39109137f7f
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: c2473fce-d6d8-4c1d-a592-c4b52f8b417f
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column SourceCode
+		dataType: string
+		lineageTag: 5fc6e4df-4e1b-4b0e-9b3d-9d6962aac757
+		summarizeBy: none
+		sourceColumn: SourceCode
+
+	column SourceName
+		dataType: string
+		lineageTag: 51404d40-f656-41dc-b5b7-1370a0992fdd
+		summarizeBy: none
+		sourceColumn: SourceName
+
+	partition DimSourceSystem = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_source_system.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"source_system_key", "SourceSystemKey"}, {"source_code", "SourceCode"}, {"source_name", "SourceName"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"SourceSystemKey", Int64.Type}, {"SourceCode", type text}, {"SourceName", type text}})
+				in
+				    Typed
+

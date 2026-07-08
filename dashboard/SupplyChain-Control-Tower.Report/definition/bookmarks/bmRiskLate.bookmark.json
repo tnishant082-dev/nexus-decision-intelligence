@@ -1,0 +1,50 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Risk Late",
+  "name": "bmRiskLate",
+  "explorationState": {
+    "version": "1.0",
+    "activeSection": "ReportSection_p09",
+    "sections": {
+      "ReportSection_p09": {
+        "visualContainers": {
+          "p09_title": {},
+          "p09_caption": {},
+          "p09_refresh": {},
+          "p09_home": {},
+          "p09_reset": {},
+          "p09_drill_0": {},
+          "p09_drill_1": {},
+          "p09_drill_2": {},
+          "p09_slicer_date": {},
+          "p09_slicer_market": {},
+          "p09_slicer_segment": {},
+          "p09_bm_0": {},
+          "p09_bm_1": {},
+          "p09_bm_2": {},
+          "p09_rail_p01": {},
+          "p09_rail_p02": {},
+          "p09_rail_p03": {},
+          "p09_rail_p04": {},
+          "p09_rail_p05": {},
+          "p09_rail_p06": {},
+          "p09_rail_p07": {},
+          "p09_rail_p08": {},
+          "p09_rail_p09": {},
+          "p09_rail_p10": {},
+          "p09_rail_p11": {},
+          "p09_rail_p12": {},
+          "p09_kpi_0": {},
+          "p09_kpi_1": {},
+          "p09_kpi_2": {},
+          "p09_kpi_3": {},
+          "p09_kpi_4": {},
+          "p09_kpi_5": {},
+          "p09_mkt": {},
+          "p09_rate": {},
+          "p09_queue": {}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+table fp_Dimension
+	lineageTag: ed624c20-b58d-4f82-a757-da68af18185d
+
+	column fp_Dimension
+		dataType: string
+		lineageTag: 83ba1cf0-a3da-4a57-85ce-4457578f5b2a
+		sourceColumn: [Value1]
+		sortByColumn: 'fp_Dimension Order'
+
+		relatedColumnDetails
+			groupByColumn: 'fp_Dimension Fields'
+
+	column 'fp_Dimension Fields'
+		dataType: string
+		isHidden
+		lineageTag: 7aa32db5-a12e-466f-a3b0-5badd65a6835
+		sourceColumn: [Value2]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "kind": 2,
+				  "version": 3
+				}
+
+	column 'fp_Dimension Order'
+		dataType: int64
+		isHidden
+		lineageTag: b9e88a27-4496-4d8f-968a-b08e25b1aad2
+		sourceColumn: [Value3]
+
+	partition fp_Dimension = calculated
+		mode: import
+		source =
+				{
+				    ("Market", NAMEOF(DimRegion[MarketName]), 1),
+				    ("Region", NAMEOF(DimRegion[RegionName]), 2),
+				    ("Country", NAMEOF(DimRegion[CountryName]), 3),
+				    ("Warehouse", NAMEOF(DimWarehouse[WarehouseName]), 4),
+				    ("Vendor", NAMEOF(DimVendor[VendorName]), 5),
+				    ("Carrier", NAMEOF(DimCarrier[CarrierName]), 6),
+				    ("Transport Mode", NAMEOF(DimTransportMode[ModeName]), 7),
+				    ("Product Category", NAMEOF(DimProduct[CategoryName]), 8),
+				    ("Segment", NAMEOF(DimCustomer[Segment]), 9),
+				    ("ABC Class", NAMEOF(DimProduct[AbcClass]), 10)
+				}
+

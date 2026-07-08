@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "bmExecDefault"
+    },
+    {
+      "name": "bmStoryProfit"
+    },
+    {
+      "name": "bmStoryService"
+    },
+    {
+      "name": "bmStoryCash"
+    },
+    {
+      "name": "bmReset"
+    },
+    {
+      "name": "bmRiskLate"
+    },
+    {
+      "name": "bmRiskFraud"
+    },
+    {
+      "name": "bmRiskHold"
+    },
+    {
+      "name": "bmPersonaCEO"
+    },
+    {
+      "name": "bmPersonaCOO"
+    },
+    {
+      "name": "bmPersonaCFO"
+    },
+    {
+      "name": "bmPersonaVPSC"
+    },
+    {
+      "name": "bmPersonaProc"
+    },
+    {
+      "name": "bmPersonaWH"
+    }
+  ]
+}

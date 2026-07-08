@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Persona WH",
+  "name": "bmPersonaWH",
+  "explorationState": {
+    "version": "1.0",
+    "activeSection": "ReportSection_p12",
+    "sections": {
+      "ReportSection_p12": {
+        "visualContainers": {
+          "p12_title": {},
+          "p12_caption": {},
+          "p12_refresh": {},
+          "p12_home": {},
+          "p12_reset": {},
+          "p12_slicer_date": {},
+          "p12_slicer_market": {},
+          "p12_slicer_segment": {},
+          "p12_bm_0": {},
+          "p12_bm_1": {},
+          "p12_bm_2": {},
+          "p12_bm_3": {},
+          "p12_bm_4": {},
+          "p12_bm_5": {},
+          "p12_rail_p01": {},
+          "p12_rail_p02": {},
+          "p12_rail_p03": {},
+          "p12_rail_p04": {},
+          "p12_rail_p05": {},
+          "p12_rail_p06": {},
+          "p12_rail_p07": {},
+          "p12_rail_p08": {},
+          "p12_rail_p09": {},
+          "p12_rail_p10": {},
+          "p12_rail_p11": {},
+          "p12_rail_p12": {},
+          "p12_kpi_0": {},
+          "p12_kpi_1": {},
+          "p12_kpi_2": {},
+          "p12_kpi_3": {},
+          "p12_kpi_4": {},
+          "p12_kpi_5": {},
+          "p12_kpi_6": {},
+          "p12_kpi_7": {},
+          "p12b_kpi_0": {},
+          "p12b_kpi_1": {},
+          "p12b_kpi_2": {},
+          "p12b_kpi_3": {},
+          "p12b_kpi_4": {},
+          "p12b_kpi_5": {},
+          "p12b_kpi_6": {},
+          "p12b_kpi_7": {},
+          "p12_trend": {},
+          "p12_tbl": {},
+          "p12_ops": {}
+        }
+      }
+    }
+  }
+}

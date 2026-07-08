@@ -1,0 +1,5 @@
+role Procurement
+	modelPermission: read
+
+	annotation PBI_Id = d58dc04410bf4653b5b7532060ed25b7
+

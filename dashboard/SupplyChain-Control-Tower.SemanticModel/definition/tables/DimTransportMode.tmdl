@@ -1,0 +1,56 @@
+table DimTransportMode
+	lineageTag: fdcc77e7-e29f-408d-9641-fe2a027cda56
+
+	column TransportModeKey
+		dataType: int64
+		isHidden
+		lineageTag: 0c729807-ac5c-45c2-8f04-ba2213df2cd2
+		summarizeBy: none
+		sourceColumn: TransportModeKey
+
+	column ModeCode
+		dataType: string
+		lineageTag: 3e66488f-6768-4b6a-b27e-904b51a1e2da
+		summarizeBy: none
+		sourceColumn: ModeCode
+
+	column ModeName
+		dataType: string
+		lineageTag: a3e3c5ee-2982-4bfe-942c-bc4edbf09172
+		summarizeBy: none
+		sourceColumn: ModeName
+
+	column SlaDays
+		dataType: int64
+		lineageTag: 531693ca-62e8-4a54-8822-49f2f3f6a1f5
+		summarizeBy: none
+		sourceColumn: SlaDays
+
+	column CostTier
+		dataType: string
+		lineageTag: 66563bce-65d8-4949-8358-c9f805bb00c1
+		summarizeBy: none
+		sourceColumn: CostTier
+
+	column EmissionTier
+		dataType: string
+		lineageTag: 074c561f-d4ec-4772-a244-1dc7e4a52dd5
+		summarizeBy: none
+		sourceColumn: EmissionTier
+
+	column SourceClass
+		dataType: string
+		lineageTag: 4482adb9-b8c5-4b21-9ae9-f9e78a4d58a3
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	partition DimTransportMode = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_transport_mode.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"transport_mode_key", "TransportModeKey"}, {"mode_code", "ModeCode"}, {"mode_name", "ModeName"}, {"sla_days", "SlaDays"}, {"cost_tier", "CostTier"}, {"emission_tier", "EmissionTier"}, {"source_class", "SourceClass"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"TransportModeKey", Int64.Type}, {"ModeCode", type text}, {"ModeName", type text}, {"SlaDays", Int64.Type}, {"CostTier", type text}, {"EmissionTier", type text}, {"SourceClass", type text}})
+				in
+				    Typed
+

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSection_dt_warehouse",
+  "displayName": "Warehouse 360",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "DrillDimWarehouseWarehouseKey",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimWarehouse"
+              }
+            },
+            "Property": "WarehouseKey"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drill",
+        "isHiddenInViewMode": true
+      },
+      {
+        "name": "DrillDimWarehouseWarehouseName",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimWarehouse"
+              }
+            },
+            "Property": "WarehouseName"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drill",
+        "isHiddenInViewMode": true
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode"
+}

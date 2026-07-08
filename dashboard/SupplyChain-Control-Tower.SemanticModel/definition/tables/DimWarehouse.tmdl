@@ -1,0 +1,64 @@
+table DimWarehouse
+	lineageTag: e8a2b311-bfeb-47cb-ad0e-2f525e8261be
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: ee383591-9081-4b77-87f5-28539f908e28
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column WarehouseCode
+		dataType: string
+		lineageTag: 1c462ba9-ad86-4a49-b206-cacf2564cf08
+		summarizeBy: none
+		sourceColumn: WarehouseCode
+
+	column WarehouseName
+		dataType: string
+		lineageTag: 9ad9f941-f322-4fc2-8893-d3becec5a881
+		summarizeBy: none
+		sourceColumn: WarehouseName
+
+	column MarketCode
+		dataType: string
+		lineageTag: 6dd635a0-4670-4a01-a7e9-47a1e7e87968
+		summarizeBy: none
+		sourceColumn: MarketCode
+
+	column WarehouseType
+		dataType: string
+		lineageTag: 15aaebd6-8163-4d93-b624-77a3fe45cb79
+		summarizeBy: none
+		sourceColumn: WarehouseType
+
+	column Timezone
+		dataType: string
+		isHidden
+		lineageTag: 636d0742-17b1-4751-bbb5-4cf5ce2afd87
+		summarizeBy: none
+		sourceColumn: Timezone
+
+	column SourceClass
+		dataType: string
+		lineageTag: 90b42388-9eee-49bb-8c40-b8a30bf03ee5
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	column DerivationRule
+		dataType: string
+		isHidden
+		lineageTag: 186ecd27-280a-4e1a-ba7c-cf895c6857ac
+		summarizeBy: none
+		sourceColumn: DerivationRule
+
+	partition DimWarehouse = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_warehouse.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"warehouse_key", "WarehouseKey"}, {"warehouse_code", "WarehouseCode"}, {"warehouse_name", "WarehouseName"}, {"market_code", "MarketCode"}, {"warehouse_type", "WarehouseType"}, {"timezone", "Timezone"}, {"source_class", "SourceClass"}, {"derivation_rule", "DerivationRule"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"WarehouseKey", Int64.Type}, {"WarehouseCode", type text}, {"WarehouseName", type text}, {"MarketCode", type text}, {"WarehouseType", type text}, {"Timezone", type text}, {"SourceClass", type text}, {"DerivationRule", type text}})
+				in
+				    Typed
+

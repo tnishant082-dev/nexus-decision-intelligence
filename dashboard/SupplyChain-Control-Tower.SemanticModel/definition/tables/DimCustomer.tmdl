@@ -1,0 +1,130 @@
+table DimCustomer
+	lineageTag: 9933835f-a23b-44e4-9155-d82de99c08be
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		lineageTag: c8f163ca-eaef-4305-a342-1b2b89e26464
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column CustomerIdSrc
+		dataType: int64
+		isHidden
+		lineageTag: 989a6073-1c95-43ac-a908-3ae45dbcb202
+		summarizeBy: none
+		sourceColumn: CustomerIdSrc
+
+	column CustomerName
+		dataType: string
+		lineageTag: 0ae7fdd4-f5ed-4ae5-89b7-7d84bb8755f0
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+	column FirstName
+		dataType: string
+		isHidden
+		lineageTag: 40c51d31-6a8b-4cc9-a69e-3727c678202d
+		summarizeBy: none
+		sourceColumn: FirstName
+
+	column LastName
+		dataType: string
+		isHidden
+		lineageTag: 2226e790-e062-4310-b6db-016b6bf2678f
+		summarizeBy: none
+		sourceColumn: LastName
+
+	column Segment
+		dataType: string
+		lineageTag: 123275a2-cd8b-45df-ab57-62dc65418654
+		summarizeBy: none
+		sourceColumn: Segment
+
+	column BillToCity
+		dataType: string
+		lineageTag: f7d823c2-6e7e-4d4a-9638-53357a0e8eda
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: BillToCity
+
+	column BillToState
+		dataType: string
+		lineageTag: 460fe5a2-1682-480c-a4c8-0be6a8bde28a
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: BillToState
+
+	column BillToPostal
+		dataType: string
+		isHidden
+		lineageTag: 90fd4781-d87a-4aa4-8294-faf26d5e3ada
+		dataCategory: PostalCode
+		summarizeBy: none
+		sourceColumn: BillToPostal
+
+	column BillToCountry
+		dataType: string
+		lineageTag: c97087fb-458a-4774-a2f2-b23e9734b95d
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: BillToCountry
+
+	column BillToCountryIso
+		dataType: string
+		lineageTag: 91ce7125-312d-4dbc-b672-c272d8735cdb
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: BillToCountryIso
+
+	column Latitude
+		dataType: double
+		isHidden
+		lineageTag: 9586e510-5a35-4097-a320-5e97b8ea0479
+		dataCategory: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+	column Longitude
+		dataType: double
+		isHidden
+		lineageTag: 3d8a92d6-9e8b-4d6c-b965-dc1912196f62
+		dataCategory: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+	column FirstOrderDate
+		dataType: dateTime
+		lineageTag: d00193f1-f6f8-419a-8f68-01be971ad94a
+		summarizeBy: none
+		sourceColumn: FirstOrderDate
+
+	column LastOrderDate
+		dataType: dateTime
+		lineageTag: 65c491a2-fe34-4911-ac72-60b776562314
+		summarizeBy: none
+		sourceColumn: LastOrderDate
+
+	column LifetimeOrders
+		dataType: int64
+		lineageTag: d005d33b-2a47-4f15-a8d6-8044aaceccbf
+		summarizeBy: none
+		sourceColumn: LifetimeOrders
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: e8b796ca-cd80-4f85-8837-04aa7fd435fc
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	partition DimCustomer = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_customer.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"customer_key", "CustomerKey"}, {"customer_id_src", "CustomerIdSrc"}, {"customer_name", "CustomerName"}, {"first_name", "FirstName"}, {"last_name", "LastName"}, {"segment", "Segment"}, {"bill_to_city", "BillToCity"}, {"bill_to_state", "BillToState"}, {"bill_to_postal", "BillToPostal"}, {"bill_to_country", "BillToCountry"}, {"bill_to_country_iso", "BillToCountryIso"}, {"latitude", "Latitude"}, {"longitude", "Longitude"}, {"first_order_date", "FirstOrderDate"}, {"last_order_date", "LastOrderDate"}, {"lifetime_orders", "LifetimeOrders"}, {"source_system_key", "SourceSystemKey"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"CustomerKey", Int64.Type}, {"CustomerIdSrc", Int64.Type}, {"CustomerName", type text}, {"FirstName", type text}, {"LastName", type text}, {"Segment", type text}, {"BillToCity", type text}, {"BillToState", type text}, {"BillToPostal", type text}, {"BillToCountry", type text}, {"BillToCountryIso", type text}, {"Latitude", type number}, {"Longitude", type number}, {"FirstOrderDate", type datetime}, {"LastOrderDate", type datetime}, {"LifetimeOrders", Int64.Type}, {"SourceSystemKey", Int64.Type}})
+				in
+				    Typed
+

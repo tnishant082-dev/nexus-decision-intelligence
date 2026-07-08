@@ -1,0 +1,38 @@
+table 'Variance View'
+	lineageTag: 5df159a8-7a38-4806-a527-c4a7d54ea375
+
+	calculationGroup
+		precedence: 30
+
+		calculationItem Actual = SELECTEDMEASURE()
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem Target = IF(SELECTEDMEASURENAME() = "Revenue", [Revenue Target], SELECTEDMEASURE())
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem Δ = SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem Δ% = DIVIDE(SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR)), CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR)))
+
+			formatStringDefinition = "0.0%"
+
+		calculationItem Status = VAR v = DIVIDE(SELECTEDMEASURE(), [Revenue Target]) RETURN IF(v >= 1, "On plan", IF(v >= 0.9, "Watch", "Off plan"))
+
+			formatStringDefinition = "@"
+
+	column 'Variance View'
+		dataType: string
+		lineageTag: a3df4ebd-db01-4458-8108-5759fcbb570f
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: 5704296c-3fc0-4d92-ab2a-f1bbcd981bdf
+		sourceColumn: Ordinal
+

@@ -1,0 +1,56 @@
+table DimCarrier
+	lineageTag: 5cc1e828-a593-4555-be93-4a6e53a27d6f
+
+	column CarrierKey
+		dataType: int64
+		isHidden
+		lineageTag: 7950b7c3-a345-4f9c-ba30-86412156590c
+		summarizeBy: none
+		sourceColumn: CarrierKey
+
+	column CarrierCode
+		dataType: string
+		lineageTag: a15da69f-aae9-4d7d-bdfe-2fd66cba3f9f
+		summarizeBy: none
+		sourceColumn: CarrierCode
+
+	column CarrierName
+		dataType: string
+		lineageTag: 3fdb97c0-7833-410f-a746-07ec4004ff6a
+		summarizeBy: none
+		sourceColumn: CarrierName
+
+	column CarrierType
+		dataType: string
+		lineageTag: 346d955a-4da7-468d-aa47-801f0f3cb54b
+		summarizeBy: none
+		sourceColumn: CarrierType
+
+	column ServiceClass
+		dataType: string
+		lineageTag: 7f34569f-591b-4ecc-9f35-633bad79e614
+		summarizeBy: none
+		sourceColumn: ServiceClass
+
+	column ModeNk
+		dataType: string
+		lineageTag: 5ff89479-f2da-4e34-9c34-39ee3d9af577
+		summarizeBy: none
+		sourceColumn: ModeNk
+
+	column SourceClass
+		dataType: string
+		lineageTag: bc62e20b-95c0-4485-bb6a-66ee9d10e88f
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	partition DimCarrier = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_carrier.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"carrier_key", "CarrierKey"}, {"carrier_code", "CarrierCode"}, {"carrier_name", "CarrierName"}, {"carrier_type", "CarrierType"}, {"service_class", "ServiceClass"}, {"mode_nk", "ModeNk"}, {"source_class", "SourceClass"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"CarrierKey", Int64.Type}, {"CarrierCode", type text}, {"CarrierName", type text}, {"CarrierType", type text}, {"ServiceClass", type text}, {"ModeNk", type text}, {"SourceClass", type text}})
+				in
+				    Typed
+

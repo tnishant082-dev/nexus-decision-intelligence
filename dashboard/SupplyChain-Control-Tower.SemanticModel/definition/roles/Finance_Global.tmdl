@@ -1,0 +1,5 @@
+role Finance_Global
+	modelPermission: read
+
+	annotation PBI_Id = 812fdcde26f8414f94555e52003aa004
+

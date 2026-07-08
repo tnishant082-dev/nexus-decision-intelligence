@@ -1,0 +1,62 @@
+table 'Time Intelligence'
+	lineageTag: 53242c8a-3150-48fb-9504-fb7172297124
+
+	calculationGroup
+		precedence: 20
+
+		calculationItem Current = SELECTEDMEASURE()
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'Prior Period' = CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, MONTH))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem MoM = SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, MONTH))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'MoM %' = DIVIDE(SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, MONTH)), CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, MONTH)))
+
+			formatStringDefinition = "0.0%"
+
+		calculationItem YoY = SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'YoY %' = DIVIDE(SELECTEDMEASURE() - CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR)), CALCULATE(SELECTEDMEASURE(), DATEADD(DimDate[Date], -1, YEAR)))
+
+			formatStringDefinition = "0.0%"
+
+		calculationItem YTD = CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date]))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'Prior YTD' = CALCULATE(SELECTEDMEASURE(), DATESYTD(DATEADD(DimDate[Date], -1, YEAR)))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'YTD Δ%' = DIVIDE(CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date])) - CALCULATE(SELECTEDMEASURE(), DATESYTD(DATEADD(DimDate[Date], -1, YEAR))), CALCULATE(SELECTEDMEASURE(), DATESYTD(DATEADD(DimDate[Date], -1, YEAR))))
+
+			formatStringDefinition = "0.0%"
+
+		calculationItem 'Rolling 12 Months' = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD(DimDate[Date], MAX(DimDate[Date]), -12, MONTH))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+		calculationItem 'Rolling 13 Weeks' = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD(DimDate[Date], MAX(DimDate[Date]), -13, WEEK))
+
+			formatStringDefinition = SELECTEDMEASUREFORMATSTRING()
+
+	column 'Time Intelligence'
+		dataType: string
+		lineageTag: 70b52ee9-7035-42ab-b3e1-406ef62daaf6
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: 7eb29d9e-ad08-41f8-9acf-e002b5cd2388
+		sourceColumn: Ordinal
+

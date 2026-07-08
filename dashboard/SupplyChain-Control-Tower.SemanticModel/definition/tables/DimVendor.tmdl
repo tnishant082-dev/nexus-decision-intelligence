@@ -1,0 +1,70 @@
+table DimVendor
+	lineageTag: 40cc1cd3-adef-4e96-ac17-54b36cf9beca
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: e59ba823-f1b9-41ee-aad3-a5b22349bd7b
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column VendorNk
+		dataType: string
+		isHidden
+		lineageTag: bdfe359f-a85c-40cd-bab6-e9b37686c57e
+		summarizeBy: none
+		sourceColumn: VendorNk
+
+	column VendorName
+		dataType: string
+		lineageTag: f6ba2d29-738b-4999-b084-e4f391ad6fc5
+		summarizeBy: none
+		sourceColumn: VendorName
+
+	column VendorType
+		dataType: string
+		lineageTag: bba3a2e5-a3db-484d-a913-5d401da44d69
+		summarizeBy: none
+		sourceColumn: VendorType
+
+	column SlaLeadTimeDays
+		dataType: int64
+		lineageTag: 80b7ed55-2673-4fc9-b830-289656466894
+		summarizeBy: none
+		sourceColumn: SlaLeadTimeDays
+
+	column PreferredFlag
+		dataType: boolean
+		lineageTag: b1e879cb-30f0-4ab1-aaec-fc2f3b3d8920
+		summarizeBy: none
+		sourceColumn: PreferredFlag
+
+	column RiskTier
+		dataType: string
+		lineageTag: 8af90540-3be4-4c52-95da-4501882a20c1
+		summarizeBy: none
+		sourceColumn: RiskTier
+
+	column SourceClass
+		dataType: string
+		lineageTag: 0033bdbf-013c-4797-bd4d-03736fd5cc60
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	column DerivationRule
+		dataType: string
+		isHidden
+		lineageTag: 5221b240-0edd-45d4-906e-4555afcdb8d1
+		summarizeBy: none
+		sourceColumn: DerivationRule
+
+	partition DimVendor = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_vendor.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"vendor_key", "VendorKey"}, {"vendor_nk", "VendorNk"}, {"vendor_name", "VendorName"}, {"vendor_type", "VendorType"}, {"sla_lead_time_days", "SlaLeadTimeDays"}, {"preferred_flag", "PreferredFlag"}, {"risk_tier", "RiskTier"}, {"source_class", "SourceClass"}, {"derivation_rule", "DerivationRule"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"VendorKey", Int64.Type}, {"VendorNk", type text}, {"VendorName", type text}, {"VendorType", type text}, {"SlaLeadTimeDays", Int64.Type}, {"PreferredFlag", type logical}, {"RiskTier", type text}, {"SourceClass", type text}, {"DerivationRule", type text}})
+				in
+				    Typed
+

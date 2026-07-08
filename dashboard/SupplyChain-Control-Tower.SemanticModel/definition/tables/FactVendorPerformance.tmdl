@@ -1,0 +1,152 @@
+table FactVendorPerformance
+	lineageTag: 42b6db64-c995-4863-bb6f-fef61ea17a84
+
+	column VendorPerfKey
+		dataType: int64
+		isHidden
+		lineageTag: e2f657a4-de0b-48b6-8179-ee239950a1c5
+		summarizeBy: none
+		sourceColumn: VendorPerfKey
+
+	column DateKey
+		dataType: int64
+		isHidden
+		lineageTag: f857addc-d268-480f-9dcc-592c30f21c59
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column MonthEndTs
+		dataType: dateTime
+		isHidden
+		lineageTag: e5ac5a6f-6a61-4f1a-9c7b-8c6bfa643f8d
+		summarizeBy: none
+		sourceColumn: MonthEndTs
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: ca8016bb-4e65-455c-b754-ca3f382236e8
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: 8b4fec34-e912-4ebd-8868-856b33cb3960
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column OrdersCount
+		dataType: int64
+		lineageTag: ba6c4efe-c107-41c1-890f-28fec64a5c5f
+		summarizeBy: none
+		sourceColumn: OrdersCount
+
+	column ShipmentsCount
+		dataType: int64
+		lineageTag: 224231dc-62b4-46de-8bdf-6437944949e9
+		summarizeBy: none
+		sourceColumn: ShipmentsCount
+
+	column OtifCount
+		dataType: int64
+		lineageTag: e4135873-b4b1-4492-b852-a2c684f591cd
+		summarizeBy: none
+		sourceColumn: OtifCount
+
+	column LateCount
+		dataType: int64
+		lineageTag: b8e081b5-87a3-4315-91bc-650e850c4381
+		summarizeBy: none
+		sourceColumn: LateCount
+
+	column CancelCount
+		dataType: int64
+		lineageTag: 6b51ad70-e2c1-451e-a311-3e7c6ff5c047
+		summarizeBy: none
+		sourceColumn: CancelCount
+
+	column FraudCount
+		dataType: int64
+		lineageTag: 145c0220-8fa9-4b07-bce0-e202ef4ea075
+		summarizeBy: none
+		sourceColumn: FraudCount
+
+	column UnitsShipped
+		dataType: double
+		lineageTag: 57c46059-c26d-4009-9a32-584fcc8f3398
+		summarizeBy: none
+		sourceColumn: UnitsShipped
+
+	column NetSales
+		dataType: double
+		lineageTag: a559bd23-87f8-4bf0-87ff-0e64c164961e
+		summarizeBy: none
+		sourceColumn: NetSales
+
+	column SpendAmount
+		dataType: double
+		lineageTag: 172e77b4-3862-462c-83af-80f015acdeb5
+		summarizeBy: none
+		sourceColumn: SpendAmount
+
+	column ProfitAmount
+		dataType: double
+		lineageTag: a98e3d75-d745-424a-a43a-0cf9872ac198
+		summarizeBy: none
+		sourceColumn: ProfitAmount
+
+	column AvgLeadTime
+		dataType: double
+		lineageTag: 9f9e8bf8-222c-4a07-b7e6-0e52334cf084
+		summarizeBy: none
+		sourceColumn: AvgLeadTime
+
+	column LeadTimeStd
+		dataType: double
+		lineageTag: e32d6cdd-0184-4dc1-bf9a-8cea40b8a2fb
+		summarizeBy: none
+		sourceColumn: LeadTimeStd
+
+	column ReliabilityScore
+		dataType: double
+		lineageTag: be675299-988c-420c-a62a-4ddb515804a1
+		summarizeBy: none
+		sourceColumn: ReliabilityScore
+
+	column SlaPct
+		dataType: double
+		lineageTag: fbe23c4e-3470-4c1d-aa65-6407272bb51b
+		summarizeBy: none
+		sourceColumn: SlaPct
+
+	column QualityScore
+		dataType: double
+		lineageTag: c972058d-5b73-4cf4-9a29-9b2e466753dc
+		summarizeBy: none
+		sourceColumn: QualityScore
+
+	column RiskScore
+		dataType: double
+		lineageTag: 0d19e797-67c5-4099-a11b-9190e99d0b7a
+		summarizeBy: none
+		sourceColumn: RiskScore
+
+	column SourceClass
+		dataType: string
+		lineageTag: aa54a13d-0c1e-4b96-a511-cfc9fb0766b5
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	partition FactVendorPerformance = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_vendor_performance.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"vendor_perf_key", "VendorPerfKey"}, {"date_key", "DateKey"}, {"month_end_ts", "MonthEndTs"}, {"vendor_key", "VendorKey"}, {"source_system_key", "SourceSystemKey"}, {"orders_count", "OrdersCount"}, {"shipments_count", "ShipmentsCount"}, {"otif_count", "OtifCount"}, {"late_count", "LateCount"}, {"cancel_count", "CancelCount"}, {"fraud_count", "FraudCount"}, {"units_shipped", "UnitsShipped"}, {"net_sales", "NetSales"}, {"spend_amount", "SpendAmount"}, {"profit_amount", "ProfitAmount"}, {"avg_lead_time", "AvgLeadTime"}, {"lead_time_std", "LeadTimeStd"}, {"reliability_score", "ReliabilityScore"}, {"sla_pct", "SlaPct"}, {"quality_score", "QualityScore"}, {"risk_score", "RiskScore"}, {"source_class", "SourceClass"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"VendorPerfKey", Int64.Type}, {"DateKey", Int64.Type}, {"MonthEndTs", type datetime}, {"VendorKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"OrdersCount", Int64.Type}, {"ShipmentsCount", Int64.Type}, {"OtifCount", Int64.Type}, {"LateCount", Int64.Type}, {"CancelCount", Int64.Type}, {"FraudCount", Int64.Type}, {"UnitsShipped", type number}, {"NetSales", type number}, {"SpendAmount", type number}, {"ProfitAmount", type number}, {"AvgLeadTime", type number}, {"LeadTimeStd", type number}, {"ReliabilityScore", type number}, {"SlaPct", type number}, {"QualityScore", type number}, {"RiskScore", type number}, {"SourceClass", type text}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [MonthEndTs] = null or ([MonthEndTs] >= RangeStart and [MonthEndTs] < RangeEnd))
+				in
+				    Filtered
+

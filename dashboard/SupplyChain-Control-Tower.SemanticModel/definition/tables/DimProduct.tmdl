@@ -1,0 +1,104 @@
+table DimProduct
+	lineageTag: 933a677c-7997-4ac3-8481-093379d46936
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		lineageTag: ee3ccb21-6f85-420a-9b26-3fe8a19eb6b9
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+	column ProductIdSrc
+		dataType: int64
+		isHidden
+		lineageTag: c889d398-3974-46d5-a6e7-c48ddf1bd110
+		summarizeBy: none
+		sourceColumn: ProductIdSrc
+
+	column ProductNk
+		dataType: string
+		isHidden
+		lineageTag: b10b657c-8f7e-49d6-b893-f79bc4466958
+		summarizeBy: none
+		sourceColumn: ProductNk
+
+	column ProductName
+		dataType: string
+		lineageTag: ff7e88f3-7132-462f-bf42-5996aee92712
+		summarizeBy: none
+		sourceColumn: ProductName
+
+	column CategoryId
+		dataType: int64
+		isHidden
+		lineageTag: 83945ad9-a066-44a0-b90f-5370fc6a8f44
+		summarizeBy: none
+		sourceColumn: CategoryId
+
+	column CategoryName
+		dataType: string
+		lineageTag: 044745ec-cb7b-4cab-b23b-8af3329ea642
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+	column CategoryGroup
+		dataType: string
+		lineageTag: b0f8e83b-5da3-4710-956f-aed76306d975
+		summarizeBy: none
+		sourceColumn: CategoryGroup
+
+	column DepartmentId
+		dataType: int64
+		isHidden
+		lineageTag: 5b842e94-d763-4265-a397-c8c122824282
+		summarizeBy: none
+		sourceColumn: DepartmentId
+
+	column DepartmentName
+		dataType: string
+		lineageTag: b331b680-d255-47df-9278-5a018b4f6f6b
+		summarizeBy: none
+		sourceColumn: DepartmentName
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: 3ec23de8-040f-4c07-aa71-286638c6ce6a
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column ListPrice
+		dataType: double
+		lineageTag: 39947113-8858-497e-b274-1f5d81958fe9
+		summarizeBy: none
+		sourceColumn: ListPrice
+
+	column AbcClass
+		dataType: string
+		lineageTag: 6575e563-b6fe-441a-846f-5951bde00433
+		summarizeBy: none
+		sourceColumn: AbcClass
+
+	column IsActive
+		dataType: boolean
+		lineageTag: 4652a4c2-8380-4465-9406-2bf1d7dc3cad
+		summarizeBy: none
+		sourceColumn: IsActive
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: 303687df-9723-47ef-a5dd-3721e4e65f99
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	partition DimProduct = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_product.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"product_key", "ProductKey"}, {"product_id_src", "ProductIdSrc"}, {"product_nk", "ProductNk"}, {"product_name", "ProductName"}, {"category_id", "CategoryId"}, {"category_name", "CategoryName"}, {"category_group", "CategoryGroup"}, {"department_id", "DepartmentId"}, {"department_name", "DepartmentName"}, {"vendor_key", "VendorKey"}, {"list_price", "ListPrice"}, {"abc_class", "AbcClass"}, {"is_active", "IsActive"}, {"source_system_key", "SourceSystemKey"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"ProductKey", Int64.Type}, {"ProductIdSrc", Int64.Type}, {"ProductNk", type text}, {"ProductName", type text}, {"CategoryId", Int64.Type}, {"CategoryName", type text}, {"CategoryGroup", type text}, {"DepartmentId", Int64.Type}, {"DepartmentName", type text}, {"VendorKey", Int64.Type}, {"ListPrice", type number}, {"AbcClass", type text}, {"IsActive", type logical}, {"SourceSystemKey", Int64.Type}})
+				in
+				    Typed
+

@@ -1,0 +1,114 @@
+table FactReturns
+	lineageTag: e39a3131-4d8b-4d08-a44c-a738e3b97ab8
+
+	column ReturnLineKey
+		dataType: int64
+		isHidden
+		lineageTag: 34809010-90a1-4c49-9825-546e9730d001
+		summarizeBy: none
+		sourceColumn: ReturnLineKey
+
+	column ReturnDateKey
+		dataType: int64
+		isHidden
+		lineageTag: bdfca384-a63d-4d0b-8f54-1fb89006a62e
+		summarizeBy: none
+		sourceColumn: ReturnDateKey
+
+	column ReturnTs
+		dataType: dateTime
+		isHidden
+		lineageTag: 5b185002-7392-4763-be5b-8d637dcadddc
+		summarizeBy: none
+		sourceColumn: ReturnTs
+
+	column OrderId
+		dataType: string
+		lineageTag: 68231a3f-11e3-423b-b52e-d97ec54cdc59
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		lineageTag: b18b2085-e7e0-4429-b189-e7c805ffc009
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		lineageTag: b0cadeab-3078-4fbd-8925-fd7cfd3686ad
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+	column RegionKey
+		dataType: int64
+		isHidden
+		lineageTag: ddaaf935-3753-4890-9ac7-31e791c37580
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: 9e40ab46-ec55-4f14-b2d0-0ad96c7b7f4c
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: ef7d6cf0-86ab-476a-a5f4-902f26f3edb0
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: dd457ccd-df14-4c55-b6d1-54bec86d1db0
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column ReturnType
+		dataType: string
+		lineageTag: a20a84e9-f054-4ba6-8e70-3ce913d144a7
+		summarizeBy: none
+		sourceColumn: ReturnType
+
+	column Quantity
+		dataType: int64
+		lineageTag: 3272f454-2262-4d4c-bd8a-01fc9f34aeee
+		summarizeBy: none
+		sourceColumn: Quantity
+
+	column ReturnValue
+		dataType: double
+		lineageTag: ad5da3fc-d2fd-4cbe-ae97-4ea95bbe8fd5
+		summarizeBy: none
+		sourceColumn: ReturnValue
+
+	column IsFraud
+		dataType: boolean
+		lineageTag: e59bb6df-681b-4685-9035-57b2ace83bd0
+		summarizeBy: none
+		sourceColumn: IsFraud
+
+	column IsCanceled
+		dataType: boolean
+		lineageTag: e3360c52-10ef-4311-b0b6-999dd6ee2e28
+		summarizeBy: none
+		sourceColumn: IsCanceled
+
+	partition FactReturns = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_returns.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"return_line_key", "ReturnLineKey"}, {"return_date_key", "ReturnDateKey"}, {"return_ts", "ReturnTs"}, {"order_id", "OrderId"}, {"customer_key", "CustomerKey"}, {"product_key", "ProductKey"}, {"region_key", "RegionKey"}, {"warehouse_key", "WarehouseKey"}, {"vendor_key", "VendorKey"}, {"source_system_key", "SourceSystemKey"}, {"return_type", "ReturnType"}, {"quantity", "Quantity"}, {"return_value", "ReturnValue"}, {"is_fraud", "IsFraud"}, {"is_canceled", "IsCanceled"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"ReturnLineKey", Int64.Type}, {"ReturnDateKey", Int64.Type}, {"ReturnTs", type datetime}, {"OrderId", type text}, {"CustomerKey", Int64.Type}, {"ProductKey", Int64.Type}, {"RegionKey", Int64.Type}, {"WarehouseKey", Int64.Type}, {"VendorKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"ReturnType", type text}, {"Quantity", Int64.Type}, {"ReturnValue", type number}, {"IsFraud", type logical}, {"IsCanceled", type logical}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [ReturnTs] = null or ([ReturnTs] >= RangeStart and [ReturnTs] < RangeEnd))
+				in
+				    Filtered
+

@@ -1,0 +1,56 @@
+table DimDeliveryStatus
+	lineageTag: e124c04b-02c4-4897-88c8-a72278fc307e
+
+	column DeliveryStatusKey
+		dataType: int64
+		isHidden
+		lineageTag: e6ac0836-ff0e-4a9f-a713-705e2f6af305
+		summarizeBy: none
+		sourceColumn: DeliveryStatusKey
+
+	column StatusCode
+		dataType: string
+		lineageTag: 8b7c06f3-a93f-499c-a772-7a574df31ab7
+		summarizeBy: none
+		sourceColumn: StatusCode
+
+	column StatusLabel
+		dataType: string
+		lineageTag: 62437602-df35-4987-ad76-026caaa502d9
+		summarizeBy: none
+		sourceColumn: StatusLabel
+
+	column IsLate
+		dataType: boolean
+		lineageTag: ae6cfd59-8ab1-472d-be80-4f47cbdcbc68
+		summarizeBy: none
+		sourceColumn: IsLate
+
+	column IsOnTime
+		dataType: boolean
+		lineageTag: 0bcc181d-2528-4313-bf6d-030777e78d59
+		summarizeBy: none
+		sourceColumn: IsOnTime
+
+	column IsAdvance
+		dataType: boolean
+		lineageTag: 85b67a73-4bcc-44d4-9652-594d18aa3d46
+		summarizeBy: none
+		sourceColumn: IsAdvance
+
+	column IsCanceledShip
+		dataType: boolean
+		lineageTag: f927f7e1-723c-432a-8dca-5519362b733b
+		summarizeBy: none
+		sourceColumn: IsCanceledShip
+
+	partition DimDeliveryStatus = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_delivery_status.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"delivery_status_key", "DeliveryStatusKey"}, {"status_code", "StatusCode"}, {"status_label", "StatusLabel"}, {"is_late", "IsLate"}, {"is_on_time", "IsOnTime"}, {"is_advance", "IsAdvance"}, {"is_canceled_ship", "IsCanceledShip"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"DeliveryStatusKey", Int64.Type}, {"StatusCode", type text}, {"StatusLabel", type text}, {"IsLate", type logical}, {"IsOnTime", type logical}, {"IsAdvance", type logical}, {"IsCanceledShip", type logical}})
+				in
+				    Typed
+

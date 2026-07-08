@@ -1,0 +1,87 @@
+table DimRegion
+	lineageTag: 251fd071-32a2-4355-9e40-18b103421d82
+
+	column RegionKey
+		dataType: int64
+		isHidden
+		lineageTag: 0ac31558-3601-49e5-9f74-2a28dc721048
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+	column MarketCode
+		dataType: string
+		lineageTag: 73afd547-fa3e-4c1a-9f51-597c65417e6c
+		summarizeBy: none
+		sourceColumn: MarketCode
+
+	column MarketName
+		dataType: string
+		lineageTag: 1e42f881-8941-4b3b-8226-a24a4505db3f
+		summarizeBy: none
+		sourceColumn: MarketName
+
+	column RegionName
+		dataType: string
+		lineageTag: 4cdf0fed-bea8-4ae4-a638-d1ef8401c31e
+		summarizeBy: none
+		sourceColumn: RegionName
+
+	column CountryName
+		dataType: string
+		lineageTag: 376859ce-660f-43ce-9919-6b66d9b34e3f
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: CountryName
+
+	column CountryIso2
+		dataType: string
+		isHidden
+		lineageTag: 11e0420a-984d-4407-bd0e-a47111fa316a
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: CountryIso2
+
+	column StateName
+		dataType: string
+		lineageTag: 79fec7f2-434c-493c-9725-7ac031fa2edb
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: StateName
+
+	column CityName
+		dataType: string
+		lineageTag: 8f568c17-777e-4b06-bd7e-52ca5860c488
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: CityName
+
+	column GeoPath
+		dataType: string
+		isHidden
+		lineageTag: 0469167f-7693-46fd-ab66-95cba6fd901c
+		summarizeBy: none
+		sourceColumn: GeoPath
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: ef396200-4b32-45c9-8494-a2f31995a50b
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column Hemisphere
+		dataType: string
+		lineageTag: 014d5652-5770-4780-a15f-19e07fc32606
+		summarizeBy: none
+		sourceColumn: Hemisphere
+
+	partition DimRegion = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_region.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"region_key", "RegionKey"}, {"market_code", "MarketCode"}, {"market_name", "MarketName"}, {"region_name", "RegionName"}, {"country_name", "CountryName"}, {"country_iso2", "CountryIso2"}, {"state_name", "StateName"}, {"city_name", "CityName"}, {"geo_path", "GeoPath"}, {"warehouse_key", "WarehouseKey"}, {"hemisphere", "Hemisphere"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"RegionKey", Int64.Type}, {"MarketCode", type text}, {"MarketName", type text}, {"RegionName", type text}, {"CountryName", type text}, {"CountryIso2", type text}, {"StateName", type text}, {"CityName", type text}, {"GeoPath", type text}, {"WarehouseKey", Int64.Type}, {"Hemisphere", type text}})
+				in
+				    Typed
+

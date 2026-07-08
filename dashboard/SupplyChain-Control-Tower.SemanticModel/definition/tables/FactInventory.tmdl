@@ -1,0 +1,148 @@
+table FactInventory
+	lineageTag: 3ba79ba8-b5db-4db5-8f1c-e103356b1a6c
+
+	column InventoryKey
+		dataType: int64
+		isHidden
+		lineageTag: be5fb3ac-5f01-4ef3-ac6e-2115bcc9eb18
+		summarizeBy: none
+		sourceColumn: InventoryKey
+
+	column DateKey
+		dataType: int64
+		isHidden
+		lineageTag: deab2bad-c7d9-41d3-9b85-7b9489ef4958
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		lineageTag: 4df13244-383d-45f0-8828-abe02b4c62d6
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		lineageTag: 657abd81-656a-4282-940a-aba19627faaa
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+	column VendorKey
+		dataType: int64
+		isHidden
+		lineageTag: c68093f9-5590-4d1d-abd4-cb0e944904a3
+		summarizeBy: none
+		sourceColumn: VendorKey
+
+	column SourceSystemKey
+		dataType: int64
+		isHidden
+		lineageTag: 20be28b2-9888-4546-9b89-aba51fcb82da
+		summarizeBy: none
+		sourceColumn: SourceSystemKey
+
+	column OnHandUnits
+		dataType: double
+		lineageTag: 16a5358d-a165-4a1e-80f3-36b53e62b57b
+		summarizeBy: none
+		sourceColumn: OnHandUnits
+
+	column OnHandValue
+		dataType: double
+		lineageTag: 5acc71b2-e8ce-4bb2-abd7-86027e0a369a
+		summarizeBy: none
+		sourceColumn: OnHandValue
+
+	column ReceiptsUnits
+		dataType: double
+		lineageTag: f6e283bf-1951-4374-8c0a-8b7b1ea8bb7a
+		summarizeBy: none
+		sourceColumn: ReceiptsUnits
+
+	column IssuesUnits
+		dataType: double
+		lineageTag: e5f04d64-63c6-44d2-a883-ae31b4266ae7
+		summarizeBy: none
+		sourceColumn: IssuesUnits
+
+	column DemandUnits
+		dataType: double
+		lineageTag: 7897dbb6-291d-44b1-b4da-641e69de9c2f
+		summarizeBy: none
+		sourceColumn: DemandUnits
+
+	column UnfilledUnits
+		dataType: double
+		lineageTag: 9bc3d788-3c19-454a-84d9-bbe67d4ce558
+		summarizeBy: none
+		sourceColumn: UnfilledUnits
+
+	column UnfilledValue
+		dataType: double
+		lineageTag: 1a68941f-1b02-48d7-b997-a332b1e1a9b5
+		summarizeBy: none
+		sourceColumn: UnfilledValue
+
+	column BackorderUnits
+		dataType: double
+		lineageTag: 38e8efc3-a3a5-4921-9f73-698303b9694f
+		summarizeBy: none
+		sourceColumn: BackorderUnits
+
+	column BackorderValue
+		dataType: double
+		lineageTag: 2530f13d-4293-41ab-9eb0-4e118ab7a525
+		summarizeBy: none
+		sourceColumn: BackorderValue
+
+	column StockoutFlag
+		dataType: boolean
+		lineageTag: 942df64c-1116-4cb9-abe7-b2593bd15752
+		summarizeBy: none
+		sourceColumn: StockoutFlag
+
+	column SafetyStockUnits
+		dataType: double
+		lineageTag: c7e5d85a-4d36-4a1a-895f-2c1aaad82b50
+		summarizeBy: none
+		sourceColumn: SafetyStockUnits
+
+	column ReorderPointUnits
+		dataType: double
+		lineageTag: 78457269-db21-46ed-b446-f9cccb440ee5
+		summarizeBy: none
+		sourceColumn: ReorderPointUnits
+
+	column TargetDos
+		dataType: double
+		lineageTag: 9353ee14-3caf-48a6-b0f5-6c8e78feb5fa
+		summarizeBy: none
+		sourceColumn: TargetDos
+
+	column SnapshotTs
+		dataType: dateTime
+		isHidden
+		lineageTag: 1cc87277-7cf8-4a50-a851-aaea77476911
+		summarizeBy: none
+		sourceColumn: SnapshotTs
+
+	column SourceClass
+		dataType: string
+		lineageTag: 4054a082-859c-4681-9e80-d5566c3f2830
+		summarizeBy: none
+		sourceColumn: SourceClass
+
+	partition FactInventory = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\fact_inventory.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"inventory_key", "InventoryKey"}, {"date_key", "DateKey"}, {"product_key", "ProductKey"}, {"warehouse_key", "WarehouseKey"}, {"vendor_key", "VendorKey"}, {"source_system_key", "SourceSystemKey"}, {"on_hand_units", "OnHandUnits"}, {"on_hand_value", "OnHandValue"}, {"receipts_units", "ReceiptsUnits"}, {"issues_units", "IssuesUnits"}, {"demand_units", "DemandUnits"}, {"unfilled_units", "UnfilledUnits"}, {"unfilled_value", "UnfilledValue"}, {"backorder_units", "BackorderUnits"}, {"backorder_value", "BackorderValue"}, {"stockout_flag", "StockoutFlag"}, {"safety_stock_units", "SafetyStockUnits"}, {"reorder_point_units", "ReorderPointUnits"}, {"target_dos", "TargetDos"}, {"snapshot_ts", "SnapshotTs"}, {"source_class", "SourceClass"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"InventoryKey", Int64.Type}, {"DateKey", Int64.Type}, {"ProductKey", Int64.Type}, {"WarehouseKey", Int64.Type}, {"VendorKey", Int64.Type}, {"SourceSystemKey", Int64.Type}, {"OnHandUnits", type number}, {"OnHandValue", type number}, {"ReceiptsUnits", type number}, {"IssuesUnits", type number}, {"DemandUnits", type number}, {"UnfilledUnits", type number}, {"UnfilledValue", type number}, {"BackorderUnits", type number}, {"BackorderValue", type number}, {"StockoutFlag", type logical}, {"SafetyStockUnits", type number}, {"ReorderPointUnits", type number}, {"TargetDos", type number}, {"SnapshotTs", type datetime}, {"SourceClass", type text}})
+				,
+				    Filtered = Table.SelectRows(Typed, each [SnapshotTs] = null or ([SnapshotTs] >= RangeStart and [SnapshotTs] < RangeEnd))
+				in
+				    Filtered
+

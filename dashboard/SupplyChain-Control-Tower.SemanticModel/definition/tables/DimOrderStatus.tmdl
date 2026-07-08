@@ -1,0 +1,68 @@
+table DimOrderStatus
+	lineageTag: 99cb97e2-50df-41ba-aa1d-dbd0f7085bb2
+
+	column OrderStatusKey
+		dataType: int64
+		isHidden
+		lineageTag: ec9d2d40-8f6e-4e44-bf17-15bae72992be
+		summarizeBy: none
+		sourceColumn: OrderStatusKey
+
+	column StatusCode
+		dataType: string
+		lineageTag: d1c30901-96e1-454b-bfd5-f6b1e717f505
+		summarizeBy: none
+		sourceColumn: StatusCode
+
+	column StatusLabel
+		dataType: string
+		lineageTag: d59b1e8b-58f9-4daa-b046-e8e4b2f40dc7
+		summarizeBy: none
+		sourceColumn: StatusLabel
+
+	column StatusGroup
+		dataType: string
+		lineageTag: 720d76d9-cfe9-4871-b774-248bfeef5a10
+		summarizeBy: none
+		sourceColumn: StatusGroup
+
+	column IsRevenue
+		dataType: boolean
+		lineageTag: 51851aef-4aeb-424d-92c7-caa9a7fa8715
+		summarizeBy: none
+		sourceColumn: IsRevenue
+
+	column IsComplete
+		dataType: boolean
+		lineageTag: 947b0aa0-9e58-456b-ac8e-4f65dae982b0
+		summarizeBy: none
+		sourceColumn: IsComplete
+
+	column IsCanceled
+		dataType: boolean
+		lineageTag: bafcbbf0-adfc-40f1-a03d-1a4a71ca4e29
+		summarizeBy: none
+		sourceColumn: IsCanceled
+
+	column IsFraud
+		dataType: boolean
+		lineageTag: ff4dba3e-cfbe-463c-8e0d-11b4989456ed
+		summarizeBy: none
+		sourceColumn: IsFraud
+
+	column IsPendingPayment
+		dataType: boolean
+		lineageTag: 9f2973af-ca42-4a9b-8af8-92f1383a0238
+		summarizeBy: none
+		sourceColumn: IsPendingPayment
+
+	partition DimOrderStatus = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\dim_order_status.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"order_status_key", "OrderStatusKey"}, {"status_code", "StatusCode"}, {"status_label", "StatusLabel"}, {"status_group", "StatusGroup"}, {"is_revenue", "IsRevenue"}, {"is_complete", "IsComplete"}, {"is_canceled", "IsCanceled"}, {"is_fraud", "IsFraud"}, {"is_pending_payment", "IsPendingPayment"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"OrderStatusKey", Int64.Type}, {"StatusCode", type text}, {"StatusLabel", type text}, {"StatusGroup", type text}, {"IsRevenue", type logical}, {"IsComplete", type logical}, {"IsCanceled", type logical}, {"IsFraud", type logical}, {"IsPendingPayment", type logical}})
+				in
+				    Typed
+

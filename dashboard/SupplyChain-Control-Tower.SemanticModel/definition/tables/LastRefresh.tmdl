@@ -1,0 +1,19 @@
+table LastRefresh
+	lineageTag: ac81a551-7f55-458f-8992-e7cd43a253e6
+
+	column RefreshDatetime
+		dataType: dateTime
+		lineageTag: 8df8725e-bf39-4720-b6a9-e432f8601d6b
+		summarizeBy: none
+		sourceColumn: RefreshDatetime
+
+	partition LastRefresh = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(pCuratedFolder & "\last_refresh.parquet")),
+				    Renamed = Table.RenameColumns(Source, {{"refresh_datetime", "RefreshDatetime"}}, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"RefreshDatetime", type datetime}})
+				in
+				    Typed
+

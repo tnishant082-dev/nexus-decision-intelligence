@@ -1,0 +1,1339 @@
+table _Measures
+	lineageTag: 9e1f6c0d-def4-4a55-b254-1f3c62cb4e0f
+
+	measure 'Revenue Lines' = CALCULATE ( SUM ( FactOrders[NetSales] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: Helpers
+		lineageTag: d251d4f4-8caa-402e-9970-dabf932aedcf
+
+	measure 'On Hand Value' =
+			CALCULATE (
+			    SUM ( FactInventory[OnHandValue] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[OnHandValue] ) ) )
+			)
+		formatString: "$"#,0
+		displayFolder: Helpers
+		lineageTag: c67b7068-6d1c-4ba6-99db-f95970de9de2
+
+	measure 'On Hand Units' =
+			CALCULATE (
+			    SUM ( FactInventory[OnHandUnits] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[OnHandUnits] ) ) )
+			)
+		formatString: #,0
+		displayFolder: Helpers
+		lineageTag: 432f962d-0440-4863-8dcb-64d6ef1f7026
+
+	measure 'Avg Inventory Value' = AVERAGEX ( VALUES ( DimDate[Date] ), CALCULATE ( SUM ( FactInventory[OnHandValue] ) ) )
+		formatString: "$"#,0
+		displayFolder: Helpers
+		lineageTag: 8e95514b-60bb-4c7b-9efa-7f9fee450edf
+
+	measure 'Unfilled Demand Value' = SUM ( FactInventory[UnfilledValue] )
+		formatString: 0.0%
+		displayFolder: Helpers
+		lineageTag: a8533ec9-eba8-475d-b94d-ae218ef506cb
+
+	measure 'Unfilled Demand Units' = SUM ( FactInventory[UnfilledUnits] )
+		formatString: 0.0%
+		displayFolder: Helpers
+		lineageTag: c99649a5-8d02-44f9-83f4-6d5461349a6f
+
+	measure Revenue = CALCULATE ( SUM ( FactOrders[NetSales] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 43d89e9d-5a0d-41b5-b3d6-e257d8b89cfd
+
+	measure 'Gross Sales' = CALCULATE ( SUM ( FactOrders[GrossSales] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: f7b09620-ec75-459d-9747-6904050a2839
+
+	measure 'Discount Amount' = CALCULATE ( SUM ( FactOrders[DiscountAmount] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: 9156e4da-7d12-42eb-8046-f8433207f04d
+
+	measure 'Discount Rate %' = DIVIDE ( [Discount Amount], [Gross Sales] )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: ce350274-6c3a-4eff-9e62-5cf0be9d0a46
+
+	measure Profit = CALCULATE ( SUM ( FactOrders[LineProfit] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 8f14ad37-3b56-4613-91f2-bded68871efd
+
+	measure 'Profit Margin %' = DIVIDE ( [Profit], [Revenue] )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: 1082be31-bc1c-4375-887a-973d813a920c
+
+	measure COGS = CALCULATE ( SUM ( FactOrders[CogsAmount] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 8abb38a8-23c6-4c25-9fc3-f1bd6804c04d
+
+	measure 'Order Volume' = DISTINCTCOUNT ( FactOrders[OrderId] )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: cb8e0619-93fb-4493-98b5-07ad7b915db4
+
+	measure 'Order Lines' = COUNTROWS ( FactOrders )
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: 801f89e2-b7df-4880-99ae-3e7cc5a61192
+
+	measure 'Units Sold' = CALCULATE ( SUM ( FactOrders[Quantity] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: fd436fb2-0cf4-469d-987c-bb9256e9ca18
+
+	measure AOV =
+			DIVIDE (
+			    [Revenue],
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsRevenue] = TRUE () )
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 570dcc3d-d633-4967-8bf5-d80978016775
+
+	measure ASP = DIVIDE ( [Revenue], [Units Sold] )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 7c9f3484-40c0-4d8b-b714-b17d825a331b
+
+	measure 'Active Customers' = CALCULATE ( DISTINCTCOUNT ( FactOrders[CustomerKey] ), FactOrders[IsRevenue] = TRUE () )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: 19a6b64e-9085-48e9-a06a-000e1b25642b
+
+	measure 'Revenue per Customer' = DIVIDE ( [Revenue], [Active Customers] )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: ee53d2ea-579e-4eda-ae00-acc5d0728d27
+
+	measure 'Profit per Order' =
+			DIVIDE (
+			    [Profit],
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsRevenue] = TRUE () )
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: d65e8d9d-b6a8-4f94-8681-61ef7986e4eb
+
+	measure 'Return Value' = SUM ( FactReturns[ReturnValue] )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 0c3e2e0a-058d-439e-9a32-3869379be627
+
+	measure 'Return Units' = SUM ( FactReturns[Quantity] )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: 03085d51-6214-418c-8e00-a587897d5c95
+
+	measure 'Return Orders' = DISTINCTCOUNT ( FactReturns[OrderId] )
+		formatString: #,0
+		displayFolder: A Executive
+		lineageTag: 43637bdd-9c5a-43e7-b39b-94b70facfa0f
+
+	measure 'Fraud Value' = CALCULATE ( SUM ( FactOrders[NetSales] ), FactOrders[IsFraud] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: e35527c7-4dfa-4bee-be78-9e825ce99376
+
+	measure 'Cost to Serve' =
+			[Discount Amount]
+			    + CALCULATE (
+			        SUM ( FactShipments[FreightCost] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			    + CALCULATE (
+			        SUM ( FactShipments[DelayCost] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			    + [Return Value]
+			    + [Fraud Value]
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 0a88cf54-0b54-4ac5-9e2b-72b4fd403a3c
+
+	measure 'Cost to Serve %' = DIVIDE ( [Cost to Serve], [Revenue] )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: 628e1420-346c-487f-8472-42fc7ecd1a5d
+
+	measure 'AR Proxy' = CALCULATE ( SUM ( FactOrders[NetSales] ), DimOrderStatus[StatusCode] = "PENDING_PAYMENT" )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 51b6967f-3966-4344-8934-1f41bb083989
+
+	measure 'AP Proxy' =
+			CALCULATE (
+			    SUM ( FactProcurement[PoValue] ),
+			    DATESINPERIOD ( DimDate[Date], MAX ( DimDate[Date] ), -7, DAY )
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 8bcdbe2c-ade8-4eaa-ace8-84cac3db8ff0
+
+	measure 'Working Capital' = [On Hand Value] + [AR Proxy] - [AP Proxy]
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: be1a3867-e236-4d6b-817a-55622a7e7414
+
+	measure 'Inventory Value' = [On Hand Value]
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 5eb01e99-3d99-48c7-8bd0-05d04457e07f
+
+	measure 'Working Capital Days' =
+			VAR Days = DISTINCTCOUNT ( DimDate[Date] )
+			RETURN
+			    DIVIDE ( [Working Capital], DIVIDE ( [Revenue], Days ) )
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 5374a163-cda4-4783-85e7-6a772f66d40c
+
+	measure 'Inventory Days' =
+			VAR Days = DISTINCTCOUNT ( DimDate[Date] )
+			RETURN
+			    DIVIDE ( [Avg Inventory Value], DIVIDE ( [COGS], Days ) )
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: c89a4c5b-7c60-4a65-8128-9cceb7b5d802
+
+	measure 'DSO Proxy' = DIVIDE ( [AR Proxy], DIVIDE ( [Revenue], DISTINCTCOUNT ( DimDate[Date] ) ) )
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: 8e4b7035-6aed-4d2f-a5d7-6cc19a193b20
+
+	measure 'DPO Proxy' = DIVIDE ( [AP Proxy], DIVIDE ( [COGS], DISTINCTCOUNT ( DimDate[Date] ) ) )
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: 4e75ee66-9a84-4db2-b396-bcee970d0039
+
+	measure 'Cash Conversion Cycle' = [Inventory Days] + [DSO Proxy] - [DPO Proxy]
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: 96942b40-803c-4c63-8f9c-a954c1be65df
+
+	measure 'Lost Sales Value' =
+			CALCULATE ( SUM ( FactOrders[NetSales] ), FactOrders[IsCanceled] = TRUE () )
+			    + [Fraud Value]
+			    + [Unfilled Demand Value]
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 0981033b-d0d7-47fd-a811-f9be436d504f
+
+	measure 'Transportation Cost' =
+			CALCULATE (
+			    SUM ( FactShipments[FreightCost] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: eeef091e-dd18-4e56-816d-11203b8e6b08
+
+	measure 'Contribution Margin' = [Revenue] - [COGS] - [Transportation Cost]
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: acbc6cb1-f505-444e-a9fb-57ea8e846990
+
+	measure 'Revenue YoY %' =
+			VAR PY = CALCULATE ( [Revenue], DATEADD ( DimDate[Date], -1, YEAR ) )
+			RETURN
+			    DIVIDE ( [Revenue] - PY, PY )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: 26bddb29-9855-43bf-b6d9-1db5a26c270e
+
+	measure 'Profit YoY %' =
+			VAR PY = CALCULATE ( [Profit], DATEADD ( DimDate[Date], -1, YEAR ) )
+			RETURN
+			    DIVIDE ( [Profit] - PY, PY )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: b9a221c2-c31d-4745-b0ec-50e8a8519d9c
+
+	measure 'Order Volume YoY %' =
+			VAR PY = CALCULATE ( [Order Volume], DATEADD ( DimDate[Date], -1, YEAR ) )
+			RETURN
+			    DIVIDE ( [Order Volume] - PY, PY )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: f19cddee-023b-4a11-a5df-65d95ac001b8
+
+	measure 'Revenue YoY Label' =
+			VAR v = [Revenue YoY %]
+			RETURN
+			    IF ( ISBLANK ( v ), "—", FORMAT ( v, "+0.0%;-0.0%;0.0%" ) )
+		formatString: @
+		displayFolder: A Executive
+		lineageTag: 94682944-f0d7-4557-ba44-bd39e946802e
+
+	measure 'Profit YoY Label' =
+			VAR v = [Profit YoY %]
+			RETURN
+			    IF ( ISBLANK ( v ), "—", FORMAT ( v, "+0.0%;-0.0%;0.0%" ) )
+		formatString: @
+		displayFolder: A Executive
+		lineageTag: 4239b42c-dde7-4eac-aa1f-875839471007
+
+	measure 'Order Volume YoY Label' =
+			VAR v = [Order Volume YoY %]
+			RETURN
+			    IF ( ISBLANK ( v ), "—", FORMAT ( v, "+0.0%;-0.0%;0.0%" ) )
+		formatString: @
+		displayFolder: A Executive
+		lineageTag: d6c8c123-e92a-43ca-9787-9bff4ddaf79b
+
+	measure 'Revenue Target' = CALCULATE ( [Revenue], DATEADD ( DimDate[Date], -1, YEAR ) ) * 1.05
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: 2b1398cc-0d6b-4023-a6e9-6ac749d4c930
+
+	measure 'Revenue vs Target %' = DIVIDE ( [Revenue], [Revenue Target] )
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: d7ef8484-6022-4cea-b333-a68c16ee13e9
+
+	measure 'At-Risk Revenue' =
+			CALCULATE (
+			    [Revenue],
+			    FactOrders[IsLate] = TRUE ()
+			        || DimOrderStatus[StatusGroup] = "Exception"
+			        || DimOrderStatus[StatusCode] = "PENDING_PAYMENT"
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: ff79180a-5b13-4264-bf48-3000dc5f08b0
+
+	measure 'OTIF %' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsOtif] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: 7111b895-3226-47e7-a75e-cf3687a71a93
+
+	measure 'On Time %' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsOnTime] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: dc4c445e-fbae-417f-af1a-0d3113be3b7a
+
+	measure 'Fill Rate' =
+			DIVIDE (
+			    [Units Sold],
+			    [Units Sold]
+			        + SUM ( FactInventory[UnfilledUnits] )
+			        + CALCULATE ( SUM ( FactOrders[Quantity] ), FactOrders[IsCanceled] = TRUE () )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: d9b49dc6-bec6-440f-9680-8cc899e33a9f
+
+	measure 'Perfect Order %' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsPerfectOrder] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: d787fd9b-ed75-463c-af85-6f575f12da95
+
+	measure 'Stockout Rate' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( FactInventory ), FactInventory[StockoutFlag] = TRUE () ),
+			    COUNTROWS ( FactInventory )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: fccc6b5d-18fe-4bab-b6f9-ef76350df0e3
+
+	measure 'Vendor SLA %' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsOnTime] = TRUE () ),
+			    DISTINCTCOUNT ( FactOrders[OrderId] )
+			)
+		formatString: 0.0%
+		displayFolder: A Executive
+		lineageTag: 1216dfd0-7cd2-4606-8bdd-e8d30ff89f36
+
+	measure 'Control Tower Health Score' =
+			VAR Otif = [OTIF %] * 100
+			VAR Perf = [Perfect Order %] * 100
+			VAR Fill = [Fill Rate] * 100
+			VAR Mar = MIN ( 100, DIVIDE ( [Profit Margin %], 0.12 ) * 100 )
+			VAR Stk = ( 1 - [Stockout Rate] ) * 100
+			VAR Vnd = [Vendor SLA %] * 100
+			RETURN
+			    Otif * 0.30 + Perf * 0.20 + Fill * 0.15 + Mar * 0.15 + Stk * 0.10 + Vnd * 0.10
+		formatString: 0.00
+		displayFolder: A Executive
+		lineageTag: 54aa2ec1-d1d3-4509-963d-fc033a3453b0
+
+	measure 'Cost of Delay' =
+			CALCULATE (
+			    SUM ( FactShipments[DelayCost] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: bcc54642-e3fb-4557-b47d-7ebbd56a9fca
+
+	measure 'Total Supply Chain Cost' = [COGS] + [Transportation Cost] + [Cost of Delay] + [Return Value] + [Unfilled Demand Value]
+		formatString: "$"#,0
+		displayFolder: A Executive
+		lineageTag: b3b59d13-39bf-4bd6-83ef-39a569a5714e
+
+	measure 'In Full %' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsInFull] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 81e2cc2d-ff54-4cdb-9441-6237443c50ea
+
+	measure 'Line Fill Rate' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( FactOrders ), FactOrders[IsRevenue] = TRUE () ),
+			    COUNTROWS ( FactOrders )
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: fe0562f4-c749-488a-abb1-5e3aeff61312
+
+	measure 'Order Fill Rate' = [In Full %]
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: ee6ed1fa-ffc3-4203-ae94-68f5cdbaa699
+
+	measure 'Perfect Order Revenue' = CALCULATE ( [Revenue], FactOrders[IsPerfectOrder] = TRUE () )
+		formatString: "$"#,0
+		displayFolder: B Supply Chain
+		lineageTag: 512b10d5-82d8-4557-a22a-d3a68c9d1c1a
+
+	measure 'Stockout Events' = CALCULATE ( COUNTROWS ( FactInventory ), FactInventory[StockoutFlag] = TRUE () )
+		formatString: #,0
+		displayFolder: B Supply Chain
+		lineageTag: d3c6fafe-3af3-4868-a4f7-5b66bacf28a8
+
+	measure 'Inventory Turnover' = DIVIDE ( [COGS], [Avg Inventory Value] )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 35d104fc-2a13-4426-b607-5853bf8f5f0c
+
+	measure 'Inventory Turnover Annualized' =
+			VAR Days = DISTINCTCOUNT ( DimDate[Date] )
+			RETURN
+			    DIVIDE ( [Inventory Turnover] * 365, Days )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: c226a465-6ab8-4976-91fc-e388185e9ce9
+
+	measure 'Weeks of Supply' = DIVIDE ( [Inventory Days], 7 )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 4d998273-dc17-40da-98cc-8a3482dae07e
+
+	measure 'Backorder Units' =
+			CALCULATE (
+			    SUM ( FactInventory[BackorderUnits] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[BackorderUnits] ) ) )
+			)
+		formatString: #,0
+		displayFolder: B Supply Chain
+		lineageTag: 8b2e06fc-a213-4426-a8cc-bf5a36444090
+
+	measure 'Backorder Rate' = DIVIDE ( [Backorder Units], [On Hand Units] + [Backorder Units] )
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 4f0ae856-1b97-4cba-8e72-124111a9b339
+
+	measure 'Backorder Value' =
+			CALCULATE (
+			    SUM ( FactInventory[BackorderValue] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[BackorderValue] ) ) )
+			)
+		formatString: "$"#,0
+		displayFolder: B Supply Chain
+		lineageTag: c3f1588c-3f95-4e7f-9ac7-24817270a4b1
+
+	measure 'Lead Time' =
+			CALCULATE (
+			    AVERAGE ( FactShipments[DaysShipReal] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: d071704c-68a1-4b51-948a-f78b996072b6
+
+	measure 'Lead Time Median' =
+			CALCULATE (
+			    PERCENTILE.INC ( FactShipments[DaysShipReal], 0.5 ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 606d1be9-694d-4eea-a986-b78fb1b9804d
+
+	measure 'Lead Time Variance' =
+			CALCULATE (
+			    VAR.S ( FactShipments[DaysShipReal] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: d737a863-c5cb-4718-bc85-fcf81fb722ec
+
+	measure 'Lead Time Std Dev' =
+			CALCULATE (
+			    STDEV.S ( FactShipments[DaysShipReal] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 7ce8159b-c890-4aab-8a68-56424f7767f6
+
+	measure 'Scheduled Lead Time' =
+			CALCULATE (
+			    AVERAGE ( FactShipments[DaysShipScheduled] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: b95cde31-d380-4279-b488-270ce1cd110e
+
+	measure 'Lead Time Adherence %' = [On Time %]
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 5041f880-c06c-4a85-95db-2ebc2b702437
+
+	measure 'Late Delivery Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsLate] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 1ecb23e1-307d-477a-850e-0d3db1d706ca
+
+	measure 'Advance Shipping Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsAdvance] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 4e856ecb-8b14-4c7e-93aa-872f1f5737da
+
+	measure 'Cancel Rate' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsCanceled] = TRUE () ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: e68c3871-45d9-47f5-9854-e7ec464e54fe
+
+	measure 'Order Cycle Time' = [Lead Time]
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 429df4ac-9ac0-46bd-ad88-77c3e3baf1c5
+
+	measure 'Demand CV' =
+			VAR D = SUMMARIZE ( DimDate, DimDate[Date], "u", [Units Sold] )
+			RETURN
+			    DIVIDE ( STDEVX.S ( D, [u] ), AVERAGEX ( D, [u] ) )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 520d5810-0e16-4609-9ca6-de657c399105
+
+	measure 'Service Level %' = 1 - [Stockout Rate]
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: dafdd9c4-2a52-488b-8b43-e4e9bc855322
+
+	measure 'Open Order Backlog' =
+			CALCULATE (
+			    DISTINCTCOUNT ( FactOrders[OrderId] ),
+			    DimOrderStatus[StatusGroup] IN { "Open", "Exception" },
+			    DimOrderStatus[IsCanceled] = FALSE (),
+			    DimOrderStatus[IsFraud] = FALSE ()
+			)
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: 0ffe1a90-1cd5-4fe8-95db-3ce4d977d851
+
+	measure 'On Hold Rate' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), DimOrderStatus[StatusCode] = "ON_HOLD" ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: e84f0345-3916-43e2-a377-16864d06070b
+
+	measure 'Processing Rate' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), DimOrderStatus[StatusCode] = "PROCESSING" ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 94e51197-7c8b-47bf-9517-918cf1af0003
+
+	measure 'Predicted Late Rate' =
+			CALCULATE (
+			    AVERAGE ( FactShipments[LateDeliveryRisk] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.0%
+		displayFolder: B Supply Chain
+		lineageTag: 344c59c6-4024-4d62-8dfc-58f33ebabd33
+
+	measure 'Late Risk Probability' = AVERAGE ( FactOrders[IsLate] )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: ec529ecc-5f2e-4887-ab88-0c096143a696
+
+	measure GMROI = DIVIDE ( [Profit], [Avg Inventory Value] )
+		formatString: 0.00
+		displayFolder: B Supply Chain
+		lineageTag: b49612af-6578-4f92-8599-3851a2b9e8ef
+
+	measure 'Vendor Reliability' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsOtif] = TRUE () ),
+			    DISTINCTCOUNT ( FactOrders[OrderId] )
+			)
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 2347c386-1b44-421b-afe4-2ccbe8fdf4e4
+
+	measure 'Vendor Quality Score' =
+			1
+			    - DIVIDE (
+			        CALCULATE (
+			            DISTINCTCOUNT ( FactOrders[OrderId] ),
+			            FactOrders[IsCanceled] = TRUE () || FactOrders[IsFraud] = TRUE ()
+			        ),
+			        DISTINCTCOUNT ( FactOrders[OrderId] )
+			    )
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: a0dbea2a-bc6b-43f6-8cbf-d892d58bf8d0
+
+	measure 'Vendor Risk Score' =
+			VAR Late = [Late Delivery Rate]
+			VAR QualGap = 1 - [Vendor Quality Score]
+			VAR LtN = DIVIDE ( [Lead Time Std Dev], 6 )
+			VAR Can = [Cancel Rate]
+			RETURN
+			    MIN ( 1, Late * 0.50 + QualGap * 0.25 + LtN * 0.15 + Can * 0.10 )
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 2dc2a7f9-56f5-4d47-a88b-d5297f58e9b1
+
+	measure 'Vendor OTIF' = [Vendor Reliability]
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 2ca285f6-53d3-4509-8ed9-db26f78b3953
+
+	measure 'Vendor On-Time %' = [Vendor SLA %]
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 1f4fc20e-1dd3-41a5-9f32-18735672f360
+
+	measure 'Vendor Lead Time' = AVERAGE ( FactOrders[DaysShipReal] )
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: ad489ac9-0c2f-4790-9f4c-a0307e1e4134
+
+	measure 'Vendor Spend' = [Revenue]
+		formatString: "$"#,0
+		displayFolder: C Vendor
+		lineageTag: 6f2dd5a1-402f-4895-b048-f6d3473c1141
+
+	measure 'Vendor PO Spend' = SUM ( FactProcurement[PoValue] )
+		formatString: "$"#,0
+		displayFolder: C Vendor
+		lineageTag: b4f562f1-d504-44cd-af5a-83e0a8942605
+
+	measure 'Top Vendor Spend %' =
+			VAR TopV = MAXX ( ALLSELECTED ( DimVendor[VendorName] ), CALCULATE ( [Revenue] ) )
+			RETURN
+			    DIVIDE ( TopV, CALCULATE ( [Revenue], ALLSELECTED ( DimVendor ) ) )
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 642b70f7-ff94-4eee-ac9c-2098ba833f1a
+
+	measure 'Vendor Defect Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactOrders[OrderId] ),
+			        FactOrders[IsCanceled] = TRUE () || FactOrders[IsFraud] = TRUE ()
+			    ),
+			    DISTINCTCOUNT ( FactOrders[OrderId] )
+			)
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 923fc6fe-c98d-4e16-bd8a-8048a5bdff4f
+
+	measure 'Vendor Return Rate' = DIVIDE ( CALCULATE ( DISTINCTCOUNT ( FactReturns[OrderId] ) ), DISTINCTCOUNT ( FactOrders[OrderId] ) )
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 98d76d2e-fa9d-45a6-a711-4918242632e5
+
+	measure 'Vendor Perfect Order %' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsPerfectOrder] = TRUE () ),
+			    DISTINCTCOUNT ( FactOrders[OrderId] )
+			)
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: b2fc0661-661c-42b0-b65b-35ac299cdabb
+
+	measure 'Supplier Availability' = 1 - [Stockout Rate]
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 079e3cb4-b391-461f-9980-4b4c73752f59
+
+	measure PPV =
+			SUMX (
+			    FactProcurement,
+			    DIVIDE ( FactProcurement[PoValue], FactProcurement[OrderedUnits] ) * FactProcurement[ReceivedUnits]
+			        - RELATED ( DimProduct[ListPrice] ) * FactProcurement[ReceivedUnits]
+			)
+		formatString: "$"#,0
+		displayFolder: C Vendor
+		lineageTag: 3978bd0f-f0e4-4b1b-8e8b-0a26b6ea16e2
+
+	measure 'Vendor Scorecard Composite' =
+			VAR Rel = [Vendor Reliability] * 100
+			VAR Qual = [Vendor Quality Score] * 100
+			VAR Risk = ( 1 - [Vendor Risk Score] ) * 100
+			VAR Mar = MIN ( 100, DIVIDE ( [Profit Margin %], 0.12 ) * 100 )
+			RETURN
+			    Rel * 0.40 + Qual * 0.25 + Risk * 0.20 + Mar * 0.15
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 0d58e56f-9aa8-4960-8d9b-bb4b50e9682f
+
+	measure 'Preferred Vendor Mix %' = DIVIDE ( CALCULATE ( [Revenue], DimVendor[PreferredFlag] = TRUE () ), [Revenue] )
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: fa0fb163-bb3a-4bc0-95b2-7d83e5d430a0
+
+	measure 'Single-Source Risk %' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( DimProduct[ProductKey] ), NOT ISBLANK ( DimProduct[VendorKey] ) ),
+			    DISTINCTCOUNT ( DimProduct[ProductKey] )
+			)
+		formatString: 0.0%
+		displayFolder: C Vendor
+		lineageTag: 50cc56f3-d237-4d11-99b7-99783f019bcb
+
+	measure 'Vendor Count' = DISTINCTCOUNT ( FactOrders[VendorKey] )
+		formatString: #,0
+		displayFolder: C Vendor
+		lineageTag: 3eb8fd60-59fc-4be5-b369-06b9ee94a4ac
+
+	measure 'Receipts vs Demand' = DIVIDE ( SUM ( FactProcurement[ReceivedUnits] ), SUM ( FactInventory[DemandUnits] ) )
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 948fed2e-737c-4034-a87d-4bdf3a9698eb
+
+	measure 'Vendor Score Rank' = RANKX ( ALLSELECTED ( DimVendor[VendorName] ), [Vendor Scorecard Composite], , DESC, DENSE )
+		formatString: 0.00
+		displayFolder: C Vendor
+		lineageTag: 433728d3-128e-4580-9b8f-2235181df8f3
+
+	measure 'Shipments Volume' =
+			CALCULATE (
+			    DISTINCTCOUNT ( FactShipments[OrderId] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: #,0
+		displayFolder: D Logistics
+		lineageTag: 97b295a8-6ade-4078-8111-56e16b98e67e
+
+	measure 'Cost Per Shipment' = DIVIDE ( [Transportation Cost], [Shipments Volume] )
+		formatString: "$"#,0
+		displayFolder: D Logistics
+		lineageTag: f9266d42-177f-4f62-90cd-034fa44b98b5
+
+	measure 'Cost Per Unit Shipped' =
+			DIVIDE (
+			    [Transportation Cost],
+			    CALCULATE (
+			        SUM ( FactShipments[UnitCount] ),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    )
+			)
+		formatString: "$"#,0
+		displayFolder: D Logistics
+		lineageTag: 3c1e3bc0-32c4-4a29-b353-59a9d2ec2f1d
+
+	measure 'Delivery Delay Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[DaysDelay] > 0,
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    [Shipments Volume]
+			)
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 10fa381a-0e8f-4ee4-bbbb-c862f9928273
+
+	measure 'Average Delay Days' =
+			CALCULATE (
+			    AVERAGEX ( FactShipments, IF ( FactShipments[DaysDelay] > 0, FactShipments[DaysDelay], 0 ) ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: D Logistics
+		lineageTag: 0ad4989e-21ba-451b-8f76-944fa133de2f
+
+	measure 'Route Performance Score' =
+			VAR Otif = [OTIF %] * 100
+			VAR Del = ( 1 - [Delivery Delay Rate] ) * 100
+			VAR Frt = MIN ( 100, DIVIDE ( 8, [Cost Per Shipment] ) * 100 )
+			RETURN
+			    Otif * 0.60 + Del * 0.25 + Frt * 0.15
+		formatString: 0.00
+		displayFolder: D Logistics
+		lineageTag: bf51753b-4b88-461b-bf5f-a6f64631a7ed
+
+	measure 'Freight Cost % of Sales' = DIVIDE ( [Transportation Cost], [Revenue] )
+		formatString: "$"#,0
+		displayFolder: D Logistics
+		lineageTag: d812fb68-b5c8-4b31-80e6-cc28b25cc84c
+
+	measure 'Mode Mix %' =
+			DIVIDE (
+			    [Shipments Volume],
+			    CALCULATE ( [Shipments Volume], ALLSELECTED ( DimTransportMode ) )
+			)
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 23715c79-9b2e-47d1-ae21-4ed46897c2b4
+
+	measure 'Same Day Performance %' = CALCULATE ( [On Time %], DimTransportMode[ModeCode] = "SAM" )
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: b4a031b6-e134-4f7f-9f83-9d0bad7babb5
+
+	measure 'First Class On-Time %' = CALCULATE ( [On Time %], DimTransportMode[ModeCode] = "FIR" )
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: c532d217-ac04-4ca7-b6ae-45b45153e7f9
+
+	measure 'Standard Class On-Time %' = CALCULATE ( [On Time %], DimTransportMode[ModeCode] = "STD" )
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 22d49335-f6db-4b57-a6ed-8f848ecf3c2d
+
+	measure 'Second Class On-Time %' = CALCULATE ( [On Time %], DimTransportMode[ModeCode] = "SEC" )
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: da7dcb67-0d17-4abd-b619-15b947c229c6
+
+	measure 'Average Transit Days' = [Lead Time]
+		formatString: 0.00
+		displayFolder: D Logistics
+		lineageTag: 7e05039c-e7a9-4cc8-87bd-1413339f77d6
+
+	measure 'Expedite Rate' =
+			DIVIDE (
+			    CALCULATE ( [Shipments Volume], DimTransportMode[ModeCode] IN { "FIR", "SAM" } ),
+			    [Shipments Volume]
+			)
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: ad7035ee-aa47-4a48-9d3b-15d3723410d0
+
+	measure 'Failed Delivery Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactShipments[OrderId] ),
+			        FactShipments[IsCanceledShip] = TRUE (),
+			        USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			    ),
+			    [Shipments Volume]
+			)
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 8a1f38a5-d87a-44e0-9e73-24412d2a8741
+
+	measure 'Countries Served' = DISTINCTCOUNT ( DimRegion[CountryName] )
+		formatString: #,0
+		displayFolder: D Logistics
+		lineageTag: d6ee2daa-47db-4446-9eb1-9033aff38a52
+
+	measure 'Regions Served' = DISTINCTCOUNT ( DimRegion[RegionName] )
+		formatString: 0.00
+		displayFolder: D Logistics
+		lineageTag: f2c52758-c63c-4831-b42d-954e1229453b
+
+	measure 'Lane On-Time %' = [On Time %]
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 80cf5235-42a8-4a6a-84fa-e79451104982
+
+	measure 'Early Delivery Rate' = [Advance Shipping Rate]
+		formatString: 0.0%
+		displayFolder: D Logistics
+		lineageTag: 9e9b7fde-1f10-44c7-87f2-be332f53a54a
+
+	measure 'Distance Shipped km' =
+			CALCULATE (
+			    SUM ( FactShipments[DistanceKmProxy] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: 0.00
+		displayFolder: D Logistics
+		lineageTag: 9945d790-dce0-46f6-b124-ddb7312f59f7
+
+	measure 'Freight per km' = DIVIDE ( [Transportation Cost], [Distance Shipped km] )
+		formatString: "$"#,0
+		displayFolder: D Logistics
+		lineageTag: 018ff7db-85f4-48e2-9310-8a446b69d62c
+
+	measure 'Warehouse Throughput Units' =
+			CALCULATE (
+			    SUM ( FactShipments[UnitCount] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: #,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 3446631f-3172-499b-853f-427b70eb8bab
+
+	measure 'Warehouse Throughput Orders' = [Shipments Volume]
+		formatString: #,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 112bb20a-384c-4c9a-95e8-d75caf148059
+
+	measure 'Warehouse Utilization' = DIVIDE ( [On Hand Units], [On Hand Units] + [Safety Stock Units] * 2 )
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: e43be6ab-3cc3-487f-b761-b2a51c1c4387
+
+	measure 'Days on Hand' = [Inventory Days]
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 9196dac7-6ce7-4f17-a388-579d46c155ed
+
+	measure 'Warehouse OTIF' = [OTIF %]
+		formatString: 0.0%
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 8cf68e2c-71b7-4834-8b93-b846db7394f6
+
+	measure 'Safety Stock Units' =
+			CALCULATE (
+			    SUM ( FactInventory[SafetyStockUnits] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[SafetyStockUnits] ) ) )
+			)
+		formatString: #,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 8d6dd367-7a98-471b-93e8-51136f10c962
+
+	measure 'Reorder Point' =
+			CALCULATE (
+			    SUM ( FactInventory[ReorderPointUnits] ),
+			    LASTNONBLANK ( DimDate[Date], CALCULATE ( SUM ( FactInventory[ReorderPointUnits] ) ) )
+			)
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: a382353c-a0ce-466a-ad84-d8ffb67aa563
+
+	measure 'Slow Mover %' = DIVIDE ( CALCULATE ( [Inventory Value], DimProduct[AbcClass] = "C" ), [Inventory Value] )
+		formatString: 0.0%
+		displayFolder: E Inventory / Warehouse
+		lineageTag: b29eb76a-1d9b-42fa-9d13-1dac44d7e90b
+
+	measure 'Fast Mover %' = DIVIDE ( CALCULATE ( [Inventory Value], DimProduct[AbcClass] = "A" ), [Inventory Value] )
+		formatString: 0.0%
+		displayFolder: E Inventory / Warehouse
+		lineageTag: a44054eb-eb3a-4f40-a552-85f38a539216
+
+	measure 'ABC-A Revenue %' = DIVIDE ( CALCULATE ( [Revenue], DimProduct[AbcClass] = "A" ), [Revenue] )
+		formatString: 0.0%
+		displayFolder: E Inventory / Warehouse
+		lineageTag: b890d685-bc30-4e66-8da2-fd2d0db50d3b
+
+	measure 'Dead Stock %' =
+			VAR Dead =
+			    CALCULATE (
+			        [Inventory Value],
+			        FILTER ( VALUES ( DimProduct[ProductKey] ), CALCULATE ( SUM ( FactInventory[IssuesUnits] ) ) = 0 )
+			    )
+			RETURN
+			    DIVIDE ( Dead, [Inventory Value] )
+		formatString: 0.0%
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 697e34be-7de1-4a80-861f-d1e62b6b1e4b
+
+	measure 'Inventory Quality' = 1 - [Dead Stock %]
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: bbf02100-5bd4-4c15-97a5-09076c0a780c
+
+	measure 'Capacity Strain Index' =
+			VAR Med = MEDIANX ( VALUES ( DimDate[Date] ), CALCULATE ( [Shipments Volume] ) )
+			RETURN
+			    DIVIDE ( DIVIDE ( [Shipments Volume], DISTINCTCOUNT ( DimDate[Date] ) ), Med )
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 67cdc3b6-f2b3-4d68-8da9-18ce408cb32d
+
+	measure 'Receipts Units' = SUM ( FactInventory[ReceiptsUnits] )
+		formatString: #,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 10bce203-0009-4e5f-8080-118ab34c3088
+
+	measure 'Issues Units' = SUM ( FactInventory[IssuesUnits] )
+		formatString: #,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: 4fe8238a-966a-44f7-8164-2d0fa15d741a
+
+	measure 'Turns vs Target' = DIVIDE ( [Inventory Turnover Annualized], 8 )
+		formatString: 0.00
+		displayFolder: E Inventory / Warehouse
+		lineageTag: d8e90a87-7aee-4ab6-944d-af213c21d1d6
+
+	measure 'Warehouse Profit' = [Profit]
+		formatString: "$"#,0
+		displayFolder: E Inventory / Warehouse
+		lineageTag: b56ecfa5-4a8d-428a-9a97-524d051db5a8
+
+	measure 'Return Rate %' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactReturns[OrderId] ), FactReturns[SourceSystemKey] = 1 ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 79d0ccc2-67ae-4340-9aa4-c98b1700fa1c
+
+	measure 'Fraud Rate' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), FactOrders[IsFraud] = TRUE () ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 20f7433d-3251-4e62-8d63-996b4638560f
+
+	measure 'Payment Pending Rate' =
+			DIVIDE (
+			    CALCULATE ( DISTINCTCOUNT ( FactOrders[OrderId] ), DimOrderStatus[StatusCode] = "PENDING_PAYMENT" ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 72a76bda-6304-490d-be96-88beaf13e708
+
+	measure 'Cash Mix %' = DIVIDE ( CALCULATE ( [Order Volume], DimPaymentType[PaymentType] = "CASH" ), [Order Volume] )
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 079527dd-4930-4fca-94c0-741850e3ab02
+
+	measure 'Transfer Mix %' = DIVIDE ( CALCULATE ( [Order Volume], DimPaymentType[PaymentType] = "TRANSFER" ), [Order Volume] )
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 8c740d20-b743-4ed8-b3f1-84caa2519dc5
+
+	measure 'Exception Count' =
+			CALCULATE (
+			    DISTINCTCOUNT ( FactOrders[OrderId] ),
+			    DimOrderStatus[StatusGroup] = "Exception" || FactOrders[IsLate] = TRUE ()
+			)
+		formatString: #,0
+		displayFolder: F Risk
+		lineageTag: f7091b91-c25f-4ae1-9d55-601996af05d7
+
+	measure 'Exception Rate' = DIVIDE ( [Exception Count], [Order Volume] )
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: 8120f17e-65a7-4528-8ba8-a07f5924f7aa
+
+	measure 'SLA Breach Count' =
+			CALCULATE (
+			    DISTINCTCOUNT ( FactShipments[OrderId] ),
+			    FactShipments[IsOnTime] = FALSE (),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: #,0
+		displayFolder: F Risk
+		lineageTag: f3707f68-c063-475c-96aa-7a92ceaf9b1e
+
+	measure 'Cost of Returns' = [Return Value] + [Return Orders] * [Cost Per Shipment] * 0.5
+		formatString: "$"#,0
+		displayFolder: F Risk
+		lineageTag: d47f7f82-f6fa-4305-b9be-5e4286bc3140
+
+	measure 'Cost of Stockout' = [Unfilled Demand Value] * ( 1 + [Profit Margin %] )
+		formatString: "$"#,0
+		displayFolder: F Risk
+		lineageTag: 43608ccd-9f12-4756-af85-7d32c80c14c1
+
+	measure 'SC Cost % of Revenue' = DIVIDE ( [Total Supply Chain Cost], [Revenue] )
+		formatString: "$"#,0
+		displayFolder: F Risk
+		lineageTag: ef803d9d-8024-4b5c-b266-beb709c8674a
+
+	measure 'Complete Rate' =
+			DIVIDE (
+			    CALCULATE (
+			        DISTINCTCOUNT ( FactOrders[OrderId] ),
+			        DimOrderStatus[StatusCode] IN { "COMPLETE", "CLOSED" }
+			    ),
+			    [Order Volume]
+			)
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: a46169e3-74eb-487f-92e9-d3c2b89c2eac
+
+	measure 'Customer OTIF' = [OTIF %]
+		formatString: 0.0%
+		displayFolder: F Risk
+		lineageTag: e06639f6-203a-4205-9215-b0450e09213f
+
+	measure 'Procurement Spend' = SUM ( FactProcurement[PoValue] )
+		formatString: "$"#,0
+		displayFolder: G Procurement
+		lineageTag: fb55dd1a-54f1-4830-bbbb-2b95388ed583
+
+	measure 'PO Cycle Time' = AVERAGE ( FactProcurement[SlaDays] )
+		formatString: 0.00
+		displayFolder: G Procurement
+		lineageTag: 90801ffa-5448-498a-987b-0e602b5a3616
+
+	measure 'PO On-Time Receipt %' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( FactProcurement ), FactProcurement[IsOnTimeReceipt] = TRUE () ),
+			    COUNTROWS ( FactProcurement )
+			)
+		formatString: 0.0%
+		displayFolder: G Procurement
+		lineageTag: 5edce928-bc7a-4557-b0e1-90c798fb078d
+
+	measure 'PO Ordered Units' = SUM ( FactProcurement[OrderedUnits] )
+		formatString: #,0
+		displayFolder: G Procurement
+		lineageTag: 0a6aded3-23e2-4048-b197-8990073d700f
+
+	measure 'PO Received Units' = SUM ( FactProcurement[ReceivedUnits] )
+		formatString: #,0
+		displayFolder: G Procurement
+		lineageTag: 130a5cb9-5461-4897-a8bf-a3a24be1bc54
+
+	measure 'PO Count' = DISTINCTCOUNT ( FactProcurement[PoNumber] )
+		formatString: #,0
+		displayFolder: G Procurement
+		lineageTag: 50e44d26-c131-4374-91fe-0871efb34416
+
+	measure 'Fill vs Receipt' = [Receipts vs Demand]
+		formatString: 0.0%
+		displayFolder: G Procurement
+		lineageTag: b83d213f-2ec8-4896-ae99-ab611dd06f6d
+
+	measure 'Vendor Snapshot Reliability' = AVERAGE ( FactVendorPerformance[ReliabilityScore] )
+		formatString: 0.00
+		displayFolder: G Procurement
+		lineageTag: 87cfcf53-ba80-4dee-90b9-c5119e6bc1a1
+
+	measure 'Vendor Snapshot Risk' = AVERAGE ( FactVendorPerformance[RiskScore] )
+		formatString: 0.00
+		displayFolder: G Procurement
+		lineageTag: 58ee16a1-cdce-48b0-b8d9-ae40ec451d5d
+
+	measure 'Spend per PO' = DIVIDE ( [Procurement Spend], [PO Count] )
+		formatString: "$"#,0
+		displayFolder: G Procurement
+		lineageTag: 405a8a01-7776-4eca-93c3-b5139eedd3c9
+
+	measure 'CO2 kg' =
+			CALCULATE (
+			    SUM ( FactShipments[Co2Kg] ),
+			    USERELATIONSHIP ( FactShipments[OrderDateKey], DimDate[DateKey] )
+			)
+		formatString: #,0.0
+		displayFolder: H Sustainability
+		lineageTag: 874cdd05-a876-479b-b739-85fec703938a
+
+	measure 'CO2 Tonnes' = DIVIDE ( [CO2 kg], 1000 )
+		formatString: #,0.0
+		displayFolder: H Sustainability
+		lineageTag: fe39340f-709d-472b-96f1-d06fa444678f
+
+	measure 'CO2 per Shipment' = DIVIDE ( [CO2 kg], [Shipments Volume] )
+		formatString: 0.00
+		displayFolder: H Sustainability
+		lineageTag: 33977d20-38be-4147-8248-9692d591c23e
+
+	measure 'CO2 Intensity' = DIVIDE ( [CO2 kg], [Revenue] )
+		formatString: 0.00
+		displayFolder: H Sustainability
+		lineageTag: 4393d059-cfff-46f6-a577-e97c37354bc9
+
+	measure 'Air Mode Share' = DIVIDE ( CALCULATE ( [Shipments Volume], DimTransportMode[ModeCode] = "FIR" ), [Shipments Volume] )
+		formatString: 0.0%
+		displayFolder: H Sustainability
+		lineageTag: e2b7a94d-5bd2-413b-bc10-9a79befb4b07
+
+	measure 'Ground Mode Share' =
+			DIVIDE (
+			    CALCULATE ( [Shipments Volume], DimTransportMode[ModeCode] IN { "STD", "SEC" } ),
+			    [Shipments Volume]
+			)
+		formatString: 0.0%
+		displayFolder: H Sustainability
+		lineageTag: d3fbcc24-8a6e-4296-b9b3-c4a1660a5f52
+
+	measure 'Sustainability Score' =
+			VAR Gnd = [Ground Mode Share] * 100
+			VAR Int = MIN ( 100, DIVIDE ( 0.05, [CO2 Intensity] ) * 100 )
+			VAR Exp = ( 1 - [Expedite Rate] ) * 100
+			RETURN
+			    Gnd * 0.50 + Int * 0.30 + Exp * 0.20
+		formatString: 0.00
+		displayFolder: H Sustainability
+		lineageTag: 9d5ec971-91a6-40a7-8a12-e46ff4dd2c06
+
+	measure 'CO2 If Shift First Class 50% to Standard' =
+			VAR FirShare = [Air Mode Share]
+			VAR Co2Now = [CO2 kg]
+			RETURN
+			    Co2Now * ( 1 - 0.5 * FirShare * ( 1 - DIVIDE ( 60, 600 ) ) )
+		formatString: #,0.0
+		displayFolder: H Sustainability
+		lineageTag: f4bfbe40-698b-4287-86be-ed7a9d6d2fab
+
+	measure 'Title Selected KPI' =
+			VAR K = SELECTEDVALUE ( fp_Metric[fp_Metric], "Revenue" )
+			VAR P = SELECTEDVALUE ( DimDate[YearMonth], "Selected period" )
+			RETURN
+			    K & " · " & P
+		formatString: @
+		displayFolder: I Chrome
+		lineageTag: 4f23daac-549b-4e89-a17c-33baeec4f32f
+
+	measure 'Last Refresh Text' = "Refreshed " & FORMAT ( MAX ( LastRefresh[RefreshDatetime] ), "YYYY-MM-DD HH:mm" )
+		formatString: @
+		displayFolder: I Chrome
+		lineageTag: e17f937f-0544-4a11-900d-f6695f0694e3
+
+	measure 'Filter Caption' =
+			VAR Mkt = SELECTEDVALUE ( DimRegion[MarketName], "All markets" )
+			VAR Seg = SELECTEDVALUE ( DimCustomer[Segment], "All segments" )
+			RETURN
+			    Mkt & " · " & Seg
+		formatString: @
+		displayFolder: I Chrome
+		lineageTag: 8e0f7803-bb04-47a8-8409-d909e739b83b
+
+	measure 'Page Subtitle Tower' =
+			[Filter Caption] & " · OTIF " & FORMAT ( [OTIF %], "0.0%" )
+			    & " · Late " & FORMAT ( [Late Delivery Rate], "0.0%" )
+		formatString: @
+		displayFolder: I Chrome
+		lineageTag: 7f1a5714-95b0-4e4f-927c-2b2e23c8cb39
+
+	measure 'KPI Definition Text' =
+			VAR K = SELECTEDVALUE ( fp_Metric[fp_Metric], "Revenue" )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        K = "Revenue", "Net merchandise value of revenue-eligible order lines.",
+			        K = "Profit", "Line profit on revenue-eligible lines.",
+			        K = "Order Volume", "Distinct customer orders.",
+			        K = "Cost to Serve", "Discounts + freight + delay + returns + fraud (modelled freight).",
+			        K = "Working Capital", "On-hand + AR proxy − AP proxy (modelled inventory/PO).",
+			        K = "Inventory Value", "On-hand × list at last date in filter (modelled snapshot).",
+			        K = "OTIF %", "On time (actual ≤ SLA) and in full (not ship-canceled).",
+			        K = "Fill Rate", "Units sold / (sold + unfilled + canceled qty).",
+			        K = "Perfect Order %", "OTIF and not fraud and COMPLETE/CLOSED.",
+			        K = "Stockout Rate", "Product-warehouse-days with reconstructed stockout.",
+			        K = "Inventory Turnover", "COGS / average on-hand value.",
+			        K = "Inventory Days", "Average inventory / daily COGS.",
+			        K = "Backorder Rate", "Backorder units / (on-hand + backorder) at last date.",
+			        K = "Lead Time", "Average actual shipping days.",
+			        K = "Lead Time Variance", "Sample variance of actual transit days.",
+			        K = "Vendor Reliability", "OTIF of orders for the vendor (department proxy).",
+			        K = "Vendor SLA %", "On-time % for the vendor's orders.",
+			        K = "Vendor Quality Score", "1 − (canceled + fraud orders) / orders.",
+			        K = "Vendor Risk Score", "Weighted late + quality gap + LT stdev + cancel.",
+			        K = "Transportation Cost", "Modelled tariff freight, not carrier invoice.",
+			        K = "Cost Per Shipment", "Freight / shipment count.",
+			        K = "Delivery Delay Rate", "Share of shipments with DaysDelay > 0.",
+			        K = "Route Performance Score", "60% OTIF + 25% on-time delay inverse + 15% freight efficiency.",
+			        K = "Control Tower Health Score", "Weighted OTIF, perfect order, fill, margin, stockout, vendor SLA.",
+			        K = "CO2 Tonnes", "Modelled emissions from mode factors × distance bands.",
+			        "See KPI catalog."
+			    )
+		formatString: @
+		displayFolder: I Chrome
+		lineageTag: 469291b3-4519-4012-9246-ac0a64cd75e6
+
+	column Id
+		lineageTag: daf20b40-9028-4e86-9c02-b09fac7a724c
+		isNameInferred
+		sourceColumn: [Id]
+
+	partition _Measures = calculated
+		mode: import
+		source = DATATABLE("Id", INTEGER, {{1}})
+
