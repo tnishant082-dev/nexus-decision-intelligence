@@ -1,5 +1,13 @@
 # Supply Chain Control Tower
 
-Enterprise-style Power BI control tower over a star-schema extract (orders, shipments, inventory, procurement, vendors).
+Analysis of enterprise supply chain performance across orders, shipments, inventory, warehouses, procurement, vendors, and sustainability.
 
-Open `dashboard/SupplyChain-Control-Tower.pbip` in Power BI Desktop. Parquet inputs live under `data/`.
+## Key Metrics (from included model)
+
+| Area | Metrics |
+|---|---|
+| Finance | Revenue ~$31.6M · Profit ~$3.8M · Orders ~63K |
+| Service | OTIF ~40.8% · Perfect order ~18.8% |
+| Logistics | Freight ~$1.0M · Delay rate ~54.8% · CO2 ~386.6 t |
+
+SQL KPI scripts live under `sql/` and `analytics/sql/`.
