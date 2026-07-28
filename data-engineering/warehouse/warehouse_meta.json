@@ -1,0 +1,99 @@
+{
+  "built_at": "2026-09-21T17:17:57.366046+00:00",
+  "db_path": "/workspace/nexus-sc/data-engineering/warehouse/nexus.duckdb",
+  "tables": [
+    {
+      "table": "dim_carrier",
+      "rows": 5
+    },
+    {
+      "table": "dim_customer",
+      "rows": 20653
+    },
+    {
+      "table": "dim_date",
+      "rows": 3318
+    },
+    {
+      "table": "dim_delivery_status",
+      "rows": 5
+    },
+    {
+      "table": "dim_order_status",
+      "rows": 10
+    },
+    {
+      "table": "dim_payment_type",
+      "rows": 5
+    },
+    {
+      "table": "dim_product",
+      "rows": 119
+    },
+    {
+      "table": "dim_region",
+      "rows": 3773
+    },
+    {
+      "table": "dim_source_system",
+      "rows": 4
+    },
+    {
+      "table": "dim_transport_mode",
+      "rows": 5
+    },
+    {
+      "table": "dim_vendor",
+      "rows": 13
+    },
+    {
+      "table": "dim_warehouse",
+      "rows": 7
+    },
+    {
+      "table": "fact_inventory",
+      "rows": 245072
+    },
+    {
+      "table": "fact_orders",
+      "rows": 180519
+    },
+    {
+      "table": "fact_procurement",
+      "rows": 8340
+    },
+    {
+      "table": "fact_returns",
+      "rows": 30644
+    },
+    {
+      "table": "fact_shipments",
+      "rows": 65752
+    },
+    {
+      "table": "fact_vendor_performance",
+      "rows": 227
+    },
+    {
+      "table": "ref_emission_factor",
+      "rows": 4
+    },
+    {
+      "table": "ref_freight_tariff",
+      "rows": 4
+    },
+    {
+      "table": "ref_lane_distance",
+      "rows": 5
+    },
+    {
+      "table": "rls_user_map",
+      "rows": 9
+    },
+    {
+      "table": "last_refresh",
+      "rows": 1
+    }
+  ],
+  "engine": "duckdb"
+}

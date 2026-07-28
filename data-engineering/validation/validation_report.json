@@ -1,0 +1,50 @@
+{
+  "validated_at": "2026-09-21T17:17:57.434084+00:00",
+  "passed": 6,
+  "total": 6,
+  "results": [
+    {
+      "check": "orders_positive",
+      "value": [
+        180519
+      ],
+      "passed": true
+    },
+    {
+      "check": "shipments_positive",
+      "value": [
+        65752
+      ],
+      "passed": true
+    },
+    {
+      "check": "otif_bounded",
+      "value": [
+        0,
+        1
+      ],
+      "passed": true
+    },
+    {
+      "check": "orders_product_fk",
+      "value": [
+        0
+      ],
+      "passed": true
+    },
+    {
+      "check": "orders_customer_fk",
+      "value": [
+        0
+      ],
+      "passed": true
+    },
+    {
+      "check": "revenue_nonneg",
+      "value": [
+        0
+      ],
+      "passed": true
+    }
+  ]
+}
