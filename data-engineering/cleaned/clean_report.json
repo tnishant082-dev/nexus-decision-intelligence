@@ -1,0 +1,447 @@
+{
+  "cleaned_at": "2026-09-21T17:17:55.293419+00:00",
+  "tables": [
+    {
+      "name": "dim_carrier.parquet",
+      "rows_in": 5,
+      "rows_out": 5,
+      "columns": [
+        "carrier_key",
+        "carrier_code",
+        "carrier_name",
+        "carrier_type",
+        "service_class",
+        "mode_nk",
+        "source_class"
+      ]
+    },
+    {
+      "name": "dim_customer.parquet",
+      "rows_in": 20653,
+      "rows_out": 20653,
+      "columns": [
+        "customer_key",
+        "customer_id_src",
+        "customer_name",
+        "first_name",
+        "last_name",
+        "segment",
+        "bill_to_city",
+        "bill_to_state",
+        "bill_to_postal",
+        "bill_to_country",
+        "bill_to_country_iso",
+        "latitude",
+        "longitude",
+        "first_order_date",
+        "last_order_date",
+        "lifetime_orders",
+        "source_system_key"
+      ]
+    },
+    {
+      "name": "dim_date.parquet",
+      "rows_in": 3318,
+      "rows_out": 3318,
+      "columns": [
+        "date_key",
+        "date",
+        "date_datetime",
+        "calendar_year",
+        "calendar_quarter",
+        "calendar_month",
+        "month_name",
+        "month_short",
+        "year_month",
+        "year_month_sort",
+        "year_quarter",
+        "week_of_year",
+        "iso_year",
+        "week_start_date",
+        "week_end_date",
+        "day_of_month",
+        "day_of_year",
+        "day_name",
+        "day_short",
+        "day_of_week",
+        "is_weekend",
+        "is_holiday",
+        "holiday_name",
+        "is_month_end",
+        "is_quarter_end",
+        "is_year_end",
+        "days_in_month",
+        "fiscal_year",
+        "fiscal_quarter",
+        "fiscal_month",
+        "season",
+        "is_partial_dataco_year"
+      ]
+    },
+    {
+      "name": "dim_delivery_status.parquet",
+      "rows_in": 5,
+      "rows_out": 5,
+      "columns": [
+        "delivery_status_key",
+        "status_code",
+        "status_label",
+        "is_late",
+        "is_on_time",
+        "is_advance",
+        "is_canceled_ship"
+      ]
+    },
+    {
+      "name": "dim_order_status.parquet",
+      "rows_in": 10,
+      "rows_out": 10,
+      "columns": [
+        "order_status_key",
+        "status_code",
+        "status_label",
+        "status_group",
+        "is_revenue",
+        "is_complete",
+        "is_canceled",
+        "is_fraud",
+        "is_pending_payment"
+      ]
+    },
+    {
+      "name": "dim_payment_type.parquet",
+      "rows_in": 5,
+      "rows_out": 5,
+      "columns": [
+        "payment_type_key",
+        "payment_type",
+        "is_cash",
+        "is_transfer"
+      ]
+    },
+    {
+      "name": "dim_product.parquet",
+      "rows_in": 119,
+      "rows_out": 119,
+      "columns": [
+        "product_key",
+        "product_id_src",
+        "product_nk",
+        "product_name",
+        "category_id",
+        "category_name",
+        "category_group",
+        "department_id",
+        "department_name",
+        "vendor_key",
+        "list_price",
+        "abc_class",
+        "is_active",
+        "source_system_key"
+      ]
+    },
+    {
+      "name": "dim_region.parquet",
+      "rows_in": 3773,
+      "rows_out": 3773,
+      "columns": [
+        "region_key",
+        "market_code",
+        "market_name",
+        "region_name",
+        "country_name",
+        "country_iso2",
+        "state_name",
+        "city_name",
+        "geo_path",
+        "warehouse_key",
+        "hemisphere"
+      ]
+    },
+    {
+      "name": "dim_source_system.parquet",
+      "rows_in": 4,
+      "rows_out": 4,
+      "columns": [
+        "source_system_key",
+        "source_code",
+        "source_name"
+      ]
+    },
+    {
+      "name": "dim_transport_mode.parquet",
+      "rows_in": 5,
+      "rows_out": 5,
+      "columns": [
+        "transport_mode_key",
+        "mode_code",
+        "mode_name",
+        "sla_days",
+        "cost_tier",
+        "emission_tier",
+        "source_class"
+      ]
+    },
+    {
+      "name": "dim_vendor.parquet",
+      "rows_in": 13,
+      "rows_out": 13,
+      "columns": [
+        "vendor_key",
+        "vendor_nk",
+        "vendor_name",
+        "vendor_type",
+        "sla_lead_time_days",
+        "preferred_flag",
+        "risk_tier",
+        "source_class",
+        "derivation_rule"
+      ]
+    },
+    {
+      "name": "dim_warehouse.parquet",
+      "rows_in": 7,
+      "rows_out": 7,
+      "columns": [
+        "warehouse_key",
+        "warehouse_code",
+        "warehouse_name",
+        "market_code",
+        "warehouse_type",
+        "timezone",
+        "source_class",
+        "derivation_rule"
+      ]
+    },
+    {
+      "name": "fact_inventory.parquet",
+      "rows_in": 245072,
+      "rows_out": 245072,
+      "columns": [
+        "inventory_key",
+        "date_key",
+        "product_key",
+        "warehouse_key",
+        "vendor_key",
+        "source_system_key",
+        "on_hand_units",
+        "on_hand_value",
+        "receipts_units",
+        "issues_units",
+        "demand_units",
+        "unfilled_units",
+        "unfilled_value",
+        "backorder_units",
+        "backorder_value",
+        "stockout_flag",
+        "safety_stock_units",
+        "reorder_point_units",
+        "target_dos",
+        "snapshot_ts",
+        "source_class"
+      ]
+    },
+    {
+      "name": "fact_orders.parquet",
+      "rows_in": 180519,
+      "rows_out": 180519,
+      "columns": [
+        "order_line_key",
+        "order_item_id",
+        "order_id",
+        "order_date_key",
+        "order_ts",
+        "customer_key",
+        "product_key",
+        "region_key",
+        "warehouse_key",
+        "vendor_key",
+        "transport_mode_key",
+        "carrier_key",
+        "order_status_key",
+        "payment_type_key",
+        "source_system_key",
+        "quantity",
+        "unit_price",
+        "gross_sales",
+        "discount_amount",
+        "discount_rate",
+        "net_sales",
+        "line_profit",
+        "profit_ratio",
+        "cogs_amount",
+        "days_ship_real",
+        "is_canceled",
+        "is_fraud",
+        "is_revenue",
+        "is_late",
+        "is_on_time",
+        "is_otif",
+        "is_perfect_order"
+      ]
+    },
+    {
+      "name": "fact_procurement.parquet",
+      "rows_in": 8340,
+      "rows_out": 8340,
+      "columns": [
+        "po_line_key",
+        "po_date_key",
+        "promised_date_key",
+        "po_ts",
+        "product_key",
+        "vendor_key",
+        "warehouse_key",
+        "source_system_key",
+        "po_number",
+        "ordered_units",
+        "received_units",
+        "po_value",
+        "sla_days",
+        "is_on_time_receipt",
+        "source_class"
+      ]
+    },
+    {
+      "name": "fact_returns.parquet",
+      "rows_in": 30644,
+      "rows_out": 30644,
+      "columns": [
+        "return_line_key",
+        "return_date_key",
+        "return_ts",
+        "order_id",
+        "customer_key",
+        "product_key",
+        "region_key",
+        "warehouse_key",
+        "vendor_key",
+        "source_system_key",
+        "return_type",
+        "quantity",
+        "return_value",
+        "is_fraud",
+        "is_canceled"
+      ]
+    },
+    {
+      "name": "fact_shipments.parquet",
+      "rows_in": 65752,
+      "rows_out": 65752,
+      "columns": [
+        "shipment_key",
+        "order_id",
+        "order_date_key",
+        "ship_date_key",
+        "order_ts",
+        "ship_ts",
+        "customer_key",
+        "region_key",
+        "warehouse_key",
+        "transport_mode_key",
+        "carrier_key",
+        "delivery_status_key",
+        "order_status_key",
+        "source_system_key",
+        "days_ship_real",
+        "days_ship_scheduled",
+        "days_delay",
+        "late_delivery_risk",
+        "is_late",
+        "is_on_time",
+        "is_advance",
+        "is_canceled_ship",
+        "is_in_full",
+        "is_otif",
+        "is_perfect_order",
+        "line_count",
+        "unit_count",
+        "net_sales_amount",
+        "freight_cost",
+        "delay_cost",
+        "co2_kg",
+        "distance_km_proxy"
+      ]
+    },
+    {
+      "name": "fact_vendor_performance.parquet",
+      "rows_in": 227,
+      "rows_out": 227,
+      "columns": [
+        "vendor_perf_key",
+        "date_key",
+        "month_end_ts",
+        "vendor_key",
+        "source_system_key",
+        "orders_count",
+        "shipments_count",
+        "otif_count",
+        "late_count",
+        "cancel_count",
+        "fraud_count",
+        "units_shipped",
+        "net_sales",
+        "spend_amount",
+        "profit_amount",
+        "avg_lead_time",
+        "lead_time_std",
+        "reliability_score",
+        "sla_pct",
+        "quality_score",
+        "risk_score",
+        "source_class"
+      ]
+    },
+    {
+      "name": "last_refresh.parquet",
+      "rows_in": 1,
+      "rows_out": 1,
+      "columns": [
+        "refresh_datetime"
+      ]
+    },
+    {
+      "name": "ref_emission_factor.parquet",
+      "rows_in": 4,
+      "rows_out": 4,
+      "columns": [
+        "mode_code",
+        "g_co2_per_tkm",
+        "avg_weight_kg_per_unit"
+      ]
+    },
+    {
+      "name": "ref_freight_tariff.parquet",
+      "rows_in": 4,
+      "rows_out": 4,
+      "columns": [
+        "mode_code",
+        "cost_per_shipment",
+        "cost_per_unit",
+        "delay_cost_per_day"
+      ]
+    },
+    {
+      "name": "ref_lane_distance.parquet",
+      "rows_in": 5,
+      "rows_out": 5,
+      "columns": [
+        "origin_market",
+        "dest_market",
+        "distance_km"
+      ]
+    },
+    {
+      "name": "rls_user_map.parquet",
+      "rows_in": 9,
+      "rows_out": 9,
+      "columns": [
+        "user_principal_name",
+        "role_code",
+        "market_code",
+        "warehouse_key",
+        "vendor_key"
+      ]
+    }
+  ]
+}
