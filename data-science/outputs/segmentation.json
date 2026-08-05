@@ -1,0 +1,25 @@
+{
+  "by_segment": [
+    {
+      "segment": "Consumer",
+      "customers": 10695,
+      "revenue_m": 16.42,
+      "otif_pct": 40.82,
+      "late_pct": 54.81
+    },
+    {
+      "segment": "Corporate",
+      "customers": 6239,
+      "revenue_m": 9.62,
+      "otif_pct": 41.15,
+      "late_pct": 54.72
+    },
+    {
+      "segment": "Home Office",
+      "customers": 3718,
+      "revenue_m": 5.61,
+      "otif_pct": 40.56,
+      "late_pct": 55.07
+    }
+  ]
+}
