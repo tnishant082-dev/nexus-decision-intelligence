@@ -1,0 +1,115 @@
+{
+  "run_id": "anomaly_20260921T171801Z",
+  "task": "otif_late_anomaly",
+  "rows": 231,
+  "anomaly_count": 12,
+  "contamination": 0.05,
+  "top_anomalies": [
+    {
+      "week_start": "2016-09-05",
+      "warehouse_key": 1,
+      "otif_rate": 0.2,
+      "late_rate": 0.725,
+      "anomaly_score": 0.15905293793957997
+    },
+    {
+      "week_start": "2016-12-19",
+      "warehouse_key": 1,
+      "otif_rate": 0.6764705882352942,
+      "late_rate": 0.3235294117647059,
+      "anomaly_score": 0.13789318260187877
+    },
+    {
+      "week_start": "2017-10-23",
+      "warehouse_key": 2,
+      "otif_rate": 0.4321503131524008,
+      "late_rate": 0.5198329853862212,
+      "anomaly_score": 0.06913824487187481
+    },
+    {
+      "week_start": "2017-01-16",
+      "warehouse_key": 5,
+      "otif_rate": 0.5684931506849316,
+      "late_rate": 0.3767123287671233,
+      "anomaly_score": 0.061406755760503584
+    },
+    {
+      "week_start": "2016-10-17",
+      "warehouse_key": 1,
+      "otif_rate": 0.631578947368421,
+      "late_rate": 0.34210526315789475,
+      "anomaly_score": 0.04615111296232843
+    },
+    {
+      "week_start": "2016-11-07",
+      "warehouse_key": 1,
+      "otif_rate": 0.2391304347826087,
+      "late_rate": 0.6521739130434783,
+      "anomaly_score": 0.03773368850681347
+    },
+    {
+      "week_start": "2017-01-02",
+      "warehouse_key": 1,
+      "otif_rate": 0.5714285714285714,
+      "late_rate": 0.2857142857142857,
+      "anomaly_score": 0.03344464141777681
+    },
+    {
+      "week_start": "2016-12-12",
+      "warehouse_key": 1,
+      "otif_rate": 0.5555555555555556,
+      "late_rate": 0.3111111111111111,
+      "anomaly_score": 0.02106072822564775
+    },
+    {
+      "week_start": "2016-12-12",
+      "warehouse_key": 2,
+      "otif_rate": 0.4810126582278481,
+      "late_rate": 0.43037974683544306,
+      "anomaly_score": 0.01934197728537468
+    },
+    {
+      "week_start": "2016-08-22",
+      "warehouse_key": 2,
+      "otif_rate": 0.603448275862069,
+      "late_rate": 0.39655172413793105,
+      "anomaly_score": 0.01644584258962256
+    },
+    {
+      "week_start": "2016-09-12",
+      "warehouse_key": 1,
+      "otif_rate": 0.5806451612903226,
+      "late_rate": 0.41935483870967744,
+      "anomaly_score": 0.012495693515943262
+    },
+    {
+      "week_start": "2015-05-25",
+      "warehouse_key": 2,
+      "otif_rate": 0.34710743801652894,
+      "late_rate": 0.6115702479338843,
+      "anomaly_score": 0.00471063283097195
+    },
+    {
+      "week_start": "2016-12-26",
+      "warehouse_key": 1,
+      "otif_rate": 0.32075471698113206,
+      "late_rate": 0.6792452830188679,
+      "anomaly_score": -0.00471063283097195
+    },
+    {
+      "week_start": "2017-01-09",
+      "warehouse_key": 1,
+      "otif_rate": 0.46296296296296297,
+      "late_rate": 0.46296296296296297,
+      "anomaly_score": -0.012770842029072749
+    },
+    {
+      "week_start": "2016-08-29",
+      "warehouse_key": 1,
+      "otif_rate": 0.4909090909090909,
+      "late_rate": 0.36363636363636365,
+      "anomaly_score": -0.013001915824566002
+    }
+  ],
+  "model_path": "ml/models/anomaly_20260921T171801Z.joblib"
+}

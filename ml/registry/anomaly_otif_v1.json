@@ -1,0 +1,12 @@
+{
+  "model_id": "anomaly_otif_v1",
+  "run_id": "anomaly_20260921T171812Z",
+  "stage": "staging",
+  "metrics": {
+    "rows": 231,
+    "anomaly_count": 12,
+    "contamination": 0.05,
+    "model_path": "ml/models/anomaly_20260921T171812Z.joblib"
+  },
+  "registered_at": "2026-09-21T17:18:12.578764+00:00"
+}
