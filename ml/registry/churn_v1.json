@@ -1,0 +1,11 @@
+{
+  "model_id": "churn_v1",
+  "run_id": "churn_20260921T171824Z",
+  "stage": "staging",
+  "metrics": {
+    "auc_without_recency": 0.932,
+    "churn_rate": 0.4531,
+    "model_path": "ml/models/churn_20260921T171824Z.joblib"
+  },
+  "registered_at": "2026-09-21T17:18:24.016485+00:00"
+}
