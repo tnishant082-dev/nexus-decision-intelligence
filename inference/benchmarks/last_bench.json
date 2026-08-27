@@ -1,0 +1,79 @@
+{
+  "ran_at": "2026-09-21T17:18:26.162810+00:00",
+  "n": 9,
+  "results": [
+    {
+      "case": "short",
+      "route": "mock",
+      "latency_ms": 12.09,
+      "tokens_in": 3,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "short",
+      "route": "small",
+      "latency_ms": 50.1,
+      "tokens_in": 3,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "short",
+      "route": "large",
+      "latency_ms": 50.09,
+      "tokens_in": 3,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "medium",
+      "route": "mock",
+      "latency_ms": 12.08,
+      "tokens_in": 45,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "medium",
+      "route": "small",
+      "latency_ms": 50.09,
+      "tokens_in": 45,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "medium",
+      "route": "large",
+      "latency_ms": 50.09,
+      "tokens_in": 45,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "long",
+      "route": "mock",
+      "latency_ms": 12.1,
+      "tokens_in": 176,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "long",
+      "route": "small",
+      "latency_ms": 50.09,
+      "tokens_in": 176,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    },
+    {
+      "case": "long",
+      "route": "large",
+      "latency_ms": 50.1,
+      "tokens_in": 176,
+      "tokens_out": 17,
+      "hardware": "cpu_local_mock"
+    }
+  ],
+  "disclaimer": "Local CPU mock timings only \u2014 not GPU throughput benchmarks."
+}
