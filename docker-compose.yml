@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - NEXUS_API_KEY=dev-nexus-key
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data:ro
+      - ./data-engineering/warehouse:/app/data-engineering/warehouse
+      - ./ml/registry:/app/ml/registry
+      - ./ml/models:/app/ml/models
+      - ./monitoring:/app/monitoring
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+  ui:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - NEXUS_API_KEY=dev-nexus-key
+      - PYTHONPATH=/app
+    depends_on:
+      - api
+    command: streamlit run frontend/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
