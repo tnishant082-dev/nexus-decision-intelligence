@@ -1,9 +1,9 @@
 {
   "model_id": "demand_forecast_v1",
-  "run_id": "forecast_20260921T172130Z",
+  "run_id": "forecast_20260921T172203Z",
   "stage": "staging",
   "metrics": {
-    "run_id": "forecast_20260921T172130Z",
+    "run_id": "forecast_20260921T172203Z",
     "task": "demand_forecast_category_week",
     "train_rows": 2923,
     "test_rows": 314,
@@ -13,8 +13,8 @@
     "wape_pct": 16.82,
     "naive_lag1_mae": 21.56,
     "lift_vs_naive_mae_pct": 13.6,
-    "model_path": "/workspace/nexus-sc/ml/models/forecast_20260921T172130Z.joblib",
+    "model_path": "ml/models/forecast_20260921T172203Z.joblib",
     "note": "Holdout = last ~16 week_starts. Prefer WAPE over MAPE on sparse categories; compare MAE to lag-1 naive."
   },
-  "registered_at": "2026-09-21T17:21:30.718158+00:00"
+  "registered_at": "2026-09-21T17:22:03.754817+00:00"
 }
