@@ -1,5 +1,5 @@
 {
-  "run_id": "forecast_20260921T172032Z",
+  "run_id": "forecast_20260921T172203Z",
   "task": "demand_forecast_category_week",
   "train_rows": 2923,
   "test_rows": 314,
@@ -9,6 +9,6 @@
   "wape_pct": 16.82,
   "naive_lag1_mae": 21.56,
   "lift_vs_naive_mae_pct": 13.6,
-  "model_path": "ml/models/forecast_20260921T172032Z.joblib",
+  "model_path": "ml/models/forecast_20260921T172203Z.joblib",
   "note": "Holdout = last ~16 week_starts. Prefer WAPE over MAPE on sparse categories; compare MAE to lag-1 naive."
 }
