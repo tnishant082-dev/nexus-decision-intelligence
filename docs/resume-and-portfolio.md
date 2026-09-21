@@ -4,7 +4,7 @@ Use only after you can run the commands yourself. Do **not** add accuracy, GPU, 
 
 ## Resume bullets (verified capabilities)
 
-- Built a local-first **retail/supply-chain decision intelligence** platform (DuckDB, FastAPI, Streamlit) that answers executive questions on revenue, OTIF, inventory, and churn with SQL evidence.
+- Built a local-first **retail/supply-chain decision OS** (DuckDB, FastAPI, Streamlit) that ranks OTIF/late work by **late-line revenue $**, not vanity KPIs, with SQL evidence and SAMPLE-policy citations.
 - Implemented **data contracts**, incremental parquet loads, freshness/profile reports, and a metric dictionary with SQL tests for finance, ops, inventory, and customer KPIs.
 - Trained leakage-aware **churn**, category-week **forecast vs lag-1 naive**, IsolationForest **OTIF anomalies**, and a documented **stockout-risk proxy**; logged runs to a file registry (MLflow optional).
 - Shipped **hybrid RAG** (lexical + dense, citations) and a **multi-agent investigate graph** (LangGraph if installed) with retries and a human-review flag.

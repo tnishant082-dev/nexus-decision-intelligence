@@ -19,8 +19,8 @@ def pick_snippets(question: str) -> list[str]:
         keys += ["logistics", "late_by_carrier"]
     if any(w in q for w in ("inventory", "stock", "stockout", "coverage", "working capital")):
         keys += ["inventory_coverage"]
-    if any(w in q for w in ("revenue", "profit", "executive", "kpi", "sales", "margin", "growth")):
-        keys += ["exec_kpis", "category_revenue"]
+    if any(w in q for w in ("revenue", "profit", "executive", "kpi", "sales", "margin", "growth", "decline", "stake", "dollar", "impact")):
+        keys += ["exec_kpis", "category_revenue", "late_revenue"]
     if any(w in q for w in ("forecast", "demand", "category")):
         keys += ["category_revenue"]
     if any(w in q for w in ("churn", "customer", "retention", "ltv")):
@@ -78,6 +78,10 @@ def analytics_agent(state: dict) -> dict:
             )
         elif key == "fill_rate" and rows:
             drivers.append(f"Shipment fill (in-full) {rows[0].get('fill_rate_pct')}%")
+        elif key == "late_revenue" and rows:
+            drivers.append(
+                f"Late-line revenue ${rows[0].get('late_revenue_m')}M ({rows[0].get('late_share_pct')}% of revenue) — service-risk pool, not proven lost sales"
+            )
         elif key == "customer_kpis" and rows:
             drivers.append(
                 f"Customers {rows[0].get('customers')}; 180d churn proxy {rows[0].get('churn_proxy_180d_pct')}%; avg LTV ${rows[0].get('avg_ltv')}"
@@ -150,9 +154,11 @@ def decision_agent(state: dict) -> dict:
     trail = list(state.get("trail") or [])
     q = state["question"].lower()
     recs = []
-    if any(w in q for w in ("otif", "late", "delay", "service")):
-        recs.append("Split late vs short-ship: prioritize carrier/mode actions where late % is highest.")
-        recs.append("Align expedite policy — elevated delay often coincides with reactive air/expedite spend.")
+    if any(w in q for w in ("otif", "late", "delay", "service", "impact", "stake")):
+        recs.append("Size the late-line revenue pool first, then pick the warehouse/carrier with the largest $ — not the highest late % alone.")
+        recs.append("Split late vs short-ship: prioritize carrier/mode actions where delay_cost is highest.")
+    if any(w in q for w in ("freight", "expedite")):
+        recs.append("Expedite freight is a small $ pool vs late revenue; cutting it blindly can worsen OTIF.")
     if any(w in q for w in ("inventory", "stock", "working capital")):
         recs.append("Review weeks-of-supply on A-class SKUs; long coverage with weak OTIF is a cash/service tradeoff.")
     if any(w in q for w in ("vendor", "procurement", "sla")):
