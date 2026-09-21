@@ -26,7 +26,7 @@ from ml.serving import predict as ml_predict
 app = FastAPI(
     title="NEXUS Decision Intelligence Platform",
     description="Local-first retail + supply chain decision intelligence. Mock LLM default.",
-    version="1.2.0",
+    version="1.3.0",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +55,7 @@ async def rate_limit(request: Request, call_next):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.2.0"}
+    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.3.0"}
 
 
 @app.get("/metrics")

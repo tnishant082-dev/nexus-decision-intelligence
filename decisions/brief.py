@@ -17,7 +17,11 @@ def build_brief() -> str:
         "",
         "## Value at stake (proxies, not GAAP)",
         f"- Revenue **${v['revenue']:,.0f}**; **{v['late_revenue_share_pct']}%** of it sits on late lines (${v['late_revenue']:,.0f}).",
-        f"- OTIF **{v['actual_otif_pct']}%** vs SAMPLE enterprise target **{v['sample_otif_target_pct']}%** (gap {v['otif_gap_pp']} pp).",
+        f"- OTIF **{v['actual_otif_pct']}%**" + (
+            f" (Wilson 95% CI {v['otif_wilson']['lo']}–{v['otif_wilson']['hi']})"
+            if v.get("otif_wilson") and v["otif_wilson"].get("lo") is not None
+            else ""
+        ) + f" vs SAMPLE enterprise target **{v['sample_otif_target_pct']}%** (gap {v['otif_gap_pp']} pp).",
         f"- Shipment delay_cost **${v['delay_cost']:,.0f}**; expedite freight **${v['expedite_freight']:,.0f}**.",
         f"- Inventory unfilled_value (all snapshots) **${v['unfilled_value_all_snapshots']:,.0f}**.",
         f"- 180d inactivity LTV proxy **${v['churn_ltv_at_risk_proxy']:,.0f}**.",

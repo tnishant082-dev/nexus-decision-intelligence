@@ -5,10 +5,13 @@ Only items that are still actually missing.
 ## Near-term (code-shaped, not claimed done)
 
 1. Recapture Streamlit screenshots after UI changes (`screenshots/nexus/`).
-2. Wilson intervals for OTIF proportion CIs.
-3. True time-based churn labels (hide last N days of orders, predict next window).
-4. Human-in-the-loop persist (approve/reject table) instead of a request flag.
-5. Chunking experiments with measured recall on a larger policy corpus.
+2. True time-based churn labels (hide last N days of orders, predict next window).
+3. Chunking experiments with measured recall on a larger policy corpus.
+
+## Shipped in 1.3
+
+- Wilson 95% intervals on order-grain OTIF (network + warehouse). Wald remains in `data-science/modules/inference_stats.py` for comparison.
+- HITL ledger status history (`proposed → accepted|rejected|done` with timestamps/notes), not only a request flag.
 
 ## Requires extra infrastructure (out of this repo until you run it)
 
