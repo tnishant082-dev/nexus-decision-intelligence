@@ -13,6 +13,7 @@ services:
       - ./ml/models:/app/ml/models
       - ./monitoring:/app/monitoring
     command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    # Optional live inference: set OPENAI_API_KEY / GROQ_API_KEY / OLLAMA_BASE_URL / VLLM_BASE_URL
   ui:
     build: .
     ports:

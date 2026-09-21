@@ -34,18 +34,29 @@ def load_chunks(knowledge_dir: Path = KNOWLEDGE) -> list[Chunk]:
 
 
 def retrieve(question: str, top_k: int = 3, knowledge_dir: Path = KNOWLEDGE) -> list[dict]:
-    q = _tokenize(question)
-    scored = []
-    for ch in load_chunks(knowledge_dir):
-        tokens = _tokenize(ch.text)
-        if not tokens:
-            continue
-        overlap = len(q & tokens)
-        score = overlap / (len(q) ** 0.5 + 1e-6)
-        if score > 0:
-            scored.append(Chunk(ch.doc_id, ch.title, ch.text, score))
-    scored.sort(key=lambda c: c.score, reverse=True)
-    return [
-        {"doc_id": c.doc_id, "title": c.title, "snippet": c.text[:500], "score": round(c.score, 3)}
-        for c in scored[:top_k]
-    ]
+    try:
+        from ai.rag.hybrid import retrieve_hybrid
+
+        return retrieve_hybrid(question, top_k=top_k, knowledge_dir=knowledge_dir)
+    except Exception:
+        q = _tokenize(question)
+        scored = []
+        for ch in load_chunks(knowledge_dir):
+            tokens = _tokenize(ch.text)
+            if not tokens:
+                continue
+            overlap = len(q & tokens)
+            score = overlap / (len(q) ** 0.5 + 1e-6)
+            if score > 0:
+                scored.append(Chunk(ch.doc_id, ch.title, ch.text, score))
+        scored.sort(key=lambda c: c.score, reverse=True)
+        return [
+            {
+                "doc_id": c.doc_id,
+                "title": c.title,
+                "snippet": c.text[:500],
+                "score": round(c.score, 3),
+                "citation": f"{c.title} ({c.doc_id})",
+            }
+            for c in scored[:top_k]
+        ]

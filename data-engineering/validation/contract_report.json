@@ -1,0 +1,200 @@
+{
+  "validated_at": "2026-09-21T18:07:58.473767+00:00",
+  "passed": 4,
+  "total": 4,
+  "results": [
+    {
+      "contract": "dim_customer.yaml",
+      "table": "dim_customer",
+      "passed": true,
+      "checks": [
+        {
+          "check": "required_columns",
+          "passed": true,
+          "missing": []
+        },
+        {
+          "check": "primary_key_unique",
+          "passed": true,
+          "duplicate_extra": 0
+        }
+      ]
+    },
+    {
+      "contract": "fact_inventory.yaml",
+      "table": "fact_inventory",
+      "passed": true,
+      "checks": [
+        {
+          "check": "required_columns",
+          "passed": true,
+          "missing": []
+        },
+        {
+          "check": "primary_key_unique",
+          "passed": true,
+          "duplicate_extra": 0
+        },
+        {
+          "check": "flag_stockout_flag_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "fk_product_key",
+          "passed": true,
+          "orphans": 0
+        },
+        {
+          "check": "fk_warehouse_key",
+          "passed": true,
+          "orphans": 0
+        }
+      ]
+    },
+    {
+      "contract": "fact_orders.yaml",
+      "table": "fact_orders",
+      "passed": true,
+      "checks": [
+        {
+          "check": "required_columns",
+          "passed": true,
+          "missing": []
+        },
+        {
+          "check": "primary_key_unique",
+          "passed": true,
+          "duplicate_extra": 0
+        },
+        {
+          "check": "flag_is_canceled_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_fraud_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_revenue_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_late_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_on_time_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_otif_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_perfect_order_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "fk_product_key",
+          "passed": true,
+          "orphans": 0
+        },
+        {
+          "check": "fk_customer_key",
+          "passed": true,
+          "orphans": 0
+        },
+        {
+          "check": "fk_warehouse_key",
+          "passed": true,
+          "orphans": 0
+        }
+      ]
+    },
+    {
+      "contract": "fact_shipments.yaml",
+      "table": "fact_shipments",
+      "passed": true,
+      "checks": [
+        {
+          "check": "required_columns",
+          "passed": true,
+          "missing": []
+        },
+        {
+          "check": "primary_key_unique",
+          "passed": true,
+          "duplicate_extra": 0
+        },
+        {
+          "check": "flag_is_late_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_on_time_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_advance_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_canceled_ship_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_in_full_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_otif_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "flag_is_perfect_order_01",
+          "passed": true,
+          "min": 0,
+          "max": 1
+        },
+        {
+          "check": "fk_warehouse_key",
+          "passed": true,
+          "orphans": 0
+        },
+        {
+          "check": "fk_carrier_key",
+          "passed": true,
+          "orphans": 0
+        }
+      ]
+    }
+  ]
+}

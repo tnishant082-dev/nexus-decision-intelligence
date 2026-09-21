@@ -1,11 +1,16 @@
-# Design Tradeoffs
+# Tradeoffs
 
-| Choice | Why | Tradeoff |
+| Choice | Gain | Cost |
 |---|---|---|
-| DuckDB file warehouse | Zero-ops local analytics, fast parquet scan | Not a multi-writer production warehouse |
-| Mock LLM default | Works offline, honest demos | No free-form reasoning without a provider key |
-| Lexical RAG | No embedding model download | Weaker semantic recall than dense vectors |
-| HistGradientBoosting forecast | Strong baseline, no native xgboost dep | Not SOTA deep forecasting |
-| Churn label = 180d recency | Uses real customer extract | Label leakage if recency kept as feature — registry uses leakage-aware model |
-| Keep Power BI + Streamlit | Extend existing BI asset | Two UI surfaces to maintain |
-| IsolationForest anomalies | Simple unsupervised OTIF/late flags | Contamination hyperparameter is heuristic |
+| DuckDB file | Fast local analytics | Not multi-writer, not an enterprise warehouse |
+| Mock LLM default | Offline CI and honest demos | No free-form reasoning until a provider is configured |
+| Hashing embeddings | No model download | Weaker semantic recall than MiniLM |
+| sklearn serving | Thin Docker image | Not the same artifact as an XGBoost experiment |
+| Keyword SQL guard | Blocks casual DML | Not a parser sandbox |
+| In-memory rate limit | Simple | Not distributed |
+| Snapshot inventory KPIs | Uses real tables | Turns/coverage are proxies, not finance-grade |
+| Sequential agent graph | Debuggable trail | Not a durable workflow engine |
+| Grafana JSON in git | Shows metric names | Dashboard is unused until you run Grafana |
+| Keep Power BI + Streamlit | Two audiences | Two UIs to maintain |
+
+See also `docs/design-decisions.md` and `docs/data-scope.md`.

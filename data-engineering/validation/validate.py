@@ -1,8 +1,10 @@
-"""Row-count, null-key, and referential checks against cleaned / warehouse."""
+"""Row-count, null-key, referential, and contract checks."""
 from __future__ import annotations
+
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+
 import duckdb
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,17 +14,23 @@ OUT = ROOT / "validation" / "validation_report.json"
 CHECKS = [
     ("orders_positive", "SELECT COUNT(*) FROM fact_orders", lambda n: n > 0),
     ("shipments_positive", "SELECT COUNT(*) FROM fact_shipments", lambda n: n > 0),
+    ("inventory_positive", "SELECT COUNT(*) FROM fact_inventory", lambda n: n > 0),
     ("otif_bounded", "SELECT MIN(is_otif), MAX(is_otif) FROM fact_orders",
-     lambda r: r[0] in (0,1) and r[1] in (0,1)),
+     lambda r: r[0] in (0, 1) and r[1] in (0, 1)),
     ("orders_product_fk",
      "SELECT COUNT(*) FROM fact_orders o LEFT JOIN dim_product p ON o.product_key=p.product_key WHERE p.product_key IS NULL",
      lambda n: n == 0),
     ("orders_customer_fk",
      "SELECT COUNT(*) FROM fact_orders o LEFT JOIN dim_customer c ON o.customer_key=c.customer_key WHERE c.customer_key IS NULL",
      lambda n: n == 0),
-    ("revenue_nonneg", "SELECT COUNT(*) FROM fact_orders WHERE is_revenue=1 AND net_sales < 0",
-     lambda n: True),  # allow returns/discounts; informational
+    ("in_full_bounded", "SELECT MIN(is_in_full), MAX(is_in_full) FROM fact_shipments",
+     lambda r: r[0] in (0, 1) and r[1] in (0, 1)),
+    ("exec_kpis_present", "SELECT revenue_m FROM v_exec_kpis", lambda n: n is not None and n > 0),
+    ("negative_revenue_lines_informational",
+     "SELECT COUNT(*) FROM fact_orders WHERE is_revenue=1 AND net_sales < 0",
+     lambda n: True),
 ]
+
 
 def validate(db_path: Path = DB) -> dict:
     con = duckdb.connect(str(db_path), read_only=True)
@@ -30,19 +38,25 @@ def validate(db_path: Path = DB) -> dict:
     passed = 0
     for name, sql, pred in CHECKS:
         val = con.execute(sql).fetchone()
-        ok = bool(pred(val[0] if len(val) == 1 else val))
+        payload = val[0] if len(val) == 1 else val
+        ok = bool(pred(payload))
         passed += int(ok)
         results.append({"check": name, "value": list(val) if isinstance(val, tuple) else val, "passed": ok})
     con.close()
+    from validation.contracts import validate_contracts
+
+    contracts = validate_contracts(db_path)
     report = {
         "validated_at": datetime.now(timezone.utc).isoformat(),
         "passed": passed,
         "total": len(CHECKS),
         "results": results,
+        "contracts": {"passed": contracts["passed"], "total": contracts["total"]},
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(report, indent=2))
     return report
+
 
 if __name__ == "__main__":
     print(json.dumps(validate(), indent=2))

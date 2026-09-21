@@ -1,0 +1,26 @@
+[
+  {
+    "id": "otif-escalation",
+    "question": "What is the OTIF escalation policy for late deliveries?",
+    "relevant_doc_ids": ["01_otif_policy.md"],
+    "must_include_terms": ["OTIF", "escalat"]
+  },
+  {
+    "id": "inventory-coverage",
+    "question": "How many weeks of supply should A-class SKUs hold?",
+    "relevant_doc_ids": ["02_inventory_policy.md"],
+    "must_include_terms": ["week", "A"]
+  },
+  {
+    "id": "vendor-sla",
+    "question": "What vendor SLA applies to on-time receipt?",
+    "relevant_doc_ids": ["03_vendor_sla.md"],
+    "must_include_terms": ["SLA", "vendor"]
+  },
+  {
+    "id": "expedite",
+    "question": "When should freight be expedited?",
+    "relevant_doc_ids": ["04_freight_expedite.md"],
+    "must_include_terms": ["expedite"]
+  }
+]

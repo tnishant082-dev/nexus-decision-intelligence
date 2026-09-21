@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T17:17:57.481706+00:00",
+  "generated_at": "2026-09-21T18:07:58.873329+00:00",
   "owner": "Nishant Tyagi",
   "platform": "NEXUS Decision Intelligence",
   "tables": [
@@ -414,7 +414,7 @@
       "grain": "shipment",
       "domain": "tms",
       "pii": false,
-      "desc": "Shipments with freight, delay, CO2, OTIF"
+      "desc": "Shipments with freight, delay, fill (in-full), CO2, OTIF"
     },
     {
       "name": "fact_vendor_performance",
@@ -513,6 +513,171 @@
       "domain": "other",
       "pii": false,
       "desc": "rls_user_map"
+    }
+  ],
+  "views": [
+    {
+      "name": "v_customer_kpis",
+      "rows": 1,
+      "columns": [
+        "customers",
+        "avg_ltv",
+        "retained_90d_pct",
+        "churn_proxy_180d_pct"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_customer_kpis"
+    },
+    {
+      "name": "v_customer_ltv",
+      "rows": 20652,
+      "columns": [
+        "customer_key",
+        "segment",
+        "frequency",
+        "monetary",
+        "first_order",
+        "last_order"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_customer_ltv"
+    },
+    {
+      "name": "v_demand_weekly",
+      "rows": 4544,
+      "columns": [
+        "iso_year",
+        "week_of_year",
+        "week_start_date",
+        "category_name",
+        "warehouse_key",
+        "units",
+        "revenue",
+        "orders"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_demand_weekly"
+    },
+    {
+      "name": "v_exec_kpis",
+      "rows": 1,
+      "columns": [
+        "revenue_m",
+        "profit_m",
+        "margin_pct",
+        "orders",
+        "otif_line_pct"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_exec_kpis"
+    },
+    {
+      "name": "v_fill_rate",
+      "rows": 1,
+      "columns": [
+        "fill_rate_pct",
+        "shipment_otif_pct",
+        "shipments"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_fill_rate"
+    },
+    {
+      "name": "v_finance_growth",
+      "rows": 4,
+      "columns": [
+        "year",
+        "revenue_m",
+        "profit_m",
+        "orders"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_finance_growth"
+    },
+    {
+      "name": "v_inventory_kpis",
+      "rows": 1,
+      "columns": [
+        "stockout_pct",
+        "coverage_ratio",
+        "turns_proxy",
+        "on_hand_value_m_all_snapshots",
+        "snapshot_rows"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_inventory_kpis"
+    },
+    {
+      "name": "v_inventory_latest",
+      "rows": 1,
+      "columns": [
+        "date_key",
+        "on_hand_m",
+        "on_hand_units",
+        "stockout_pct"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_inventory_latest"
+    },
+    {
+      "name": "v_logistics",
+      "rows": 1,
+      "columns": [
+        "freight_m",
+        "cost_per_ship",
+        "delay_rate_pct",
+        "co2_tonnes",
+        "shipments"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_logistics"
+    },
+    {
+      "name": "v_otif_order",
+      "rows": 1,
+      "columns": [
+        "otif_pct",
+        "perfect_order_pct"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_otif_order"
+    },
+    {
+      "name": "v_stockout_risk",
+      "rows": 118,
+      "columns": [
+        "product_key",
+        "product_name",
+        "category_name",
+        "abc_class",
+        "stockout_pct",
+        "coverage_ratio",
+        "unfilled_units"
+      ],
+      "grain": "unknown",
+      "domain": "other",
+      "pii": false,
+      "desc": "v_stockout_risk"
     }
   ]
 }

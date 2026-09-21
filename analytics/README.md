@@ -18,4 +18,6 @@ The Power BI project under `dashboard/SupplyChain-Control-Tower.pbip` remains th
 | Customer 360 | Revenue, returns, OTIF by customer |
 | Sustainability Dashboard | CO2, mode mix |
 
-Streamlit **Analytics** tab runs the same warehouse views (`v_exec_kpis`, `v_otif_order`, `v_logistics`, `v_demand_weekly`) for local investigation without Power BI Desktop.
+Streamlit **Analytics** tab runs warehouse views (`v_exec_kpis`, `v_otif_order`, `v_fill_rate`, `v_logistics`, `v_inventory_kpis`, `v_customer_kpis`, `v_demand_weekly`) for local investigation without Power BI Desktop.
+
+Metric definitions: [`metrics/dictionary.yaml`](./metrics/dictionary.yaml).

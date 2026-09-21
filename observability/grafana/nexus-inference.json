@@ -1,0 +1,28 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Inference calls",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "targets": [ { "expr": "nexus_inference_calls_total" } ]
+    },
+    {
+      "title": "Cache hit rate",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "targets": [ { "expr": "nexus_inference_cache_hit_rate" } ]
+    }
+  ],
+  "schemaVersion": 38,
+  "tags": ["nexus"],
+  "title": "NEXUS inference (import into Grafana)",
+  "uid": "nexus-inference",
+  "version": 1
+}

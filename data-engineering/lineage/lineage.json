@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T17:17:57.434843+00:00",
+  "generated_at": "2026-09-21T18:07:58.478531+00:00",
   "nodes": [
     {
       "id": "src.dataco",
@@ -20,6 +20,10 @@
       "type": "cleaned"
     },
     {
+      "id": "contracts.yaml",
+      "type": "governance"
+    },
+    {
       "id": "warehouse.duckdb",
       "type": "warehouse"
     },
@@ -37,6 +41,10 @@
     },
     {
       "id": "ml.churn",
+      "type": "ml"
+    },
+    {
+      "id": "ml.stockout",
       "type": "ml"
     },
     {
@@ -64,8 +72,18 @@
     },
     {
       "from": "cleaned.parquet",
+      "to": "contracts.yaml",
+      "transform": "schema_validate"
+    },
+    {
+      "from": "cleaned.parquet",
       "to": "warehouse.duckdb",
-      "transform": "duckdb_load"
+      "transform": "duckdb_load_incremental"
+    },
+    {
+      "from": "contracts.yaml",
+      "to": "warehouse.duckdb",
+      "transform": "gate"
     },
     {
       "from": "warehouse.duckdb",
@@ -82,6 +100,10 @@
     {
       "from": "warehouse.duckdb",
       "to": "ml.churn"
+    },
+    {
+      "from": "warehouse.duckdb",
+      "to": "ml.stockout"
     },
     {
       "from": "warehouse.duckdb",

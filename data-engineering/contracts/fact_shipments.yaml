@@ -1,0 +1,27 @@
+# fact_shipments — shipment grain (TMS)
+version: 1
+table: fact_shipments
+grain: shipment_key
+source: data/fact_shipments.parquet
+primary_key: shipment_key
+required_columns:
+  - shipment_key
+  - order_id
+  - warehouse_key
+  - carrier_key
+  - is_late
+  - is_in_full
+  - is_otif
+  - freight_cost
+  - co2_kg
+flag_columns: [is_late, is_on_time, is_advance, is_canceled_ship, is_in_full, is_otif, is_perfect_order]
+foreign_keys:
+  - {column: warehouse_key, ref_table: dim_warehouse, ref_column: warehouse_key}
+  - {column: carrier_key, ref_table: dim_carrier, ref_column: carrier_key}
+freshness:
+  date_column: ship_date_key
+  calendar_table: dim_date
+  calendar_key: date_key
+  calendar_date: date
+  max_lag_days: 4000
+pii: false

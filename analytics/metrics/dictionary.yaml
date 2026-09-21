@@ -1,0 +1,106 @@
+# NEXUS metric dictionary — definitions used by warehouse views and agents.
+# Numbers are computed at query time; this file is the semantic contract.
+
+version: 1
+as_of_note: "All metrics are over the included public extract (approx 2015-01-01 to 2018-01-31), not a live ERP."
+
+metrics:
+  revenue:
+    domain: finance
+    view: v_exec_kpis
+    column: revenue_m
+    grain: extract total
+    sql: "SUM(net_sales) WHERE is_revenue = 1, scaled / 1e6"
+    unit: USD millions
+    assumptions:
+      - is_revenue flag comes from the modeled extract
+    limitations:
+      - Not GAAP revenue; public Kaggle/UCI derived fact table
+
+  profit:
+    domain: finance
+    view: v_exec_kpis
+    column: profit_m
+    sql: "SUM(line_profit) WHERE is_revenue = 1, scaled / 1e6"
+    unit: USD millions
+
+  margin:
+    domain: finance
+    view: v_exec_kpis
+    column: margin_pct
+    sql: "100 * SUM(line_profit) / SUM(net_sales) on revenue lines"
+    unit: percent
+
+  growth:
+    domain: finance
+    view: v_finance_growth
+    column: revenue_m
+    grain: calendar_year
+    sql: "Annual revenue from dim_date.calendar_year"
+    limitations:
+      - Partial years in DataCo extract; YoY is not a clean like-for-like
+
+  otif:
+    domain: operations
+    view: v_otif_order
+    column: otif_pct
+    grain: order
+    sql: "AVG of MIN(is_otif) per order_id * 100"
+    assumptions:
+      - Line flags rolled to order with MIN (strictest line)
+
+  fill_rate:
+    domain: operations
+    view: v_fill_rate
+    column: fill_rate_pct
+    grain: shipment
+    sql: "AVG(is_in_full) * 100 on fact_shipments"
+
+  perfect_order:
+    domain: operations
+    view: v_otif_order
+    column: perfect_order_pct
+    grain: order
+    sql: "AVG of MIN(is_perfect_order) per order_id * 100"
+
+  inventory_turns:
+    domain: inventory
+    view: v_inventory_kpis
+    column: turns_proxy
+    sql: "SUM(issues_units) / AVG(on_hand_units) across snapshots"
+    limitations:
+      - Not annualized COGS/average inventory; snapshot-weighted proxy only
+
+  coverage:
+    domain: inventory
+    view: v_inventory_kpis
+    column: coverage_ratio
+    sql: "AVG(on_hand_units / demand_units) where demand_units > 0"
+
+  stockout_risk:
+    domain: inventory
+    view: v_stockout_risk
+    column: stockout_pct
+    grain: product
+    sql: "AVG(stockout_flag) by product"
+
+  retention:
+    domain: customer
+    view: v_customer_kpis
+    column: retained_90d_pct
+    sql: "Share of customers with recency_days <= 90 vs extract max date"
+
+  churn:
+    domain: customer
+    view: v_customer_kpis
+    column: churn_proxy_180d_pct
+    sql: "Share of customers with recency_days > 180"
+    limitations:
+      - Proxy inactivity label, not a contracted churn event
+
+  lifetime_value:
+    domain: customer
+    view: v_customer_kpis
+    column: avg_ltv
+    sql: "AVG of SUM(net_sales) per customer on revenue lines"
+    unit: USD
