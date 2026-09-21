@@ -45,6 +45,32 @@ def welch_test(a, b) -> dict[str, Any]:
     }
 
 
+def wilson_interval(successes: int, n: int, alpha: float = 0.05) -> dict[str, float]:
+    """Wilson score interval for a binomial proportion (preferred over Wald)."""
+    if n <= 0:
+        return {"n": 0, "successes": 0, "p": None, "ci_low": None, "ci_high": None, "center": None}
+    p = successes / n
+    z = float(stats.norm.ppf(1 - alpha / 2))
+    z2 = z * z
+    denom = 1 + z2 / n
+    center = (p + z2 / (2 * n)) / denom
+    margin = z * np.sqrt((p * (1 - p) + z2 / (4 * n)) / n) / denom
+    return {
+        "n": int(n),
+        "successes": int(successes),
+        "p": p,
+        "center": float(center),
+        "ci_low": float(max(0.0, center - margin)),
+        "ci_high": float(min(1.0, center + margin)),
+        "alpha": alpha,
+        "method": "Wilson score interval",
+        "limitations": [
+            "Treats orders as iid Bernoulli trials; warehouse clustering is ignored",
+            "Interval is on the order-grain OTIF indicator, not on late-line dollars",
+        ],
+    }
+
+
 def proportion_ci(successes: int, n: int, alpha: float = 0.05) -> dict[str, float]:
     if n <= 0:
         return {"n": 0, "p": None}
