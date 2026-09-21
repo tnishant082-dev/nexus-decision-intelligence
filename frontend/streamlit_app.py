@@ -90,7 +90,7 @@ def sql_df(sql: str) -> pd.DataFrame:
 
 
 tabs = st.tabs([
-    "Command Center", "Analytics", "Predictions", "AI Analyst",
+    "Command Center", "Decision Board", "Analytics", "Predictions", "AI Analyst",
     "Knowledge", "Agent Workspace", "Inference Monitor", "ML Experiments",
 ])
 
@@ -114,6 +114,18 @@ with tabs[0]:
         c2[3].metric("Turns proxy", f"{inv.get('turns_proxy', '—')}")
         c2[4].metric("Retain 90d", f"{cust.get('retained_90d_pct', '—')}%")
         c2[5].metric("Churn proxy", f"{cust.get('churn_proxy_180d_pct', '—')}%")
+        vas = api("GET", "/api/v1/value-at-stake")
+        if vas and vas.get("summary"):
+            s = vas["summary"]
+            st.markdown("#### Value at stake (service-risk pool, not lost sales)")
+            v1, v2, v3, v4 = st.columns(4)
+            v1.metric("Late-line revenue", f"${s.get('late_revenue', 0)/1e6:.1f}M", f"{s.get('late_revenue_share_pct')}% of sales")
+            v2.metric("OTIF gap vs SAMPLE 92%", f"{s.get('otif_gap_pp')} pp")
+            v3.metric("Delay cost", f"${s.get('delay_cost', 0)/1e3:.0f}k")
+            v4.metric("Expedite freight", f"${s.get('expedite_freight', 0)/1e3:.0f}k")
+            yoy = s.get("yoy_2016_2017") or {}
+            if yoy:
+                st.caption(f"2016→2017 revenue ${yoy.get('revenue_from_m')}M → ${yoy.get('revenue_to_m')}M ({yoy.get('delta_m')}M). Late $ is exposure, not recovered EBITDA.")
         growth = data.get("growth") or []
         if growth:
             gdf = pd.DataFrame(growth)
@@ -124,6 +136,51 @@ with tabs[0]:
         st.warning("Start API (`uvicorn backend.main:app`) or run the data-engineering pipeline first.")
 
 with tabs[1]:
+    st.subheader("Decision Board")
+    st.caption("Rank exceptions by dollars, run linear what-ifs, write a Monday brief, accept/reject actions.")
+    from decisions.economics import carrier_exceptions, warehouse_exceptions
+    from decisions.scenarios import close_late_gap, cut_expedite, list_warehouses
+    from decisions.brief import build_brief
+    from decisions import ledger
+
+    wh = pd.DataFrame(warehouse_exceptions())
+    if not wh.empty:
+        st.plotly_chart(px.bar(wh, x="warehouse_name", y="late_revenue", title="Late-line revenue by warehouse"), use_container_width=True)
+        st.dataframe(wh, use_container_width=True)
+        st.download_button("Export exceptions CSV", wh.to_csv(index=False), "exceptions.csv", "text/csv")
+    names = list_warehouses()
+    colx, coly = st.columns(2)
+    with colx:
+        wh_name = st.selectbox("Warehouse (or All)", ["NETWORK"] + names)
+        close = st.slider("Close this share of late-line $", 0.05, 1.0, 0.25)
+        if st.button("Run late-gap scenario"):
+            scope = None if wh_name == "NETWORK" else wh_name
+            st.json(close_late_gap(warehouse_name=scope, close_pct=close))
+    with coly:
+        cut = st.slider("Cut expedite freight share", 0.05, 1.0, 0.30)
+        if st.button("Run expedite scenario"):
+            st.json(cut_expedite(cut_pct=cut))
+    brief = build_brief()
+    st.markdown("#### Monday ops brief")
+    st.markdown(brief)
+    st.download_button("Download brief.md", brief, "nexus-decision-brief.md", "text/markdown")
+    st.markdown("#### Action ledger")
+    title = st.text_input("Action title", "Attack highest-$ late warehouse")
+    owner = st.text_input("Owner", "Warehouse ops")
+    if st.button("Propose action"):
+        top = warehouse_exceptions(limit=1)
+        dollars = float(top[0]["late_revenue"]) if top else None
+        ledger.add(title, "Sized from late-line revenue pool", dollars, owner)
+        st.success("Added")
+    items = ledger.list_items()
+    if items:
+        st.dataframe(pd.DataFrame(items), use_container_width=True)
+        iid = st.selectbox("Update id", [i["id"] for i in items])
+        stt = st.selectbox("Status", ["proposed", "accepted", "rejected", "done"])
+        if st.button("Update status"):
+            ledger.set_status(iid, stt)
+
+with tabs[2]:
     st.subheader("Analytics")
     drill = st.selectbox("Drill-down", ["OTIF by warehouse", "Late by carrier", "Stockout by product", "Custom SQL"])
     queries = {
@@ -151,7 +208,7 @@ with tabs[1]:
             if len(df.columns) >= 2 and not num.empty:
                 st.plotly_chart(px.bar(df.head(15), x=df.columns[0], y=num.columns[0]), use_container_width=True)
 
-with tabs[2]:
+with tabs[3]:
     st.subheader("Predictions")
     col_a, col_b, col_c = st.columns(3)
     with col_a:
@@ -181,7 +238,7 @@ with tabs[2]:
                 "avg_safety": 8, "coverage": 0.25, "abc_code": 0
             }]}) or {"hint": "train models"})
 
-with tabs[3]:
+with tabs[4]:
     st.subheader("AI Analyst")
     q = st.text_input("Question", "Why is OTIF low and which warehouses drive late deliveries?")
     human = st.checkbox("Human review mode (hold recommendations)")
@@ -199,6 +256,9 @@ with tabs[3]:
             for rec in r.get("recommendations", []):
                 st.write(f"- {rec}")
             st.metric("Confidence", r.get("confidence"))
+            if r.get("value_at_stake"):
+                st.markdown("#### Value at stake")
+                st.json(r["value_at_stake"])
             st.caption("Citations: " + ", ".join(r.get("citations") or []) )
             with st.expander("Evidence trail"):
                 st.json(r.get("evidence"))
@@ -207,7 +267,7 @@ with tabs[3]:
             st.download_button("Export investigate JSON", json.dumps(r, indent=2), "investigate.json")
             st.caption(r.get("disclaimer", ""))
 
-with tabs[4]:
+with tabs[5]:
     st.subheader("Knowledge Center")
     qk = st.text_input("Search policies", "OTIF escalation expedite")
     if st.button("Retrieve"):
@@ -218,7 +278,7 @@ with tabs[4]:
             st.write(h["snippet"][:400] + "…")
     st.caption("Policies under docs/knowledge/ are SAMPLE.")
 
-with tabs[5]:
+with tabs[6]:
     st.subheader("Agent Workspace")
     st.markdown("Orchestrator → analytics/SQL → forecast → inventory → risk → RAG → decision")
     if st.button("Run sample investigate"):
@@ -228,7 +288,7 @@ with tabs[5]:
         st.json(payload)
         st.download_button("Export", json.dumps(payload, indent=2), "agent.json")
 
-with tabs[6]:
+with tabs[7]:
     st.subheader("Inference Monitor")
     prompt = st.text_area("Prompt", "Summarize OTIF drivers for leadership.")
     force = st.selectbox("Force route", [None, "mock", "small", "large", "openai", "groq", "ollama", "vllm", "llamacpp"])
@@ -246,7 +306,7 @@ with tabs[6]:
         st.plotly_chart(px.bar(by, x="route", y="avg_latency_ms", title="Avg latency by route (local log)"), use_container_width=True)
     st.caption("Mock default. Live providers only if their env vars are set. No GPU claims.")
 
-with tabs[7]:
+with tabs[8]:
     st.subheader("ML Experiments")
     exp = ROOT / "ml" / "experiments"
     reg = ROOT / "ml" / "registry"

@@ -63,4 +63,10 @@ KPI_SNIPPETS = {
         WHERE o.is_revenue = 1
         GROUP BY 1 ORDER BY revenue_m DESC LIMIT 15
     """,
+    "late_revenue": """
+        SELECT ROUND(SUM(CASE WHEN is_revenue=1 AND is_late=1 THEN net_sales ELSE 0 END)/1e6,2) AS late_revenue_m,
+               ROUND(100.0 * SUM(CASE WHEN is_revenue=1 AND is_late=1 THEN net_sales ELSE 0 END)
+                     / NULLIF(SUM(CASE WHEN is_revenue=1 THEN net_sales ELSE 0 END),0), 2) AS late_share_pct
+        FROM fact_orders
+    """,
 }

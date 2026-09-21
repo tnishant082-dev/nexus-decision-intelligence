@@ -33,6 +33,8 @@ Example questions:
 - Which customers match a 180-day inactivity (churn **proxy**)?
 - What action should we take next?
 
+The flagship loop is **dollarized exceptions**, not prettier tiles: rank warehouses by late-line revenue $, run linear what-ifs, emit a Monday brief, accept/reject actions. Late $ is **service-risk exposure**, not lost sales. See [`docs/business-impact.md`](./docs/business-impact.md).
+
 ---
 
 ## Architecture
@@ -169,7 +171,7 @@ curl -s -X POST http://127.0.0.1:8000/api/v1/investigate \
 
 ## Console tabs
 
-Command Center · Analytics · Predictions · AI Analyst · Knowledge · Agent Workspace · Inference Monitor · ML Experiments
+Command Center · **Decision Board** · Analytics · Predictions · AI Analyst · Knowledge · Agent Workspace · Inference Monitor · ML Experiments
 
 | Command Center | AI Analyst | Inference |
 |:---:|:---:|:---:|

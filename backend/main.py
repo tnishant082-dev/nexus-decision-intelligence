@@ -26,7 +26,7 @@ from ml.serving import predict as ml_predict
 app = FastAPI(
     title="NEXUS Decision Intelligence Platform",
     description="Local-first retail + supply chain decision intelligence. Mock LLM default.",
-    version="1.1.0",
+    version="1.2.0",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +55,7 @@ async def rate_limit(request: Request, call_next):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.1.0"}
+    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.2.0"}
 
 
 @app.get("/metrics")
@@ -197,6 +197,87 @@ def api_kpis(_=Depends(require_api_key)):
         "growth": run_sql("SELECT * FROM v_finance_growth").get("rows") if run_sql("SELECT * FROM v_finance_growth").get("ok") else [],
         "source": "duckdb warehouse over DataCo + Online Retail II extracts",
     }
+
+
+class ScenarioRequest(BaseModel):
+    warehouse_name: str | None = None
+    close_pct: float = 0.25
+    expedite_cut_pct: float = 0.3
+
+
+class LedgerAdd(BaseModel):
+    title: str
+    rationale: str = ""
+    dollars_at_stake: float | None = None
+    owner: str = "ops"
+
+
+class LedgerStatus(BaseModel):
+    id: str
+    status: str
+
+
+@app.get("/api/v1/value-at-stake")
+def api_vas(_=Depends(require_api_key)):
+    from decisions.economics import carrier_exceptions, value_at_stake, warehouse_exceptions
+
+    return {
+        "summary": value_at_stake(),
+        "warehouse_exceptions": warehouse_exceptions(),
+        "carrier_exceptions": carrier_exceptions(),
+    }
+
+
+@app.post("/api/v1/scenarios/late-gap")
+def api_scenario_late(body: ScenarioRequest, _=Depends(require_api_key)):
+    from decisions.scenarios import close_late_gap
+
+    return close_late_gap(warehouse_name=body.warehouse_name, close_pct=body.close_pct)
+
+
+@app.post("/api/v1/scenarios/expedite")
+def api_scenario_exp(body: ScenarioRequest, _=Depends(require_api_key)):
+    from decisions.scenarios import cut_expedite
+
+    return cut_expedite(cut_pct=body.expedite_cut_pct)
+
+
+@app.get("/api/v1/brief.md")
+def api_brief(_=Depends(require_api_key)):
+    from decisions.brief import build_brief
+
+    return PlainTextResponse(build_brief(), media_type="text/markdown")
+
+
+@app.get("/api/v1/ledger")
+def api_ledger_list(role=Depends(optional_role), _=Depends(require_api_key)):
+    from decisions.ledger import list_items
+
+    return {"items": list_items(), "role": role}
+
+
+@app.post("/api/v1/ledger")
+def api_ledger_add(body: LedgerAdd, key=Depends(require_api_key), role=Depends(optional_role)):
+    from decisions.ledger import add
+
+    if role == "viewer":
+        return {"ok": False, "error": "analyst or admin role required"}
+    item = add(body.title, body.rationale, body.dollars_at_stake, body.owner, source="api")
+    if AUDIT_ENABLED:
+        audit_log("ledger_add", key[:6], {"id": item["id"]})
+    return item
+
+
+@app.post("/api/v1/ledger/status")
+def api_ledger_status(body: LedgerStatus, key=Depends(require_api_key), role=Depends(optional_role)):
+    from decisions.ledger import set_status
+
+    if role == "viewer":
+        return {"ok": False, "error": "analyst or admin role required"}
+    item = set_status(body.id, body.status)
+    if AUDIT_ENABLED:
+        audit_log("ledger_status", key[:6], {"id": body.id, "status": body.status})
+    return item or {"ok": False, "error": "not found"}
 
 
 if __name__ == "__main__":
