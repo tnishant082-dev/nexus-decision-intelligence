@@ -16,7 +16,11 @@
 
 > Formerly presented as *Supply Chain Control Tower*. The Power BI `.pbip` analytics layer is retained and mapped into the NEXUS Executive Command Center.
 
-**Demo video (Power BI walkthrough):** [`artifacts/supply-chain-control-tower-demo.mp4`](./artifacts/supply-chain-control-tower-demo.mp4)
+**Demo video (NEXUS Streamlit console ~65s, silent):** [`artifacts/nexus-decision-intelligence-demo.mp4`](./artifacts/nexus-decision-intelligence-demo.mp4)
+
+Legacy Power BI Control Tower walkthrough (still useful for the analytics layer): [`artifacts/supply-chain-control-tower-demo.mp4`](./artifacts/supply-chain-control-tower-demo.mp4)
+
+Live UI captures: [`screenshots/nexus/`](./screenshots/nexus/) · sample investigate JSON: [`artifacts/sample-investigate.json`](./artifacts/sample-investigate.json)
 
 ---
 
