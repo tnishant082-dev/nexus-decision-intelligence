@@ -9,6 +9,9 @@ from pathlib import Path
 
 from inference.router import generate, route
 from inference import cache as resp_cache
+from inference.queue import enqueue
+from inference.retry import with_retry
+from security.guardrails.scan import scan
 
 LOG_DB = Path(__file__).resolve().parents[1] / "monitoring" / "inference_logs.sqlite"
 
@@ -51,19 +54,45 @@ def _cost(tokens_in: int, tokens_out: int) -> float:
 
 
 def complete(prompt: str, force: str | None = None, use_cache: bool = True) -> dict:
-    _ensure_log()
-    decision = route(prompt, force=force)
-    if use_cache:
-        hit = resp_cache.get(decision.label, prompt)
-        if hit:
-            _log(hit, prompt, cache_hit=1)
-            return hit
-    result = generate(prompt, force=force)
-    result["cost_usd"] = _cost(int(result.get("tokens_in") or 0), int(result.get("tokens_out") or 0))
-    if use_cache:
-        resp_cache.put(decision.label, prompt, result)
-    _log(result, prompt, cache_hit=0)
-    return result
+    def _run():
+        guard = scan(prompt, "prompt")
+        if not guard["allowed"]:
+            return {
+                "text": "Blocked by guardrails.",
+                "route": "blocked",
+                "blocked": True,
+                "findings": guard["findings"],
+                "latency_ms": 0,
+                "ttft_ms": 0,
+                "tokens_in": 0,
+                "tokens_out": 0,
+                "cost_usd": 0,
+            }
+        _ensure_log()
+        decision = route(prompt, force=force)
+        if use_cache:
+            hit = resp_cache.get(decision.label, prompt)
+            if hit:
+                _log(hit, prompt, cache_hit=1)
+                return hit
+
+        def _gen():
+            return generate(prompt, force=force)
+
+        def _fallback(err: Exception):
+            mock = generate(prompt, force="mock")
+            mock["fallback_from"] = decision.label
+            mock["provider_error"] = str(err)
+            return mock
+
+        result = with_retry(_gen, retries=2, fallback=_fallback)
+        result["cost_usd"] = _cost(int(result.get("tokens_in") or 0), int(result.get("tokens_out") or 0))
+        if use_cache and not result.get("blocked"):
+            resp_cache.put(decision.label, prompt, result)
+        _log(result, prompt, cache_hit=0)
+        return result
+
+    return enqueue(_run)
 
 
 def complete_batch(prompts: list[str], force: str | None = None, use_cache: bool = True) -> list[dict]:

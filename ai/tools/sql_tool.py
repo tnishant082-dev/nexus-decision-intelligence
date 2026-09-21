@@ -9,6 +9,11 @@ DB = Path(__file__).resolve().parents[2] / "data-engineering" / "warehouse" / "n
 FORBIDDEN = re.compile(r"\b(INSERT|UPDATE|DELETE|DROP|ALTER|ATTACH|COPY|CREATE|REPLACE|GRANT|PRAGMA)\b", re.I)
 
 def run_sql(sql: str, limit: int = 50) -> dict:
+    from security.guardrails.scan import scan
+
+    g = scan(sql, "sql")
+    if not g["allowed"]:
+        return {"ok": False, "error": "Blocked by SQL write guardrail.", "findings": g["findings"]}
     sql = sql.strip().rstrip(";")
     if FORBIDDEN.search(sql):
         return {"ok": False, "error": "Only read-only SELECT queries are allowed."}

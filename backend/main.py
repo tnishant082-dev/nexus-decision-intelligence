@@ -26,7 +26,7 @@ from ml.serving import predict as ml_predict
 app = FastAPI(
     title="NEXUS Decision Intelligence Platform",
     description="Local-first retail + supply chain decision intelligence. Mock LLM default.",
-    version="1.3.0",
+    version="1.4.0",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +55,7 @@ async def rate_limit(request: Request, call_next):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.3.0"}
+    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.4.0"}
 
 
 @app.get("/metrics")
@@ -278,6 +278,83 @@ def api_ledger_status(body: LedgerStatus, key=Depends(require_api_key), role=Dep
     if AUDIT_ENABLED:
         audit_log("ledger_status", key[:6], {"id": body.id, "status": body.status})
     return item or {"ok": False, "error": "not found"}
+
+
+class GraphRequest(BaseModel):
+    question: str = Field(..., min_length=3, max_length=2000)
+
+
+class SimRequest(BaseModel):
+    kind: str
+    pct: float | None = None
+    days: float | None = None
+    on: bool | None = None
+
+
+@app.post("/api/v1/graph/retrieve")
+def api_graph(body: GraphRequest, _=Depends(require_api_key)):
+    from ai.graphrag.retrieve import graph_retrieve
+    from ai.graphrag.neo4j_adapter import status as neo4j_status
+    from security.guardrails.scan import scan
+
+    g = scan(body.question, "rag")
+    if not g["allowed"]:
+        return {"blocked": True, "findings": g["findings"]}
+    out = graph_retrieve(body.question)
+    out["neo4j"] = neo4j_status()
+    return out
+
+
+@app.post("/api/v1/simulate")
+def api_sim(body: SimRequest, _=Depends(require_api_key)):
+    from simulation.engine import simulate
+
+    shock = {"kind": body.kind}
+    if body.pct is not None:
+        shock["pct"] = body.pct
+    if body.days is not None:
+        shock["days"] = body.days
+    if body.on is not None:
+        shock["on"] = body.on
+    return simulate(shock)
+
+
+@app.get("/api/v1/eval")
+def api_eval(_=Depends(require_api_key)):
+    from evaluation.runner import run_evaluation
+
+    return run_evaluation()
+
+
+@app.get("/api/v1/copilot/brief.md")
+def api_copilot(_=Depends(require_api_key)):
+    from copilot.brief import monday_brief_markdown
+
+    return PlainTextResponse(monday_brief_markdown(), media_type="text/markdown")
+
+
+@app.get("/api/v1/quality")
+def api_quality(_=Depends(require_api_key)):
+    from quality.command import score
+
+    return score()
+
+
+@app.get("/api/v1/observe")
+def api_observe(_=Depends(require_api_key)):
+    from observability.collect import snapshot
+
+    return snapshot()
+
+
+@app.get("/api/v1/stream/stats")
+def api_stream(_=Depends(require_api_key)):
+    from streaming.replay import stream_stats
+    from streaming.kafka_adapter import status as kafka_status
+
+    s = stream_stats()
+    s["adapter"] = kafka_status()
+    return s
 
 
 if __name__ == "__main__":

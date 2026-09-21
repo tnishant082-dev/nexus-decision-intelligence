@@ -92,6 +92,7 @@ def sql_df(sql: str) -> pd.DataFrame:
 tabs = st.tabs([
     "Command Center", "Decision Board", "Analytics", "Predictions", "AI Analyst",
     "Knowledge", "Agent Workspace", "Inference Monitor", "ML Experiments",
+    "GraphRAG", "Twin", "Copilot", "Quality", "Eval",
 ])
 
 with tabs[0]:
@@ -330,3 +331,54 @@ with tabs[8]:
         st.markdown("#### Registry")
         for f in sorted(reg.glob("*.json")):
             st.json(json.loads(f.read_text()))
+
+with tabs[9]:
+    st.subheader("GraphRAG")
+    st.caption("In-process snapshot. Neo4j is idle unless NEO4J_URI is set.")
+    from ai.graphrag.retrieve import graph_retrieve
+    from ai.graphrag.neo4j_adapter import status as neo4j_status
+    from ai.graphrag.graph import load_graph
+
+    g = load_graph()
+    st.json({"counts": g.get("counts"), "neo4j": neo4j_status()})
+    gq = st.text_input("Graph question", "Which suppliers are indirectly responsible for OTIF failures?")
+    if st.button("Retrieve graph"):
+        st.json(graph_retrieve(gq))
+
+with tabs[10]:
+    st.subheader("Linear SAMPLE twin")
+    st.caption("Not a digital twin of OMS/WMS physics.")
+    from simulation.engine import simulate, describe_shock
+
+    kind = st.selectbox("Shock", ["inventory", "supplier_delay", "demand", "price", "promotion"])
+    pct = st.slider("pct", -30, 40, 20)
+    days = st.slider("days", 1, 14, 5)
+    if st.button("Run shock"):
+        shock = {"kind": kind}
+        if kind in {"inventory", "demand", "price"}:
+            shock["pct"] = pct
+        if kind == "supplier_delay":
+            shock["days"] = days
+        r = simulate(shock)
+        st.write(describe_shock(shock))
+        st.json(r)
+
+with tabs[11]:
+    st.subheader("Monday brief")
+    from copilot.brief import monday_brief_markdown
+
+    st.markdown(monday_brief_markdown())
+
+with tabs[12]:
+    st.subheader("Data quality")
+    from quality.command import score as qscore
+
+    st.json(qscore())
+
+with tabs[13]:
+    st.subheader("Agent evaluation")
+    from evaluation.runner import run_evaluation
+
+    if st.button("Run evaluation"):
+        st.json(run_evaluation())
+

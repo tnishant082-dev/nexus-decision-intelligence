@@ -5,8 +5,6 @@ import os
 import time
 from typing import Any
 
-import httpx
-
 
 def complete_http(
     prompt: str,
@@ -17,6 +15,8 @@ def complete_http(
     route_label: str,
     timeout: float = 30.0,
 ) -> dict[str, Any]:
+    import httpx
+
     url = base_url.rstrip("/") + "/chat/completions"
     headers = {"Content-Type": "application/json"}
     if api_key:
