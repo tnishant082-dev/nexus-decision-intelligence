@@ -35,21 +35,25 @@ def add(title: str, rationale: str, dollars: float | None, owner: str, source: s
         "source": source,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
+        "history": [{"status": "proposed", "at": datetime.now(timezone.utc).isoformat(), "note": None}],
     rows.append(item)
     _save(rows)
     return item
 
 
-def set_status(item_id: str, status: str) -> dict | None:
+def set_status(item_id: str, status: str, note: str | None = None) -> dict | None:
     if status not in {"proposed", "accepted", "rejected", "done"}:
         raise ValueError("status must be proposed|accepted|rejected|done")
     rows = _load()
     found = None
+    now = datetime.now(timezone.utc).isoformat()
     for row in rows:
         if row["id"] == item_id:
             row["status"] = status
-            row["updated_at"] = datetime.now(timezone.utc).isoformat()
+            row["updated_at"] = now
+            hist = list(row.get("history") or [])
+            hist.append({"status": status, "at": now, "note": note})
+            row["history"] = hist
             found = row
     _save(rows)
     return found

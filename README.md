@@ -173,6 +173,8 @@ curl -s -X POST http://127.0.0.1:8000/api/v1/investigate \
 
 Command Center · **Decision Board** · Analytics · Predictions · AI Analyst · Knowledge · Agent Workspace · Inference Monitor · ML Experiments
 
+Wilson 95% CIs on order-grain OTIF (network + warehouse) ship in **1.3**. The action ledger keeps accept/reject **history**, not just a request flag. Late $ is still exposure, not lost sales.
+
 | Command Center | AI Analyst | Inference |
 |:---:|:---:|:---:|
 | ![cc](./screenshots/nexus/01-command-center.png) | ![ai](./screenshots/nexus/02-ai-analyst.png) | ![inf](./screenshots/nexus/03-inference-monitor.png) |

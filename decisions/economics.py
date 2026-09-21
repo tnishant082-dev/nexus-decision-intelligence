@@ -10,6 +10,8 @@ from pathlib import Path
 
 import duckdb
 
+from decisions.wilson import wilson_interval
+
 DB = Path(__file__).resolve().parents[1] / "data-engineering" / "warehouse" / "nexus.duckdb"
 SAMPLE_OTIF_TARGET = 92.0  # docs/knowledge/01_otif_policy.md Enterprise SAMPLE target
 
@@ -32,11 +34,12 @@ def value_at_stake(db: Path = DB) -> dict:
     ).fetchone()
     otif = con.execute(
         """
-        SELECT 100.0 * AVG(otif) FROM (
+        SELECT 100.0 * AVG(otif), SUM(otif), COUNT(*) FROM (
           SELECT MIN(is_otif) AS otif FROM fact_orders GROUP BY order_id
         )
         """
-    ).fetchone()[0]
+    ).fetchone()
+    otif_pct, otif_successes, otif_n = otif
     freight, delay_cost, expedite = con.execute(
         """
         SELECT SUM(freight_cost), SUM(delay_cost),
@@ -66,8 +69,9 @@ def value_at_stake(db: Path = DB) -> dict:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "sample_otif_target_pct": SAMPLE_OTIF_TARGET,
-        "actual_otif_pct": round(float(otif or 0), 2),
-        "otif_gap_pp": round(SAMPLE_OTIF_TARGET - float(otif or 0), 2),
+        "actual_otif_pct": round(float(otif_pct or 0), 2),
+        "otif_gap_pp": round(SAMPLE_OTIF_TARGET - float(otif_pct or 0), 2),
+        "otif_wilson": wilson_interval(int(otif_successes or 0), int(otif_n or 0)),
         "revenue": round(float(rev or 0), 2),
         "late_revenue": round(float(late_rev or 0), 2),
         "late_revenue_share_pct": round(100.0 * float(late_rev or 0) / float(rev or 1), 2),
@@ -109,15 +113,40 @@ def warehouse_exceptions(db: Path = DB, limit: int = 12) -> list[dict]:
     ).df()
     con.close()
     out = []
+    counts = {r["warehouse_name"]: r for r in _order_grain_otif(db)}
     for r in df.to_dict(orient="records"):
+        grain = counts.get(r["warehouse_name"], {})
+        n = int(grain.get("n") or r.get("orders") or 0)
+        succ = int(grain.get("successes") or 0)
         out.append({
             **r,
+            "otif_wilson": wilson_interval(succ, n),
             "exception_type": "late_service",
             "owner": "Warehouse ops",
             "policy": "SAMPLE OTIF enterprise target 92% (docs/knowledge/01_otif_policy.md)",
             "action": "Split late vs short-ship; inspect top carriers feeding this node.",
         })
     return out
+
+
+def _order_grain_otif(db: Path = DB) -> list[dict]:
+    con = _con(db)
+    df = con.execute(
+        """
+        SELECT w.warehouse_name,
+               COUNT(*) AS n,
+               SUM(t.otif) AS successes
+        FROM (
+          SELECT warehouse_key, MIN(is_otif) AS otif
+          FROM fact_orders
+          GROUP BY warehouse_key, order_id
+        ) t
+        JOIN dim_warehouse w ON t.warehouse_key = w.warehouse_key
+        GROUP BY 1
+        """
+    ).df()
+    con.close()
+    return df.to_dict(orient="records")
 
 
 def carrier_exceptions(db: Path = DB, limit: int = 8) -> list[dict]:

@@ -117,6 +117,12 @@ with tabs[0]:
         vas = api("GET", "/api/v1/value-at-stake")
         if vas and vas.get("summary"):
             s = vas["summary"]
+            wci = s.get("otif_wilson") or {}
+            if wci.get("lo") is not None:
+                st.caption(
+                    f"OTIF Wilson 95% CI {wci.get('lo')}–{wci.get('hi')} "
+                    f"(n={wci.get('n'):,} orders). SAMPLE target {s.get('sample_otif_target_pct')}%."
+                )
             st.markdown("#### Value at stake (service-risk pool, not lost sales)")
             v1, v2, v3, v4 = st.columns(4)
             v1.metric("Late-line revenue", f"${s.get('late_revenue', 0)/1e6:.1f}M", f"{s.get('late_revenue_share_pct')}% of sales")
@@ -147,6 +153,7 @@ with tabs[1]:
     if not wh.empty:
         st.plotly_chart(px.bar(wh, x="warehouse_name", y="late_revenue", title="Late-line revenue by warehouse"), use_container_width=True)
         st.dataframe(wh, use_container_width=True)
+        st.caption("OTIF Wilson 95% intervals are on order grain (otif_wilson). Late % remains line-weighted.")
         st.download_button("Export exceptions CSV", wh.to_csv(index=False), "exceptions.csv", "text/csv")
     names = list_warehouses()
     colx, coly = st.columns(2)
