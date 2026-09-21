@@ -1,145 +1,145 @@
 {
-  "built_at": "2026-09-21T18:09:28.363494+00:00",
-  "db_path": "E:\\nishnt\\nishant-codex-handoff\\nishant tyagi\\projects\\nexus-decision-intelligence\\data-engineering\\warehouse\\nexus.duckdb",
+  "built_at": "2026-09-21T22:01:26.494828+00:00",
+  "db_path": "/workspace/nexus-sc/data-engineering/warehouse/nexus.duckdb",
   "load_mode": "incremental",
   "tables": [
     {
       "table": "dim_carrier",
       "rows": 5,
-      "sha256": "07613d3328e97da9d773779bd5dbcd949f4c29ecdf5154cfa6467dbca122e3a3",
-      "skipped": true
+      "sha256": "cb76938a873bc6f6692390e0435d2e00b5eae721304a0bb7c50945b5f0ee66dd",
+      "skipped": false
     },
     {
       "table": "dim_customer",
       "rows": 20653,
-      "sha256": "499b6803c9939e5a7b4b83557ed2e33066ca09e24b131664cb1c47dc4d51d25c",
-      "skipped": true
+      "sha256": "193bcfe3e46df299af1681c416d5058a003596bb0a74c437aba346a640045a7e",
+      "skipped": false
     },
     {
       "table": "dim_date",
       "rows": 3318,
-      "sha256": "5669460131c883e295038a8a53ef92b299a285cc6fdd456a41d2050f10cc0a94",
-      "skipped": true
+      "sha256": "fae284cc11135e9286a1eac404e9a95dfb064b3a9271efdb1d10e0d2e00b3d57",
+      "skipped": false
     },
     {
       "table": "dim_delivery_status",
       "rows": 5,
-      "sha256": "8a7ca88b1038c60a4f5457078953a43190fd2fcb3533e6f48a9f6d00c694330a",
-      "skipped": true
+      "sha256": "4ab628624e980138294396e5ecbca886380184c03ee87fdf842d0be856158f48",
+      "skipped": false
     },
     {
       "table": "dim_order_status",
       "rows": 10,
-      "sha256": "56890ed6bb71b2cfcc2b4351e0beb2d7a1b4ada5fcad80b39c4c22754995380e",
-      "skipped": true
+      "sha256": "e491daf7c14dac72d41765761a12a1cc5b5f9c782dc72c355224e305a147dee7",
+      "skipped": false
     },
     {
       "table": "dim_payment_type",
       "rows": 5,
-      "sha256": "ae04b6902857afa2c05ea8abd9fe5602ec2904d86b1eccf30bd7447ed3428389",
-      "skipped": true
+      "sha256": "358506baec4c3d855c582406f05db50df7c0ad41d96e0781199508bbe0249bf0",
+      "skipped": false
     },
     {
       "table": "dim_product",
       "rows": 119,
-      "sha256": "318b184995777880f558208d06d97cce2a46a9f23554b3c0677a35edb6bfa864",
-      "skipped": true
+      "sha256": "0ea318570b64e736b0dcf227a5daef6a430d93a7fadab8d3d4c7309060fd6065",
+      "skipped": false
     },
     {
       "table": "dim_region",
       "rows": 3773,
-      "sha256": "4e743ff4e9c6bba092a4b123b05b534ff3c4bd36608d1ac5f225e4822efed926",
-      "skipped": true
+      "sha256": "1181d7837072b17977b05019296cbcfef3e4555783377c2a7270ac9ac3868eb7",
+      "skipped": false
     },
     {
       "table": "dim_source_system",
       "rows": 4,
-      "sha256": "edca38c3261ca6a12bf21773c223932ecb0bb4997eb53e6200a4758589b1c121",
-      "skipped": true
+      "sha256": "6a4f336fc7f691aa793b348d4e352d854f130730e8419fd6b0524cb003a642be",
+      "skipped": false
     },
     {
       "table": "dim_transport_mode",
       "rows": 5,
-      "sha256": "84b60bc85e045809e5066725d3b27e916f28765a4f2698aa40d1b8dd6fcd8ba2",
-      "skipped": true
+      "sha256": "8d88a45ccf0c835fccdc8d0f2a4101232c4fd6efee8cc6a5ce5dd762a8ae579c",
+      "skipped": false
     },
     {
       "table": "dim_vendor",
       "rows": 13,
-      "sha256": "dc27f1d62405009f0e6c633e900f9024e49805d1d5464288c4d4d23f7c528c1a",
-      "skipped": true
+      "sha256": "de1c74a8f68decd7fec16ecb998a8beed23656b208d8fcb4845fcb7793c11284",
+      "skipped": false
     },
     {
       "table": "dim_warehouse",
       "rows": 7,
-      "sha256": "332a073050453c21ac9ad4d5e3ab113cab540c525f6f4bbc3beeba6292fc19d5",
-      "skipped": true
+      "sha256": "41d52dcc379bd97d3d80f5429dab16e67d9b927ce31564f0fd8888907ef9f20f",
+      "skipped": false
     },
     {
       "table": "fact_inventory",
       "rows": 245072,
-      "sha256": "5e8031d2800bb493178f7d99804b1e805b0764ddcad0556383e56e7631c73cb3",
-      "skipped": true
+      "sha256": "ddf035ec0fd4f7f9949affc58eb9d3a7d7e923cab8b1179752f1c4407e799d91",
+      "skipped": false
     },
     {
       "table": "fact_orders",
       "rows": 180519,
-      "sha256": "a15b2a0585aa371d32f38ee5ed01596e21098df8682012f649123ebb4a17231c",
-      "skipped": true
+      "sha256": "0dd593dca4573dfa61b907f6a9b21efaf9519a35bed5916ad4a061bcbf6eef8c",
+      "skipped": false
     },
     {
       "table": "fact_procurement",
       "rows": 8340,
-      "sha256": "0a0642737848383f058558cb9dace34894f3ad50d710ad5d82ca3cfae29c5f82",
-      "skipped": true
+      "sha256": "fc2ea82d79811149557ff56480d86f8f93a9792d241e6699d0d0f28047297d59",
+      "skipped": false
     },
     {
       "table": "fact_returns",
       "rows": 30644,
-      "sha256": "31e16df5430576ff01249d15163f5af7311045048eb9ac0d8b08fb36dc2dd9f0",
-      "skipped": true
+      "sha256": "8029252166350e03990182f71d1d8f70922d2f1e5d48277dd7782f9b75305fbb",
+      "skipped": false
     },
     {
       "table": "fact_shipments",
       "rows": 65752,
-      "sha256": "2d4744f8cdd7599e3295f9f1651f84c9c82dfce0c9406550dc9185999269fd50",
-      "skipped": true
+      "sha256": "c515283d634f9142e66d3d9f6a58da051eef0c383820d780fc88e3c5766e130d",
+      "skipped": false
     },
     {
       "table": "fact_vendor_performance",
       "rows": 227,
-      "sha256": "569cbd0a2e311ff02bab071b1c9602dcf2b9f8cbe368f817aa733cf17ba3ef69",
-      "skipped": true
+      "sha256": "38c8951d3b50da59b65a396b021d2f9c8ea82c6d6318b80f5f0845e289b9c35f",
+      "skipped": false
     },
     {
       "table": "ref_emission_factor",
       "rows": 4,
-      "sha256": "0981909ad5ba3c6517fe3a62a8646daea287c0475f8df0b66488eac214bd1d3a",
-      "skipped": true
+      "sha256": "b8da4926b60c14f544c250898521bdec7394d77932df24664f7229c5c7e83ac2",
+      "skipped": false
     },
     {
       "table": "ref_freight_tariff",
       "rows": 4,
-      "sha256": "7bfa833cbba68b3d3a87bd5ac16a44c4608b5081f72002736c908b8f530ac49b",
-      "skipped": true
+      "sha256": "96dd2096674376ca6e222abd3136bc81c60143f479a6a27c0adff6791d5fcacb",
+      "skipped": false
     },
     {
       "table": "ref_lane_distance",
       "rows": 5,
-      "sha256": "b7b56b33e52eeaded7e18d40139045d5f4c8ee9d5646eec212c98513ce154146",
-      "skipped": true
+      "sha256": "ee3deff53e093522ef591335dca9a4e7a1c8eb60235a9ddcb63346b52ae29fb9",
+      "skipped": false
     },
     {
       "table": "rls_user_map",
       "rows": 9,
-      "sha256": "c3402a1a4a9137cc4e0895ed38b48dba3f33a4a86f7851797df9d04d070c92b3",
-      "skipped": true
+      "sha256": "6cebd83427a54953d676a5c57d0de6c68c476795f24842476cee24bc82d0c284",
+      "skipped": false
     },
     {
       "table": "last_refresh",
       "rows": 1,
-      "sha256": "54886e771b2c0e253eb03158b7f7c98c55db10b9de3aa40c740fe7e7f8c39a36",
-      "skipped": true
+      "sha256": "54dfd07a8e7f1ad4aaa1cced2166546c46c40fbb9ee09341d6d197ec41502cb1",
+      "skipped": false
     }
   ],
   "engine": "duckdb",

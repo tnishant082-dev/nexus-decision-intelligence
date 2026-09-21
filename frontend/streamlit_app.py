@@ -50,9 +50,11 @@ def api(method, path, **kwargs):
         if r.status_code == 401:
             st.error("Unauthorized — set NEXUS_API_KEY")
             return None
+        if r.status_code >= 400:
+            return None
         if r.headers.get("content-type", "").startswith("application/json"):
             return r.json()
-        return r.text
+        return None
     except requests.exceptions.ConnectionError:
         return None
 

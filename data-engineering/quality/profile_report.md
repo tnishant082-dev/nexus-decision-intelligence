@@ -1,6 +1,6 @@
 # Warehouse profile
 
-Generated `2026-09-21T18:08:01.070083+00:00`
+Generated `2026-09-21T22:01:27.475528+00:00`
 
 ## fact_orders (180519 rows)
 

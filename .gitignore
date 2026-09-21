@@ -35,3 +35,6 @@ inference/cache/*.json
 monitoring/*.sqlite
 monitoring/decision_ledger.json
 artifacts/memory.json
+
+# Local run logs
+logs/

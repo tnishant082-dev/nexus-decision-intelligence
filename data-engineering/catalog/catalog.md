@@ -1,6 +1,6 @@
 # NEXUS data catalog
 
-Generated `2026-09-21T18:07:58.873329+00:00` from DuckDB.
+Generated `2026-09-21T22:01:26.892204+00:00` from DuckDB.
 
 ## Tables
 

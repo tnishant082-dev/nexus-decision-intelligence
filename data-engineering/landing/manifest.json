@@ -1,148 +1,148 @@
 {
-  "landed_at": "2026-09-21T18:07:51.140847+00:00",
-  "source_dir": "E:\\nishnt\\nishant-codex-handoff\\nishant tyagi\\projects\\nexus-decision-intelligence\\data",
+  "landed_at": "2026-09-21T22:01:24.565181+00:00",
+  "source_dir": "/workspace/nexus-sc/data",
   "file_count": 23,
-  "copied": 23,
-  "skipped_unchanged": 0,
+  "copied": 0,
+  "skipped_unchanged": 23,
   "incremental": true,
   "files": [
     {
       "name": "dim_carrier.parquet",
       "bytes": 4776,
       "sha256": "07613d3328e97da9d773779bd5dbcd949f4c29ecdf5154cfa6467dbca122e3a3",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_customer.parquet",
       "bytes": 806078,
       "sha256": "b998c9189ac3627a58e66b681b6b2e26eea2850619c9d2b5ed8a74ffeac7c6b9",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_date.parquet",
       "bytes": 99455,
       "sha256": "7082583e5ca0fc03e904308f35f06907c8de9b5421e98cd32d0d609d7b79affb",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_delivery_status.parquet",
       "bytes": 4482,
       "sha256": "4763354c9b6d23deeb717bba8d1bce20431bd6186ae2ff66951ab4b6be2aabd1",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_order_status.parquet",
       "bytes": 5646,
       "sha256": "46649368a16877c7c84e3e7fd2ca79c5a93f9dc74f10d5955ea0b188808cadc3",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_payment_type.parquet",
       "bytes": 2810,
       "sha256": "ae04b6902857afa2c05ea8abd9fe5602ec2904d86b1eccf30bd7447ed3428389",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_product.parquet",
       "bytes": 16245,
       "sha256": "82d2d2a0a3541782ad54cdf8b65b94c44d57d3c48394603eed75befa02b6a98d",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_region.parquet",
       "bytes": 144573,
       "sha256": "22d42c9614f1d9b7765b1fec0412e95b24521729fff4c083da15a24ceb490bc6",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_source_system.parquet",
       "bytes": 2517,
       "sha256": "edca38c3261ca6a12bf21773c223932ecb0bb4997eb53e6200a4758589b1c121",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_transport_mode.parquet",
       "bytes": 4767,
       "sha256": "84b60bc85e045809e5066725d3b27e916f28765a4f2698aa40d1b8dd6fcd8ba2",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_vendor.parquet",
       "bytes": 6141,
       "sha256": "e92b9262331ddeb4b3427a54e29f094cd40d34c588d4023e4d55000e1714a9d0",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "dim_warehouse.parquet",
       "bytes": 5565,
       "sha256": "332a073050453c21ac9ad4d5e3ab113cab540c525f6f4bbc3beeba6292fc19d5",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_inventory.parquet",
       "bytes": 2143775,
       "sha256": "4622904cc469b384d8fcd5ec820fa91dd47ed16e5679c7d4f7faf8ed99348bbf",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_orders.parquet",
       "bytes": 6969698,
       "sha256": "576347b4d7bec97c4539425fd5542be03e52d029e61eab353b05123b5e490858",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_procurement.parquet",
       "bytes": 172209,
       "sha256": "1fff6520eb6271db4931e45566d1cb2d9430887a1dc812a9a439bc4b6715f290",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_returns.parquet",
       "bytes": 604550,
       "sha256": "851411b0a815a1cca752310f8f3dfd5eba4b34cb3c24f3146da549e9e1f85e5a",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_shipments.parquet",
       "bytes": 3279779,
       "sha256": "5b40696119cf732e44642dde72730b709ef82a6f07e5b17b0d1691244b87ba49",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "fact_vendor_performance.parquet",
       "bytes": 39466,
       "sha256": "569cbd0a2e311ff02bab071b1c9602dcf2b9f8cbe368f817aa733cf17ba3ef69",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "last_refresh.parquet",
       "bytes": 1315,
       "sha256": "54886e771b2c0e253eb03158b7f7c98c55db10b9de3aa40c740fe7e7f8c39a36",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "ref_emission_factor.parquet",
       "bytes": 2491,
       "sha256": "0981909ad5ba3c6517fe3a62a8646daea287c0475f8df0b66488eac214bd1d3a",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "ref_freight_tariff.parquet",
       "bytes": 3130,
       "sha256": "7bfa833cbba68b3d3a87bd5ac16a44c4608b5081f72002736c908b8f530ac49b",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "ref_lane_distance.parquet",
       "bytes": 2399,
       "sha256": "b7b56b33e52eeaded7e18d40139045d5f4c8ee9d5646eec212c98513ce154146",
-      "skipped": false
+      "skipped": true
     },
     {
       "name": "rls_user_map.parquet",
       "bytes": 3692,
       "sha256": "c3402a1a4a9137cc4e0895ed38b48dba3f33a4a86f7851797df9d04d070c92b3",
-      "skipped": false
+      "skipped": true
     }
   ],
   "sources_cited": [
