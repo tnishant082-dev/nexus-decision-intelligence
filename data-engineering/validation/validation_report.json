@@ -1,7 +1,7 @@
 {
-  "validated_at": "2026-09-21T17:17:57.434084+00:00",
-  "passed": 6,
-  "total": 6,
+  "validated_at": "2026-09-21T18:07:58.476597+00:00",
+  "passed": 9,
+  "total": 9,
   "results": [
     {
       "check": "orders_positive",
@@ -14,6 +14,13 @@
       "check": "shipments_positive",
       "value": [
         65752
+      ],
+      "passed": true
+    },
+    {
+      "check": "inventory_positive",
+      "value": [
+        245072
       ],
       "passed": true
     },
@@ -40,11 +47,30 @@
       "passed": true
     },
     {
-      "check": "revenue_nonneg",
+      "check": "in_full_bounded",
+      "value": [
+        0,
+        1
+      ],
+      "passed": true
+    },
+    {
+      "check": "exec_kpis_present",
+      "value": [
+        31.64
+      ],
+      "passed": true
+    },
+    {
+      "check": "negative_revenue_lines_informational",
       "value": [
         0
       ],
       "passed": true
     }
-  ]
+  ],
+  "contracts": {
+    "passed": 4,
+    "total": 4
+  }
 }

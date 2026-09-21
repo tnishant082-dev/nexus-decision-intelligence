@@ -1,0 +1,13 @@
+# Optional extras — not required for CI or the mock demo path.
+# pip install -r requirements-optional.txt
+
+xgboost>=2.0
+lightgbm>=4.0
+prophet>=1.1
+shap>=0.44
+sentence-transformers>=2.2
+faiss-cpu>=1.7
+langgraph>=0.2
+mlflow>=2.10
+opentelemetry-sdk>=1.24
+opentelemetry-instrumentation-fastapi>=0.45b0

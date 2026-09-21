@@ -1,8 +1,11 @@
-# Security Notes (local portfolio)
+# Security notes (local portfolio)
 
-- **API key**: `NEXUS_API_KEY` (default `dev-nexus-key`) required on `/api/v1/*`.
-- **Rate limit**: in-memory ~60 req/min per key/IP — demo only, not distributed.
-- **SQL tool**: SELECT/WITH only; blocks DDL/DML keywords.
-- **PII**: `dim_customer` includes names from the public extract — treat as demo data; do not deploy publicly without redaction.
-- **Secrets**: no cloud keys required for the mock path. Do not commit real provider keys.
-- **Docker**: binds localhost ports; do not expose without auth hardening.
+- **API key:** `NEXUS_API_KEY` compared with `hmac.compare_digest`. Default `dev-nexus-key` is for localhost only.
+- **Roles:** `X-Nexus-Role` = `viewer` (default) | `analyst` | `admin`. Viewers cannot use `/api/v1/sql`.
+- **CORS:** allow-list from `NEXUS_CORS_ORIGINS` (defaults to local Streamlit), not `*`.
+- **Rate limit:** in-memory ~60 req/min per key/IP — not distributed.
+- **SQL tool:** SELECT/WITH only; keyword filter is not a full sandbox.
+- **Audit:** `monitoring/audit.sqlite` when `NEXUS_AUDIT=1`.
+- **PII:** `dim_customer` includes names from the public extract — demo data; do not expose publicly without redaction.
+- **Secrets:** provider keys via environment only. Do not commit `.env`.
+- **Docker:** do not publish ports without rotating the key and tightening CORS.

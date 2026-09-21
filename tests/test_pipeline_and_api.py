@@ -15,14 +15,16 @@ DB = ROOT / "data-engineering" / "warehouse" / "nexus.duckdb"
 
 @pytest.fixture(scope="session", autouse=True)
 def ensure_warehouse():
-    if not DB.exists():
-        sys.path.insert(0, str(ROOT / "data-engineering"))
-        from etl.land import land
-        from etl.clean import clean
-        from etl.warehouse import load_warehouse
+    sys.path.insert(0, str(ROOT / "data-engineering"))
+    from etl.land import land
+    from etl.clean import clean
+    from etl.warehouse import load_warehouse
+
+    cleaned = ROOT / "data-engineering" / "cleaned"
+    if not any(cleaned.glob("*.parquet")):
         land()
         clean()
-        load_warehouse()
+    load_warehouse(incremental=True)
     assert DB.exists()
 
 

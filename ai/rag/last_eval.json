@@ -1,0 +1,56 @@
+{
+  "n": 4,
+  "recall_at_k": 1.0,
+  "mean_precision_at_k": 0.6668,
+  "term_hit_rate": 1.0,
+  "k": 3,
+  "cases": [
+    {
+      "id": "otif-escalation",
+      "hit_at_k": true,
+      "precision_at_k": 0.667,
+      "term_overlap_ok": true,
+      "citations": [
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec3)",
+        "OTIF Service Policy (SAMPLE) (01_otif_policy.md#sec0)",
+        "OTIF Service Policy (SAMPLE) (01_otif_policy.md#sec1)"
+      ]
+    },
+    {
+      "id": "inventory-coverage",
+      "hit_at_k": true,
+      "precision_at_k": 1.0,
+      "term_overlap_ok": true,
+      "citations": [
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec1)",
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec3)",
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec2)"
+      ]
+    },
+    {
+      "id": "vendor-sla",
+      "hit_at_k": true,
+      "precision_at_k": 0.667,
+      "term_overlap_ok": true,
+      "citations": [
+        "Vendor SLA & Risk Policy (SAMPLE) (03_vendor_sla.md#sec2)",
+        "Vendor SLA & Risk Policy (SAMPLE) (03_vendor_sla.md#sec0)",
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec3)"
+      ]
+    },
+    {
+      "id": "expedite",
+      "hit_at_k": true,
+      "precision_at_k": 0.333,
+      "term_overlap_ok": true,
+      "citations": [
+        "Inventory & Safety Stock Policy (SAMPLE) (02_inventory_policy.md#sec3)",
+        "OTIF Service Policy (SAMPLE) (01_otif_policy.md#sec3)",
+        "Freight & Expedite Policy (SAMPLE) (04_freight_expedite.md#sec0)"
+      ]
+    }
+  ],
+  "faithfulness": null,
+  "answer_relevance": null,
+  "note": "Faithfulness and answer relevance require an LLM judge or human labels. This harness scores retrieval recall/precision against gold doc ids only."
+}

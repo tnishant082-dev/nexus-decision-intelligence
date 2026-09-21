@@ -1,62 +1,77 @@
-# NEXUS Architecture
+# NEXUS architecture
+
+Local-first **enterprise decision intelligence** for retail and supply-chain operations. One warehouse, one investigate API, one Streamlit console.
 
 ```mermaid
 flowchart TB
-  subgraph Sources
-    DC[DataCo extract]
-    OR[Online Retail II extract]
+  subgraph sources [Public extracts]
+    DC[DataCo Smart Supply Chain]
+    UK[Online Retail II]
   end
-  subgraph DE[Data Engineering]
-    L[Landing parquet]
-    C[Cleaned]
-    W[(DuckDB warehouse)]
+  subgraph de [Data engineering]
+    L[Landing + SHA256 manifest]
+    C[Clean + YAML contracts]
+    W[(DuckDB nexus.duckdb)]
+    Q[Profile / freshness / validation]
   end
-  subgraph Analytics
-    SQL[KPI SQL / views]
+  subgraph consume [Consumers]
+    KPI[Metric views + dictionary]
     PBI[Power BI .pbip]
+    DS[Hypothesis / RCA / A/B calculator]
+    ML[Forecast / anomaly / churn / stockout]
+    RAG[Hybrid RAG over SAMPLE SOPs]
+    AG[Investigate graph]
   end
-  subgraph DS[Data Science]
-    EDA[EDA + hypothesis]
-    SEG[Segmentation]
+  subgraph inf [Inference gateway]
+    R[Router]
+    M[Mock default]
+    H[OpenAI-compatible HTTP]
   end
-  subgraph ML
-    F[Demand forecast]
-    A[OTIF anomaly]
-    CH[Churn proxy]
-    REG[Model registry]
-  end
-  subgraph AI
-    RAG[RAG over sample SOPs]
-    AG[Investigate multi-agent]
-  end
-  subgraph Inference
-    GW[Gateway + router]
-    CACHE[Response cache]
-  end
-  subgraph Platform
+  subgraph plat [Platform]
     API[FastAPI]
-    UI[Streamlit console]
+    UI[Streamlit]
+    PROM[/metrics Prometheus text]
   end
   DC --> L
-  OR --> L
-  L --> C --> W
-  W --> SQL
-  C --> PBI
-  W --> EDA
-  W --> SEG
-  W --> F --> REG
-  W --> A --> REG
-  W --> CH --> REG
+  UK --> L --> C --> W
+  C --> Q
+  W --> KPI --> PBI
+  W --> DS
+  W --> ML
   W --> AG
   RAG --> AG
-  REG --> AG
+  ML --> AG
   AG --> API
-  GW --> API
-  CACHE --> GW
+  R --> M
+  R --> H
+  H --> API
+  M --> API
   API --> UI
+  API --> PROM
 ```
 
-## Local-first defaults
-- LLM: **mock** templates via inference router (`mock` / `small` / `large` labels)
-- Warehouse: DuckDB file under `data-engineering/warehouse/nexus.duckdb`
-- Auth: shared API key header (`X-API-Key`)
+## Runtime defaults
+
+| Concern | Default | Optional |
+|---|---|---|
+| Warehouse | DuckDB file | None in-repo |
+| LLM | Mock templates | `OPENAI_*`, `GROQ_*`, `OLLAMA_BASE_URL`, `VLLM_BASE_URL`, `LLAMACPP_BASE_URL` |
+| Embeddings | Hashing vectors | `sentence-transformers` + FAISS |
+| Agents | Local linear graph + retries | LangGraph if installed |
+| Tracking | JSON files under `ml/tracking` | MLflow if installed |
+| Auth | `X-API-Key` (constant-time compare) | `X-Nexus-Role`: viewer / analyst / admin |
+| Metrics | Prometheus text on `/metrics` | Import Grafana JSON yourself |
+
+## Investigate path
+
+1. Orchestrator records plan (`langgraph` or `local_graph`).
+2. Analytics/SQL agent runs curated SELECT snippets.
+3. Forecast agent reads `ml/registry`.
+4. Inventory and risk agents query metric views.
+5. RAG agent returns cited chunks.
+6. Decision agent emits recommendations (held if `human_review=true`).
+7. Confidence is an **evidence completeness score**, not model accuracy.
+
+## What is not in process
+
+No vLLM/Ollama/Grafana/MLflow **servers** are started by `docker compose`. Adapters and dashboard JSON exist so you can wire them without inventing a fleet.

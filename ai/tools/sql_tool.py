@@ -48,6 +48,8 @@ KPI_SNIPPETS = {
     """,
     "exec_kpis": "SELECT * FROM v_exec_kpis",
     "logistics": "SELECT * FROM v_logistics",
+    "fill_rate": "SELECT * FROM v_fill_rate",
+    "customer_kpis": "SELECT * FROM v_customer_kpis",
     "inventory_coverage": """
         SELECT ROUND(SUM(on_hand_value)/1e6,2) AS on_hand_value_m_all_snapshots,
                ROUND(AVG(stockout_flag)*100,2) AS stockout_pct

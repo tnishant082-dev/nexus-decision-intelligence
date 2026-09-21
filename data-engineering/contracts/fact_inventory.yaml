@@ -1,0 +1,28 @@
+# fact_inventory — product × warehouse × snapshot date (WMS)
+version: 1
+table: fact_inventory
+grain: inventory_key
+source: data/fact_inventory.parquet
+primary_key: inventory_key
+required_columns:
+  - inventory_key
+  - date_key
+  - product_key
+  - warehouse_key
+  - on_hand_units
+  - on_hand_value
+  - demand_units
+  - stockout_flag
+flag_columns: [stockout_flag]
+foreign_keys:
+  - {column: product_key, ref_table: dim_product, ref_column: product_key}
+  - {column: warehouse_key, ref_table: dim_warehouse, ref_column: warehouse_key}
+freshness:
+  date_column: date_key
+  calendar_table: dim_date
+  calendar_key: date_key
+  calendar_date: date
+  max_lag_days: 4000
+pii: false
+notes:
+  - on-hand value summed across snapshots is not a single-day balance sheet

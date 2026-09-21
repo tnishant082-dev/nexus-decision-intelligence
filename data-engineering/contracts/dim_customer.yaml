@@ -1,0 +1,16 @@
+# dim_customer — CRM (demo PII present)
+version: 1
+table: dim_customer
+grain: customer_key
+source: data/dim_customer.parquet
+primary_key: customer_key
+required_columns:
+  - customer_key
+  - segment
+pii: true
+pii_columns: [customer_name, first_name, last_name, bill_to_postal]
+flag_columns: []
+foreign_keys: []
+freshness:
+  date_column: last_order_date
+  max_lag_days: 4000

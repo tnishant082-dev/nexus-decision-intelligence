@@ -1,0 +1,3 @@
+# Quality outputs (generated)
+*.json
+!/.gitkeep

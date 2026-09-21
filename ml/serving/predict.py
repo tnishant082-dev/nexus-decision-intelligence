@@ -70,3 +70,11 @@ def predict_churn(rows: list[dict]) -> list[dict]:
     X = pd.DataFrame(rows)[features].fillna(0)
     proba = model.predict_proba(X)[:, 1]
     return [{"churn_probability": round(float(p), 4)} for p in proba]
+
+
+def predict_stockout(rows: list[dict]) -> list[dict]:
+    bundle = _bundle("stockout_v1")
+    model, features = bundle["model"], bundle["features"]
+    X = pd.DataFrame(rows)[features].fillna(0)
+    proba = model.predict_proba(X)[:, 1]
+    return [{"stockout_risk": round(float(p), 4)} for p in proba]

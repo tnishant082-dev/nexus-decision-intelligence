@@ -1,0 +1,33 @@
+# fact_orders — order line grain (OMS)
+version: 1
+table: fact_orders
+grain: order_line_key
+source: data/fact_orders.parquet
+primary_key: order_line_key
+required_columns:
+  - order_line_key
+  - order_id
+  - order_date_key
+  - customer_key
+  - product_key
+  - warehouse_key
+  - quantity
+  - net_sales
+  - line_profit
+  - is_revenue
+  - is_late
+  - is_on_time
+  - is_otif
+  - is_perfect_order
+flag_columns: [is_canceled, is_fraud, is_revenue, is_late, is_on_time, is_otif, is_perfect_order]
+foreign_keys:
+  - {column: product_key, ref_table: dim_product, ref_column: product_key}
+  - {column: customer_key, ref_table: dim_customer, ref_column: customer_key}
+  - {column: warehouse_key, ref_table: dim_warehouse, ref_column: warehouse_key}
+freshness:
+  date_column: order_date_key
+  calendar_table: dim_date
+  calendar_key: date_key
+  calendar_date: date
+  max_lag_days: 4000  # historical extract; not a live feed
+pii: false

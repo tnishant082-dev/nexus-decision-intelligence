@@ -1,11 +1,39 @@
 {
   "hypothesis": "Mean net_sales differs between late and on-time revenue lines",
+  "methodology": "Welch two-sample t-test",
+  "assumptions": [
+    "Independent observations (order lines in a public extract may be clustered)",
+    "Approximate normality of means via CLT; variances need not be equal"
+  ],
+  "limitations": [
+    "Not a randomized experiment; p-values are descriptive",
+    "Large n makes tiny differences 'significant'"
+  ],
   "n_late": 98977,
   "n_ontime": 73788,
   "mean_late": 182.69,
   "mean_ontime": 183.8,
+  "mean_late_ci": {
+    "n": 98977,
+    "mean": 182.6945178804726,
+    "std": 118.88950667684064,
+    "ci_low": 181.95383930287215,
+    "ci_high": 183.43519645807305,
+    "alpha": 0.05,
+    "method": "Student t interval on the mean (iid assumption)"
+  },
+  "mean_ontime_ci": {
+    "n": 73788,
+    "mean": 183.79831110327575,
+    "std": 121.7994798424847,
+    "ci_low": 182.91947522400017,
+    "ci_high": 184.67714698255133,
+    "alpha": 0.05,
+    "method": "Student t interval on the mean (iid assumption)"
+  },
   "welch_t": -1.8823,
   "p_value": 0.059791874349564705,
+  "significant_at_0.05": false,
   "correlations": {
     "late_vs_days_ship": 0.4213788852627882,
     "otif_vs_profit": 0.0045575961329211954
