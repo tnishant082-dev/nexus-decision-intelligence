@@ -36,6 +36,7 @@ def add(title: str, rationale: str, dollars: float | None, owner: str, source: s
         "created_at": datetime.now(timezone.utc).isoformat(),
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "history": [{"status": "proposed", "at": datetime.now(timezone.utc).isoformat(), "note": None}],
+    }
     rows.append(item)
     _save(rows)
     return item
