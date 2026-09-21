@@ -8,6 +8,19 @@ from decisions.economics import value_at_stake, warehouse_exceptions
 
 
 def investigate(question: str, human_review: bool = False) -> dict:
+    from security.guardrails.scan import scan
+
+    g = scan(question, "agent")
+    if not g["allowed"]:
+        return {
+            "question": question,
+            "blocked": True,
+            "findings": g["findings"],
+            "drivers": ["Blocked by guardrails."],
+            "recommendations": [],
+            "citations": [],
+            "agent_trail": [{"agent": "guardrails", "note": "blocked"}],
+        }
     state = run_graph(question, human_review=human_review)
     sql_results = state.get("sql_results") or []
     docs = state.get("documents") or []

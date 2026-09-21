@@ -7,6 +7,16 @@ Only items that are still actually missing.
 1. Recapture Streamlit screenshots after UI changes (`screenshots/nexus/`).
 2. True time-based churn labels (hide last N days of orders, predict next window).
 3. Chunking experiments with measured recall on a larger policy corpus.
+4. Optional NetworkX/Neo4j live rebuild job that **replaces** the committed 41/112 snapshot after a measured run.
+
+## Shipped in 1.4
+
+- GraphRAG snapshot (41 nodes / 112 edges) with NetworkX optional and Neo4j idle.
+- Linear SAMPLE twin (inventory / delay / demand / price / promotion).
+- Gold-set agent evaluation (6 cases) + heuristic guardrails.
+- Inference queue, retry, mock fallback; copilot Monday brief MD/PDF.
+- Quality command (freshness, schema drift, nulls, dupes).
+- JSON memory; in-process week replay (Kafka idle).
 
 ## Shipped in 1.3
 
@@ -16,6 +26,8 @@ Only items that are still actually missing.
 ## Requires extra infrastructure (out of this repo until you run it)
 
 - Ollama / vLLM / llama.cpp server process
+- Neo4j
+- Kafka / Redpanda
 - Postgres + pgvector
 - MLflow tracking server
 - Prometheus + Grafana containers
@@ -27,3 +39,4 @@ Only items that are still actually missing.
 - Live OMS/WMS CDC
 - GPU throughput leaderboards
 - Statutory inventory accounting
+- Network digital twin

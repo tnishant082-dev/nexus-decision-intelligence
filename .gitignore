@@ -34,3 +34,4 @@ data-engineering/warehouse/*.duckdb
 inference/cache/*.json
 monitoring/*.sqlite
 monitoring/decision_ledger.json
+artifacts/memory.json

@@ -1,26 +1,13 @@
-# Resume bullets, portfolio blurb, GitHub topics
+## Technical achievements summary (v1.4)
 
-Use only after you can run the commands yourself. Do **not** add accuracy, GPU, or “production at company X” language.
+Measurable, reproducible, not invented:
 
-## Resume bullets (verified capabilities)
+- Order-grain OTIF **40.83%** (Wilson 95% CI **40.46–41.21**, n=**65,752**, 26,849 successes) vs SAMPLE 92%.
+- Extract revenue **$31.64M**; late-line exposure **$18.08M** (57.14% of sales) — exposure, not lost sales.
+- GraphRAG snapshot **41 nodes / 112 edges**; Fan Shop **~$8.43M** late-line $ is the largest supplier node.
+- Quality command **11/11** checks, score **100**, 0 incidents; lag vs today is informational.
+- Gold eval **6/6** on snapshot-backed strings; hallucination **0** on that path; cost **$0**.
+- Twin: inventory +20% → OTIF **42.43%**; lead time +5 days → OTIF **31.83%** (linear SAMPLE elasticities).
+- Inference default **mock**; vLLM/Ollama/llama.cpp/OpenAI/Groq adapters idle unless env is set.
 
-- Built a local-first **retail/supply-chain decision OS** (DuckDB, FastAPI, Streamlit) that ranks OTIF/late work by **late-line revenue $**, not vanity KPIs, with SQL evidence and SAMPLE-policy citations.
-- Implemented **data contracts**, incremental parquet loads, freshness/profile reports, and a metric dictionary with SQL tests for finance, ops, inventory, and customer KPIs.
-- Trained leakage-aware **churn**, category-week **forecast vs lag-1 naive**, IsolationForest **OTIF anomalies**, and a documented **stockout-risk proxy**; logged runs to a file registry (MLflow optional).
-- Shipped **hybrid RAG** (lexical + dense, citations) and a **multi-agent investigate graph** (LangGraph if installed) with retries and a human-review flag.
-- Designed an **inference gateway** with mock default and OpenAI-compatible adapters (OpenAI/Groq/Ollama/vLLM/llama.cpp HTTP), plus Prometheus-format `/metrics` (TTFT, tokens, cache, cost fields).
-
-## Portfolio short description
-
-NEXUS is a single-domain decision-intelligence demo: public DataCo + Online Retail II extracts land in DuckDB; executives query KPIs or `/api/v1/investigate` and get drivers, SAMPLE-policy citations, and model-registry ids. LLMs default to mock so the repo stays honest offline.
-
-## GitHub topics
-
-`data-engineering` `duckdb` `analytics` `supply-chain` `otif` `machine-learning` `rag` `agents` `fastapi` `streamlit` `mlops` `inference` `portfolio`
-
-## Interview talking points
-
-- Why OTIF is ~40% in this extract (flags, not a broken KPI formula).
-- Why churn AUC with recency is leaky.
-- Why inventory on-hand $ summed over snapshots is not a balance sheet.
-- What happens if Groq is down (mock fallback).
+Commands: `python -m pytest tests/test_platform_v14.py tests/test_wilson.py`.

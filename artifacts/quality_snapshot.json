@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-09-21T20:23:39.474584+00:00",
+  "extract_window": { "min": "2015-01-01 00:00:00", "max": "2018-01-31 23:38:00" },
+  "freshness": {
+    "max_event_ts": "2018-01-31 23:38:00",
+    "extract_end": "2018-01-31",
+    "lag_vs_extract_end_days": 0,
+    "lag_vs_utc_today_days": 3155,
+    "note": "Historical public extract. Lag vs today is expected; score uses extract-end freshness, not wall-clock SLA.",
+    "passed_extract_completeness": true
+  },
+  "schema": {
+    "fact_orders_columns": 32,
+    "fact_orders_rows": 180519,
+    "duplicate_order_line_keys": 0,
+    "null_pct": {
+      "order_id": 0.0,
+      "customer_key": 0.0,
+      "product_key": 0.0,
+      "warehouse_key": 0.0,
+      "vendor_key": 0.0,
+      "net_sales": 0.0,
+      "is_otif": 0.0,
+      "is_late": 0.0
+    }
+  },
+  "schema_drift": {
+    "table": "fact_orders",
+    "expected_columns": 32,
+    "actual_columns": 32,
+    "added": [],
+    "removed": [],
+    "passed": true,
+    "note": "Compared to the warehouse contract at extract time. Not a live CDC schema registry."
+  },
+  "null_monitoring": [
+    { "column": "order_id", "null_pct": 0.0, "passed": true },
+    { "column": "customer_key", "null_pct": 0.0, "passed": true },
+    { "column": "product_key", "null_pct": 0.0, "passed": true },
+    { "column": "warehouse_key", "null_pct": 0.0, "passed": true },
+    { "column": "vendor_key", "null_pct": 0.0, "passed": true },
+    { "column": "net_sales", "null_pct": 0.0, "passed": true },
+    { "column": "is_otif", "null_pct": 0.0, "passed": true },
+    { "column": "is_late", "null_pct": 0.0, "passed": true }
+  ],
+  "duplicates": { "order_line_key_dupes": 0, "passed": true },
+  "incidents": [],
+  "score": 100.0,
+  "checks_passed": 11,
+  "checks_total": 11
+}

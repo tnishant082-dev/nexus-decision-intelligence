@@ -62,10 +62,18 @@ Full diagrams: [`docs/architecture.md`](./docs/architecture.md) · decisions: [`
 | Data science | `data-science/` | Welch test, CIs, RCA, correlations, A/B calculator |
 | ML | `ml/` | Forecast vs lag-1, OTIF anomaly, churn without recency, stockout proxy, file registry, PSI drift |
 | RAG | `ai/rag/` | Hybrid retrieval + citations; FAISS / sentence-transformers **if installed** |
+| GraphRAG | `ai/graphrag/` | 41/112 snapshot; NetworkX optional; Neo4j **idle** unless configured |
+| Twin | `simulation/` | Linear SAMPLE elasticities on extract KPIs — not a physics twin |
+| Eval | `evaluation/` | 6 gold cases on snapshot strings; hallucination 0 on this path |
+| Guardrails | `security/guardrails/` | Injection / jailbreak / PII / SQL-write heuristics |
+| Copilot | `copilot/` | Monday brief Markdown + text PDF |
+| Quality | `quality/` | Freshness, schema drift, nulls, dupes; lag vs today is not an incident |
+| Memory | `memory/` | JSON incidents / investigations / actions |
+| Streaming | `streaming/` | In-process week replay; Kafka adapter idle |
 | Agents | `ai/agents/` | Analytics, SQL, forecast, inventory, risk, RAG, decision; LangGraph **if installed** |
-| Inference | `inference/` | Router, cache, TTFT/token/cost logs; OpenAI/Groq/Ollama/vLLM/llama.cpp **HTTP adapters** |
+| Inference | `inference/` | Queue, retry, cache, TTFT/token/cost logs; OpenAI/Groq/Ollama/vLLM/llama.cpp **HTTP adapters** |
 | Platform | `backend/` + `frontend/` | API key + roles + `/metrics` · Streamlit tabs |
-| Observability | `observability/` | Prometheus scrape example + Grafana JSON (**you** run those tools) |
+| Observability | `observability/` | Prometheus scrape example + Grafana JSON + `collect.snapshot()` (**you** run Grafana) |
 
 ---
 
@@ -117,7 +125,9 @@ Investigate graph: orchestrator → analytics/SQL → forecast registry → inve
 - Evidence: SQL snippets, model ids, document **citations**.
 - `human_review=true` prefixes recommendations with a hold line.
 - Knowledge files in `docs/knowledge/` are labeled **SAMPLE**.
+- GraphRAG (`ai/graphrag/`) ranks suppliers by late-line $ (Fan Shop is the largest on this extract). Neo4j is not started by default.
 - Retrieval eval (`python -m ai.rag.evaluate`) scores **recall/precision vs gold doc ids**. Faithfulness is not claimed (`null` until a judge).
+- Agent eval (`python -c "from evaluation.runner import run_evaluation; print(run_evaluation()['summary'])"`) is snapshot-backed. Hallucination rate is 0 on that path because it does not judge live LLM text.
 
 ---
 
@@ -127,7 +137,9 @@ Default: mock completions on CPU with capped sleep. Labels `small`/`large` are *
 
 Opt-in HTTP (OpenAI-compatible): OpenAI, Groq, Ollama, vLLM, llama.cpp server. Failed HTTP **falls back to mock**. This repo does **not** start those servers.
 
-Gateway logs: latency, TTFT (non-streaming), tokens, cache hits, cost (0 unless you set USD rates). Streamlit **Inference Monitor** reads the local SQLite log.
+Gateway logs: latency, TTFT (non-streaming), tokens, cache hits, cost (0 unless you set USD rates). Completes run through a process-local queue with retry and mock fallback. Streamlit **Inference Monitor** reads the local SQLite log.
+
+Architecture notes: [`docs/graphrag.md`](./docs/graphrag.md) · [`docs/simulation.md`](./docs/simulation.md) · [`docs/inference.md`](./docs/inference.md) · [`docs/agent-evaluation.md`](./docs/agent-evaluation.md) · [`docs/limitations.md`](./docs/limitations.md)
 
 ---
 
