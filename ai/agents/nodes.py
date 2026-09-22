@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from ai.agents.cards import note_metric, stamp
 from ai.rag.retriever import retrieve
 from ai.tools.sql_tool import KPI_SNIPPETS, run_sql
 
@@ -153,27 +154,59 @@ def rag_agent(state: dict) -> dict:
 def decision_agent(state: dict) -> dict:
     trail = list(state.get("trail") or [])
     q = state["question"].lower()
-    recs = []
+    specs: list[tuple[str, str]] = []
     if any(w in q for w in ("otif", "late", "delay", "service", "impact", "stake")):
-        recs.append("Size the late-line revenue pool first, then pick the warehouse/carrier with the largest $ — not the highest late % alone.")
-        recs.append("Split late vs short-ship: prioritize carrier/mode actions where delay_cost is highest.")
+        specs.append((
+            "Size the late-line revenue pool first, then pick the warehouse/carrier with the largest $ — not the highest late % alone.",
+            "late_revenue",
+        ))
+        specs.append((
+            "Split late vs short-ship: prioritize carrier/mode actions where delay_cost is highest.",
+            "delay_cost",
+        ))
     if any(w in q for w in ("freight", "expedite")):
-        recs.append("Expedite freight is a small $ pool vs late revenue; cutting it blindly can worsen OTIF.")
+        specs.append((
+            "Expedite freight is a small $ pool vs late revenue; cutting it blindly can worsen OTIF.",
+            "expedite_freight",
+        ))
     if any(w in q for w in ("inventory", "stock", "working capital")):
-        recs.append("Review weeks-of-supply on A-class SKUs; long coverage with weak OTIF is a cash/service tradeoff.")
+        specs.append((
+            "Review weeks-of-supply on A-class SKUs; long coverage with weak OTIF is a cash/service tradeoff.",
+            "inventory",
+        ))
     if any(w in q for w in ("vendor", "procurement", "sla")):
-        recs.append("Check preferred-vendor mix and on-time receipt SLA for vendors feeding late warehouses.")
+        specs.append((
+            "Check preferred-vendor mix and on-time receipt SLA for vendors feeding late warehouses.",
+            "vendor_sla",
+        ))
     if any(w in q for w in ("churn", "customer", "retention")):
-        recs.append("Treat 180-day inactivity as a proxy, not contracted churn; prioritize high-LTV lapsed accounts.")
+        specs.append((
+            "Treat 180-day inactivity as a proxy, not contracted churn; prioritize high-LTV lapsed accounts.",
+            "churn_proxy",
+        ))
     if any(w in q for w in ("revenue", "profit", "margin", "growth")):
-        recs.append("Read annual growth from v_finance_growth with partial-year caveat before calling a decline structural.")
-    if not recs:
-        recs.append("Start from Executive KPIs, then drill OTIF → warehouse → carrier; cite policy thresholds from knowledge base.")
+        specs.append((
+            "Read annual growth from v_finance_growth with the partial-year caveat before calling a decline structural.",
+            "growth",
+        ))
+    if not specs:
+        specs.append((
+            "Start from Executive KPIs, then drill OTIF → warehouse → carrier; cite policy thresholds from the knowledge base.",
+            "otif",
+        ))
     docs = state.get("documents") or []
     if docs:
-        recs.append(f"Apply guidance from '{docs[0].get('title')}' ({docs[0].get('doc_id')}) — SAMPLE policy.")
-    for n in (state.get("inventory_notes") or []) + (state.get("risk_notes") or []):
-        recs.append(n)
+        specs.append((
+            f"Apply guidance from '{docs[0].get('title')}' ({docs[0].get('doc_id')}) — SAMPLE policy.",
+            "sample_policy",
+        ))
+    for note in (state.get("inventory_notes") or []) + (state.get("risk_notes") or []):
+        specs.append((note, note_metric(note)))
+    cards = [stamp(action, metric_id) for action, metric_id in specs]
+    recs = [card["action"] for card in cards]
     pending = bool(state.get("human_review"))
-    trail.append({"agent": "decision", "action": "synthesize", "pending_review": pending})
-    return {**state, "recommendations": recs, "pending_review": pending, "trail": trail}
+    if pending:
+        for card in cards:
+            card["held"] = True
+    trail.append({"agent": "decision", "action": "synthesize", "pending_review": pending, "cards": len(cards)})
+    return {**state, "recommendations": recs, "action_cards": cards, "pending_review": pending, "trail": trail}

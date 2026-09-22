@@ -15,6 +15,7 @@ Only items that are still actually missing.
 - `warehouse_late_gap` can rank a warehouse. `advance_selection` is computed and then marked `do_not_claim`.
 - Board endpoint, Streamlit **Inferential** tab, and a one-line claim on investigate plus the Monday brief.
 - LLM inference gateway is unchanged and is a different subsystem.
+- Agent action cards and ledger proposals carry the extract window (2015-01-01 → 2018-01-31) and the metric definition, so a late-line dollar cannot be read as lost sales. The AI Analyst shows the action first and labels confidence as evidence completeness.
 
 ## Shipped in 1.4
 

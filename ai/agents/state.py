@@ -16,6 +16,7 @@ class InvestigateState(TypedDict, total=False):
     risk_notes: list[str]
     documents: list[dict[str, Any]]
     recommendations: list[str]
+    action_cards: list[dict[str, Any]]
     pending_review: bool
     trail: list[dict[str, Any]]
     errors: list[str]

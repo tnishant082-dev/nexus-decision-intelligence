@@ -24,18 +24,26 @@ def _save(rows: list[dict]) -> None:
 
 
 def add(title: str, rationale: str, dollars: float | None, owner: str, source: str = "console") -> dict:
+    from ai.agents.cards import stamp
+
+    bound = stamp(title, "late_revenue" if dollars is not None else "otif")
     rows = _load()
+    now = datetime.now(timezone.utc).isoformat()
     item = {
         "id": str(uuid.uuid4())[:8],
         "title": title,
         "rationale": rationale,
         "dollars_at_stake": dollars,
+        "metric": bound["metric"],
+        "means": bound["means"],
+        "does_not_mean": bound["does_not_mean"],
+        "extract_window": bound["extract_window"],
         "owner": owner,
         "status": "proposed",
         "source": source,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-        "history": [{"status": "proposed", "at": datetime.now(timezone.utc).isoformat(), "note": None}],
+        "created_at": now,
+        "updated_at": now,
+        "history": [{"status": "proposed", "at": now, "note": None}],
     }
     rows.append(item)
     _save(rows)

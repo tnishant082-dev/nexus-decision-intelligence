@@ -15,6 +15,7 @@
 | Agents | LangGraph if importable else local graph | Demo works offline; no fake Cloud graphs |
 | Inference | Mock default + OpenAI-compatible HTTP | No GPU claims; live path is env-gated |
 | Inferential engineering | Pre-specified studies, 2 pp practical threshold, causal claims off | A significant contrast is not an effect; advance shipping is a selected treatment |
+| Action cards | Every recommendation carries extract window plus what the metric means and does not mean | A late-line dollar figure must not be readable as lost sales once it leaves the metric dictionary |
 | Batching | Sequential `complete_batch` | Continuous batching needs a real engine (vLLM) |
 | Observability | Prometheus text + Grafana JSON | We do not ship a Grafana container as “production monitoring” |
 | Auth | Shared API key + role header | Portfolio hardening, not SSO |

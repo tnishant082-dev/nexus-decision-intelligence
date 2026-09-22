@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from ai.agents.graph import run_graph
+from ai.agents.cards import stamp
 from decisions.economics import value_at_stake, warehouse_exceptions
 from inferential.studies import claim_summary
 
@@ -38,23 +39,35 @@ def investigate(question: str, human_review: bool = False) -> dict:
         if ev.get("backend"):
             backend = ev["backend"]
             break
-    recs = state.get("recommendations") or []
-    recs.append(
+    recs = list(state.get("recommendations") or [])
+    cards = list(state.get("action_cards") or [])
+    stake = stamp(
         f"Value at stake: ${vas['late_revenue']:,.0f} late-line revenue "
-        f"({vas['late_revenue_share_pct']}% of sales); OTIF {vas['actual_otif_pct']}% vs SAMPLE {vas['sample_otif_target_pct']}%."
+        f"({vas['late_revenue_share_pct']}% of sales); OTIF {vas['actual_otif_pct']}% vs SAMPLE {vas['sample_otif_target_pct']}%.",
+        "late_revenue",
     )
+    recs.append(stake["action"])
+    cards.append(stake)
     if top_exc:
-        recs.append(
-            f"Largest $ late pool: {top_exc[0]['warehouse_name']} (${top_exc[0]['late_revenue']:,.0f})."
+        top = stamp(
+            f"Largest $ late pool: {top_exc[0]['warehouse_name']} (${top_exc[0]['late_revenue']:,.0f}).",
+            "late_revenue",
         )
+        recs.append(top["action"])
+        cards.append(top)
     inferred = claim_summary()
-    recs.append(inferred["line"])
+    gap = stamp(inferred["line"], "inferential")
+    recs.append(gap["action"])
+    cards.append(gap)
     if state.get("pending_review"):
         recs = ["HUMAN REVIEW: recommendations held until an operator approves."] + recs
+        for card in cards:
+            card["held"] = True
     return {
         "question": question,
         "drivers": state.get("drivers") or [],
         "recommendations": recs,
+        "action_cards": cards,
         "value_at_stake": {
             "late_revenue": vas["late_revenue"],
             "late_revenue_share_pct": vas["late_revenue_share_pct"],
@@ -81,8 +94,11 @@ def investigate(question: str, human_review: bool = False) -> dict:
         "confidence": conf,
         "llm_mode": "mock",
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "extract_window": cards[0]["extract_window"] if cards else "2015-01-01 → 2018-01-31",
         "disclaimer": (
-            "Local NEXUS demo. Late revenue is service-risk exposure, not proven lost sales. "
+            "Local NEXUS demo on the 2015-01-01 → 2018-01-31 extract. "
+            "Each action card states what its metric means. "
+            "Late-line revenue is service-risk exposure, not lost sales. "
             "Policies are SAMPLE; LLM is mock unless a provider is configured."
         ),
     }

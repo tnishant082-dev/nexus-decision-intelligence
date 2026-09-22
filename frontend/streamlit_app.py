@@ -156,7 +156,10 @@ with tabs[1]:
     if not wh.empty:
         st.plotly_chart(px.bar(wh, x="warehouse_name", y="late_revenue", title="Late-line revenue by warehouse"), use_container_width=True)
         st.dataframe(wh, use_container_width=True)
-        st.caption("OTIF Wilson 95% intervals are on order grain (otif_wilson). Late % remains line-weighted.")
+        st.caption(
+            "Late-line revenue is service-risk exposure on the 2015-01-01 → 2018-01-31 extract, not lost sales. "
+            "OTIF Wilson 95% intervals are on order grain. Late % remains line-weighted."
+        )
         st.download_button("Export exceptions CSV", wh.to_csv(index=False), "exceptions.csv", "text/csv")
     names = list_warehouses()
     colx, coly = st.columns(2)
@@ -259,17 +262,34 @@ with tabs[4]:
                 from ai.agents.investigate import investigate
 
                 r = investigate(q, human_review=human)
-            st.markdown("#### Drivers")
-            for d in r.get("drivers", []):
-                st.write(f"- {d}")
-            st.markdown("#### Recommendations")
-            for rec in r.get("recommendations", []):
-                st.write(f"- {rec}")
-            st.metric("Confidence", r.get("confidence"))
+            if r.get("pending_review"):
+                st.warning("These actions are held until an operator approves them.")
+            cards = r.get("action_cards") or []
+            st.markdown("#### What to do")
+            if cards:
+                for card in cards:
+                    st.markdown(f"**{card.get('action')}**")
+                    st.caption(
+                        f"{card.get('metric')} — {card.get('means')} "
+                        f"Does not mean: {card.get('does_not_mean')} "
+                        f"Extract {card.get('extract_window')}."
+                    )
+            else:
+                for rec in r.get("recommendations", []):
+                    st.write(f"- {rec}")
+            st.caption(
+                f"Evidence completeness {r.get('confidence')} — how much SQL, policy, and model evidence came back. "
+                "Not the probability that the action is right."
+            )
+            drivers = r.get("drivers") or []
+            if drivers:
+                with st.expander("What the extract shows"):
+                    for d in drivers:
+                        st.write(f"- {d}")
             if r.get("value_at_stake"):
-                st.markdown("#### Value at stake")
-                st.json(r["value_at_stake"])
-            st.caption("Citations: " + ", ".join(r.get("citations") or []) )
+                with st.expander("Underlying figures"):
+                    st.json(r["value_at_stake"])
+            st.caption("Citations: " + ", ".join(r.get("citations") or []))
             with st.expander("Evidence trail"):
                 st.json(r.get("evidence"))
             with st.expander("Agent trail"):

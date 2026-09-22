@@ -1,7 +1,7 @@
 # Limitations (read before quoting NEXUS)
 
 - **Not hosted SaaS.** Local-first portfolio platform.
-- **Late-line $ is exposure, not lost sales** and not recovered EBITDA.
+- **Late-line $ is exposure, not lost sales** and not recovered EBITDA. That sentence is on each agent action card and ledger proposal, with the extract window, not only in this file.
 - **SAMPLE policies** in `docs/knowledge/` are RAG fixtures, not live SOPs.
 - **Customer names are not used** in GraphRAG; nodes are segments.
 - **GraphRAG is a snapshot** (41/112). Neo4j is idle unless you run it.
