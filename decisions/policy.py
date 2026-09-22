@@ -3,6 +3,8 @@
 Investigate a warehouse only when the mix-adjusted gap clears the practical
 threshold and leave-one-stratum-out keeps the same sign. Advance shipping is
 never that action: the study is refused as a selected treatment.
+
+exposure_split explains the late-line dollar pool. It does not change the verdict.
 """
 from __future__ import annotations
 
@@ -10,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from ai.agents.cards import EXTRACT_WINDOW, stamp
+from decisions.decompose import exposure_split
 from inferential.studies import run_study
 
 
@@ -35,14 +38,15 @@ def next_action(db: Path | None = None) -> dict[str, Any]:
         decision = "hold"
         metric_id = "inferential"
     bound = stamp(gap["decision"]["action"], metric_id)
-    exposure = _exposure(db, gap["estimand"].get("target_warehouse"))
+    warehouse = gap["estimand"].get("target_warehouse")
+    exposure = _exposure(db, warehouse)
     return {
         "ok": True,
         "decision": decision,
         "verdict": verdict,
         "action": gap["decision"]["action"],
         "because": gap["decision"]["reason"],
-        "warehouse": gap["estimand"].get("target_warehouse"),
+        "warehouse": warehouse,
         "adjusted_risk_difference_pp": gap["estimate"].get("adjusted_risk_difference_pp"),
         "ci_low_pp": gap["estimate"].get("ci_low_pp"),
         "ci_high_pp": gap["estimate"].get("ci_high_pp"),
@@ -50,6 +54,7 @@ def next_action(db: Path | None = None) -> dict[str, Any]:
         "stability": gap.get("stability"),
         "nullification_bias_pp": (gap.get("sensitivity") or {}).get("nullification_bias_pp"),
         "late_revenue_exposure": exposure,
+        "exposure_split": exposure_split(db, warehouse),
         "metric": bound["metric"],
         "means": bound["means"],
         "does_not_mean": bound["does_not_mean"],

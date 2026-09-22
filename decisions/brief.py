@@ -26,6 +26,9 @@ def build_brief() -> str:
             f"Gap {policy.get('adjusted_risk_difference_pp')} pp. {policy.get('means')} "
             f"Does not mean: {policy.get('does_not_mean')} Extract {policy.get('extract_window')}."
         )
+        sentence = (policy.get("exposure_split") or {}).get("explanation")
+        if sentence:
+            lines.append(f"- {sentence}")
         if policy.get("refused"):
             lines.append(f"- Refused: {policy['refused'][0].get('action')}")
     else:
