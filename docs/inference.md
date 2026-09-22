@@ -1,5 +1,7 @@
 # Inference architecture
 
+LLM completions only. Statistical claims live in [`inferential-engineering.md`](./inferential-engineering.md).
+
 Default path is a **CPU mock**. Labels `small` / `medium` / `large` are **slots**, not GPUs.
 
 ```

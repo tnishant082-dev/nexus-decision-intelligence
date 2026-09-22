@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from decisions.economics import carrier_exceptions, value_at_stake, warehouse_exceptions
+from inferential.studies import claim_summary
 
 
 def build_brief() -> str:
@@ -44,7 +45,12 @@ def build_brief() -> str:
         lines.append(
             f"- **{row['carrier_name']}**: delay_cost ${row['delay_cost']:,.0f} · late {row['late_pct']}% → {row['action']}"
         )
+    inferred = claim_summary()
     lines += [
+        "",
+        "## Inferential engineering",
+        f"- {inferred['line']}",
+        "- Advance-shipping contrasts are registered separately and are refused as effects.",
         "",
         "## Guardrails",
         "- Policies in `docs/knowledge/` are SAMPLE.",

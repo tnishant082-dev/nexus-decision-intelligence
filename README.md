@@ -45,7 +45,9 @@ flowchart LR
   DE --> BI[Power BI + Streamlit]
   DE --> ML[Forecast / anomaly / churn / stockout]
   DE --> AI[Investigate graph + RAG]
+  DE --> IE[Inferential engineering]
   INF[Inference gateway mock or HTTP] --> API[FastAPI]
+  IE --> API
   AI --> API
   ML --> API
   API --> UI[NEXUS console]
@@ -60,6 +62,7 @@ Full diagrams: [`docs/architecture.md`](./docs/architecture.md) · decisions: [`
 | Data engineering | `data-engineering/` | Incremental land/clean/load, YAML contracts, profile, freshness, catalog, lineage |
 | Analytics | `analytics/` + `dashboard/` | Metric dictionary + KPI views + Power BI |
 | Data science | `data-science/` | Welch test, CIs, RCA, correlations, A/B calculator |
+| Inferential engineering | `inferential/` | Registered estimands, mix-adjusted risk differences, sensitivity, action verdicts. Not the LLM gateway |
 | ML | `ml/` | Forecast vs lag-1, OTIF anomaly, churn without recency, stockout proxy, file registry, PSI drift |
 | RAG | `ai/rag/` | Hybrid retrieval + citations; FAISS / sentence-transformers **if installed** |
 | GraphRAG | `ai/graphrag/` | 41/112 snapshot; NetworkX optional; Neo4j **idle** unless configured |
@@ -139,7 +142,16 @@ Opt-in HTTP (OpenAI-compatible): OpenAI, Groq, Ollama, vLLM, llama.cpp server. F
 
 Gateway logs: latency, TTFT (non-streaming), tokens, cache hits, cost (0 unless you set USD rates). Completes run through a process-local queue with retry and mock fallback. Streamlit **Inference Monitor** reads the local SQLite log.
 
-Architecture notes: [`docs/graphrag.md`](./docs/graphrag.md) · [`docs/simulation.md`](./docs/simulation.md) · [`docs/inference.md`](./docs/inference.md) · [`docs/agent-evaluation.md`](./docs/agent-evaluation.md) · [`docs/limitations.md`](./docs/limitations.md)
+Architecture notes: [`docs/graphrag.md`](./docs/graphrag.md) · [`docs/simulation.md`](./docs/simulation.md) · [`docs/inference.md`](./docs/inference.md) · [`docs/inferential-engineering.md`](./docs/inferential-engineering.md) · [`docs/agent-evaluation.md`](./docs/agent-evaluation.md) · [`docs/limitations.md`](./docs/limitations.md)
+
+## Inferential engineering
+
+Separate from the LLM gateway above. Two pre-specified studies run on the warehouse:
+
+- **Warehouse late gap** — category-adjusted late rate at the highest late-revenue warehouse versus the rest of the network. A `prioritize` verdict ranks investigation. It is not an effect of moving orders.
+- **Advance selection** — late rate on advance shipments. The interval is computed, then the verdict is `do_not_claim`, because `is_advance` is chosen when delay risk is already high.
+
+`GET /api/v1/inferential/board`. Practical threshold is 2 percentage points. Method: [`docs/inferential-engineering.md`](./docs/inferential-engineering.md).
 
 ---
 
@@ -183,7 +195,7 @@ curl -s -X POST http://127.0.0.1:8000/api/v1/investigate \
 
 ## Console tabs
 
-Command Center · **Decision Board** · Analytics · Predictions · AI Analyst · Knowledge · Agent Workspace · Inference Monitor · ML Experiments
+Command Center · **Decision Board** · Analytics · Predictions · AI Analyst · Knowledge · Agent Workspace · Inference Monitor · ML Experiments · **Inferential**
 
 Wilson 95% CIs on order-grain OTIF (network + warehouse) ship in **1.3**. The action ledger keeps accept/reject **history**, not just a request flag. Late $ is still exposure, not lost sales.
 

@@ -9,6 +9,13 @@ Only items that are still actually missing.
 3. Chunking experiments with measured recall on a larger policy corpus.
 4. Optional NetworkX/Neo4j live rebuild job that **replaces** the committed 41/112 snapshot after a measured run.
 
+## Shipped in 1.5
+
+- Inferential engineering (`inferential/`): estimand, identification, stratified risk difference, nullification bias, and an action verdict.
+- `warehouse_late_gap` can rank a warehouse. `advance_selection` is computed and then marked `do_not_claim`.
+- Board endpoint, Streamlit **Inferential** tab, and a one-line claim on investigate plus the Monday brief.
+- LLM inference gateway is unchanged and is a different subsystem.
+
 ## Shipped in 1.4
 
 - GraphRAG snapshot (41 nodes / 112 edges) with NetworkX optional and Neo4j idle.

@@ -6,6 +6,7 @@
 - **Customer names are not used** in GraphRAG; nodes are segments.
 - **GraphRAG is a snapshot** (41/112). Neo4j is idle unless you run it.
 - **Twin is linear SAMPLE elasticities**, not OMS/WMS physics.
+- **Inferential engineering does not identify causal effects.** Warehouse gaps are mix-adjusted associations. Advance-shipping contrasts are refused as effects. Category adjustment does not control carrier, season, or customer mix.
 - **LLM default is mock.** vLLM / Ollama / llama.cpp / OpenAI / Groq are HTTP adapters; this repo does not start those servers or claim GPUs.
 - **Eval hallucination = 0** only on snapshot-backed strings. Live Grok/OpenAI answers are not auto-scored.
 - **Streaming is weekly replay** of the extract. Kafka/Redpanda stay idle without a broker.

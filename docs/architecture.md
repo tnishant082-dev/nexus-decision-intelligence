@@ -1,6 +1,6 @@
 # NEXUS architecture
 
-Local-first **enterprise decision intelligence** for retail and supply-chain operations. One warehouse, one investigate API, one Streamlit console. Version **1.4**.
+Local-first **enterprise decision intelligence** for retail and supply-chain operations. One warehouse, one investigate API, one Streamlit console. Version **1.5**.
 
 ```mermaid
 flowchart TB
@@ -18,6 +18,7 @@ flowchart TB
     KPI[Metric views + dictionary]
     PBI[Power BI .pbip]
     DS[Hypothesis / RCA / A/B calculator]
+    IE[Inferential engineering]
     ML[Forecast / anomaly / churn / stockout]
     RAG[Hybrid RAG over SAMPLE SOPs]
     G[GraphRAG 41/112 snapshot]
@@ -44,6 +45,7 @@ flowchart TB
   C --> Q
   W --> KPI --> PBI
   W --> DS
+  W --> IE
   W --> ML
   W --> G
   W --> TWIN
@@ -53,6 +55,7 @@ flowchart TB
   ML --> AG
   AG --> COP
   AG --> API
+  IE --> API
   GR --> QU --> R
   R --> M
   R --> H

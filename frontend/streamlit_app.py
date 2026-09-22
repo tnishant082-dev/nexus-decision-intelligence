@@ -94,7 +94,7 @@ def sql_df(sql: str) -> pd.DataFrame:
 tabs = st.tabs([
     "Command Center", "Decision Board", "Analytics", "Predictions", "AI Analyst",
     "Knowledge", "Agent Workspace", "Inference Monitor", "ML Experiments",
-    "GraphRAG", "Twin", "Copilot", "Quality", "Eval",
+    "GraphRAG", "Twin", "Copilot", "Quality", "Eval", "Inferential",
 ])
 
 with tabs[0]:
@@ -383,4 +383,30 @@ with tabs[13]:
 
     if st.button("Run evaluation"):
         st.json(run_evaluation())
+
+with tabs[14]:
+    st.subheader("Inferential engineering")
+    st.caption(
+        "Estimand, adjustment, interval, sensitivity, verdict. "
+        "This tab is not the LLM Inference Monitor."
+    )
+    from inferential.studies import run_board
+
+    board = run_board()
+    for card in board.get("studies") or []:
+        st.markdown(f"#### {card.get('title') or card.get('study_id')}")
+        if not card.get("ok"):
+            st.warning(card.get("error") or "Study did not run.")
+            continue
+        estimate = card["estimate"]
+        decision = card["decision"]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Verdict", decision["verdict"])
+        c2.metric("Adjusted gap", f"{estimate.get('adjusted_risk_difference_pp')} pp")
+        c3.metric("95% CI low", f"{estimate.get('ci_low_pp')} pp")
+        c4.metric("95% CI high", f"{estimate.get('ci_high_pp')} pp")
+        st.write(decision.get("action"))
+        st.caption(decision.get("reason"))
+        with st.expander("Claim card"):
+            st.json(card)
 

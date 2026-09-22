@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from ai.agents.graph import run_graph
 from decisions.economics import value_at_stake, warehouse_exceptions
+from inferential.studies import claim_summary
 
 
 def investigate(question: str, human_review: bool = False) -> dict:
@@ -46,6 +47,8 @@ def investigate(question: str, human_review: bool = False) -> dict:
         recs.append(
             f"Largest $ late pool: {top_exc[0]['warehouse_name']} (${top_exc[0]['late_revenue']:,.0f})."
         )
+    inferred = claim_summary()
+    recs.append(inferred["line"])
     if state.get("pending_review"):
         recs = ["HUMAN REVIEW: recommendations held until an operator approves."] + recs
     return {
@@ -61,6 +64,7 @@ def investigate(question: str, human_review: bool = False) -> dict:
             "yoy_2016_2017": vas.get("yoy_2016_2017"),
         },
         "priority_exceptions": top_exc,
+        "inferential": inferred,
         "evidence": {
             "sql": sql_results,
             "models": models,
