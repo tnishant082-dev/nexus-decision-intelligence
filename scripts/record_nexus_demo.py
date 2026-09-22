@@ -16,13 +16,16 @@ OUT_MP4 = ROOT / "artifacts" / "nexus-decision-intelligence-demo.mp4"
 VID_DIR = Path("/tmp/nexus-demo-record/pw-video")
 FFMPEG = "/usr/bin/ffmpeg"
 
-# Walk order: cover overview, Decision Board, investigate, GraphRAG, ML, quality/copilot
+# Walk major current tabs. shot_names may be a str or list (README keeps legacy names).
+# Actions: investigate / predict / graph / None
 SECTIONS = [
-    ("Command Center", "Command Center — live KPIs from DuckDB extract", "01-command-center.png", None),
-    ("Decision Board", "Decision Board — late $ by warehouse · Wilson OTIF intervals", "02-decision-board.png", None),
-    ("AI Analyst", "AI Analyst — multi-agent investigate (mock LLM)", "03-ai-analyst.png", "investigate"),
+    ("Command Center", "Command Center — live KPIs · Wilson OTIF CI · value at stake", "01-command-center.png", None),
+    ("Decision Board", "Decision Board — next action · late $ by warehouse · hold unless power clears", "02-decision-board.png", None),
+    ("AI Analyst", "AI Analyst — multi-agent investigate (mock LLM)", ["03-ai-analyst.png", "02-ai-analyst.png"], "investigate"),
     ("Predictions", "Predictions — demand forecast + OTIF anomaly", "04-predictions.png", "predict"),
+    ("Inference Monitor", "Inference Monitor — route mock / small / large (not causal inference)", "03-inference-monitor.png", None),
     ("GraphRAG", "GraphRAG — in-process supplier/OTIF graph snapshot", "05-graphrag.png", "graph"),
+    ("Inferential", "Inferential — estimand · adjustment · CI · power · hold/act", "08-inferential.png", None),
     ("Copilot", "Copilot — Monday ops brief from extract KPIs", "06-copilot.png", None),
     ("Quality", "Quality — freshness / schema / null checks", "07-quality.png", None),
 ]
@@ -77,12 +80,12 @@ def show_title_card(page) -> None:
               Local-first retail + supply-chain console · DuckDB · FastAPI · Streamlit · mock LLM
             </div>
             <div style="margin-top:28px;font-size:14px;opacity:0.7;">
-              Live demo · public DataCo + Online Retail II extracts · not hosted SaaS
+              Live demo · Decision Board · Inferential engineering · GraphRAG · public extracts
             </div>`;
           document.body.appendChild(overlay);
         }"""
     )
-    page.wait_for_timeout(2500)
+    page.wait_for_timeout(2200)
     page.evaluate(
         """() => {
           const el = document.getElementById('nexus-title-card');
@@ -93,7 +96,7 @@ def show_title_card(page) -> None:
 
 def click_tab(page, name: str) -> None:
     page.get_by_role("tab", name=name).click()
-    wait_streamlit(page, 1600)
+    wait_streamlit(page, 1400)
 
 
 def dismiss_banners(page) -> None:
@@ -121,17 +124,23 @@ def _click_button(page, name: str, wait_ms: int = 2500) -> bool:
 
 def run_action(page, action: str | None) -> None:
     if action == "investigate":
-        if _click_button(page, "Investigate", 2000):
+        if _click_button(page, "Investigate", 1800):
             try:
                 page.get_by_text("Drivers", exact=False).first.wait_for(timeout=25000)
             except Exception:
                 pass
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(1600)
     elif action == "predict":
-        _click_button(page, "Predict demand", 3000)
-        _click_button(page, "Score anomaly", 2000)
+        _click_button(page, "Predict demand", 2500)
+        _click_button(page, "Score anomaly", 1600)
     elif action == "graph":
-        _click_button(page, "Retrieve graph", 2500)
+        _click_button(page, "Retrieve graph", 2200)
+
+
+def save_shots(page, shot_names) -> None:
+    names = shot_names if isinstance(shot_names, list) else [shot_names]
+    for name in names:
+        page.screenshot(path=str(SHOT / name), full_page=False)
 
 
 def encode_mp4(webm: Path, dest: Path) -> None:
@@ -140,6 +149,8 @@ def encode_mp4(webm: Path, dest: Path) -> None:
     cmd = [
         FFMPEG, "-y", "-i", str(webm),
         "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        "-vf", "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2",
+        "-r", "30",
         "-preset", "medium", "-crf", "23",
         "-movflags", "+faststart",
         "-an",
@@ -174,16 +185,14 @@ def main() -> None:
             print(f"→ {tab}")
             click_tab(page, tab)
             set_caption(page, caption)
-            # let metrics/charts paint
-            page.wait_for_timeout(1200)
+            page.wait_for_timeout(900)
             run_action(page, action)
-            page.screenshot(path=str(SHOT / shot_name), full_page=False)
-            page.wait_for_timeout(1500)
+            save_shots(page, shot_name)
+            page.wait_for_timeout(1100)
 
-        # closing beat
         click_tab(page, "Command Center")
         set_caption(page, "NEXUS — portfolio local demo · mock LLM · DuckDB warehouse")
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(1800)
 
         page.close()
         context.close()
@@ -193,7 +202,7 @@ def main() -> None:
     if not videos:
         raise SystemExit("No Playwright webm produced")
     webm = videos[0]
-    print("WEB M", webm, "size", webm.stat().st_size)
+    print("WEBM", webm, "size", webm.stat().st_size)
     encode_mp4(webm, OUT_MP4)
     print("MP4", OUT_MP4, "size", OUT_MP4.stat().st_size)
 
