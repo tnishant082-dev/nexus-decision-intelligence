@@ -153,10 +153,12 @@ with tabs[1]:
     if policy.get("ok"):
         st.markdown(f"**{policy['decision'].upper()}** — {policy.get('action')}")
         gap = policy.get("adjusted_risk_difference_pp")
+        sentence = (policy.get("exposure_split") or {}).get("explanation")
         st.caption(
             f"{policy.get('warehouse')}: adjusted late-rate gap {gap} pp "
             f"(95% CI {policy.get('ci_low_pp')} to {policy.get('ci_high_pp')}). "
             f"Verdict {policy.get('verdict')}."
+            + (f" {sentence}" if sentence else "")
         )
         st.caption(
             f"{policy.get('metric')} — {policy.get('means')} "

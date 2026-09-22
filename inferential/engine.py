@@ -147,7 +147,7 @@ def nullification_bias(estimate: float, se: float, z: float = 1.96) -> float:
 
 def evalue_risk_ratio(p_treated: float, p_control: float) -> dict[str, Any]:
     """VanderWeele E-value for the point risk ratio. Undefined if a rate is 0."""
-    if p_control <= 0 or p_treated < 0 or not np.isfinite(p_treated) or not np.isfinite(p_control):
+    if p_control <= 0 or p_treated <= 0 or not np.isfinite(p_treated) or not np.isfinite(p_control):
         return {
             "evalue": None,
             "risk_ratio": None,

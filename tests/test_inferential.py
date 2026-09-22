@@ -77,6 +77,15 @@ def test_one_stratum_can_flip_the_sign():
     assert out["sign_flip"] is True
 
 
+def test_evalue_is_omitted_when_an_arm_rate_is_zero():
+    from inferential.engine import evalue_risk_ratio
+
+    # Advance shipments in this extract are never late, so the treated rate is 0.
+    out = evalue_risk_ratio(0.0, 0.71)
+    assert out["evalue"] is None
+    assert out["risk_ratio"] is None
+
+
 def test_nullification_bias_is_the_distance_from_zero_to_the_bound():
     from inferential.engine import nullification_bias
 
