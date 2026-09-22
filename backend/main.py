@@ -26,7 +26,7 @@ from ml.serving import predict as ml_predict
 app = FastAPI(
     title="NEXUS Decision Intelligence Platform",
     description="Local-first retail + supply chain decision intelligence. Mock LLM default.",
-    version="1.5.0",
+    version="1.6.0",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +55,7 @@ async def rate_limit(request: Request, call_next):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.5.0"}
+    return {"status": "ok", "service": "nexus", "llm_default": "mock", "version": "1.6.0"}
 
 
 @app.get("/metrics")
@@ -215,6 +215,13 @@ class LedgerAdd(BaseModel):
 class LedgerStatus(BaseModel):
     id: str
     status: str
+
+
+@app.get("/api/v1/decision/next")
+def api_next_action(_=Depends(require_api_key)):
+    from decisions.policy import next_action
+
+    return next_action()
 
 
 @app.get("/api/v1/inferential/board")

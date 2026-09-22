@@ -9,7 +9,11 @@ Each registered study runs the same six steps:
 3. **Estimator** — inverse-variance stratified risk difference. Strata with fewer than 20 units on either arm are dropped.
 4. **Uncertainty** — normal 95% interval on the adjusted risk difference.
 5. **Sensitivity** — nullification bias (how large a constant shift must be before the interval covers zero) and a crude-rate E-value. The E-value describes the unadjusted rates, not the stratified contrast.
-6. **Decision** — `prioritize` only when the whole interval sits above a 2 percentage-point practical threshold **and** identification does not forbid the claim. Otherwise `hold`, `do_not_prioritize`, or `do_not_claim`.
+6. **Power** — 80% minimum detectable risk difference, variance at the control rate. A hold that could not have seen a 2 percentage-point gap is `underpowered`.
+7. **Stability** — the stratified estimate is refit with each category removed. A sign flip makes the verdict `unstable`.
+8. **Decision** — `prioritize` only when the whole interval sits above a 2 percentage-point practical threshold, leave-one-out keeps the sign, and identification does not forbid the claim. Otherwise `hold`, `underpowered`, `unstable`, `do_not_prioritize`, or `do_not_claim`.
+
+`GET /api/v1/decision/next` turns the warehouse study into one operator action (`investigate` or `hold`) and always lists advance shipping under `refused`.
 
 ## Registered studies
 

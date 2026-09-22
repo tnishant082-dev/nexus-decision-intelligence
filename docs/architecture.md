@@ -1,6 +1,6 @@
 # NEXUS architecture
 
-Local-first **enterprise decision intelligence** for retail and supply-chain operations. One warehouse, one investigate API, one Streamlit console. Version **1.5**.
+Local-first **enterprise decision intelligence** for retail and supply-chain operations. One warehouse, one investigate API, one Streamlit console. Version **1.6**.
 
 ```mermaid
 flowchart TB

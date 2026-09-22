@@ -168,6 +168,51 @@ def evalue_risk_ratio(p_treated: float, p_control: float) -> dict[str, Any]:
     }
 
 
+def leave_one_stratum_out(y, treat, stratum, min_cell: int = 20) -> dict[str, Any]:
+    """Refit once with each included stratum removed.
+
+    A sign flip means one category is carrying the contrast. The ranking is
+    then too brittle to act on.
+    """
+    full = stratified_risk_difference(y, treat, stratum, min_cell=min_cell)
+    if not full.get("ok") or int(full.get("strata_used") or 0) < 2:
+        return {
+            "checked": False,
+            "sign_flip": False,
+            "strata_checked": 0,
+            "reason": "Leave-one-out needs two strata that pass the cell minimum.",
+        }
+    outcome, arm, strata = _as_arrays(y, treat, stratum)
+    base = float(full["adjusted_risk_difference"])
+    worst = None
+    max_shift = 0.0
+    flip = False
+    checked = 0
+    for level in pd_unique(strata):
+        keep = strata != level
+        refit = stratified_risk_difference(outcome[keep], arm[keep], strata[keep], min_cell=min_cell)
+        if not refit.get("ok"):
+            continue
+        if int(refit["strata_used"]) >= int(full["strata_used"]):
+            continue
+        checked += 1
+        estimate = float(refit["adjusted_risk_difference"])
+        shift = abs(estimate - base)
+        if shift >= max_shift:
+            max_shift = shift
+            worst = str(level)
+        if base * estimate < 0 and abs(base) >= 0.01:
+            flip = True
+    return {
+        "checked": checked > 0,
+        "sign_flip": flip,
+        "strata_checked": checked,
+        "max_shift": max_shift,
+        "worst_stratum": worst,
+        "method": "Refit the stratified risk difference once per included stratum.",
+    }
+
+
 def association_signal(ci_low: float, ci_high: float, minimum_practical_effect: float) -> str:
     """What the interval says before identification is allowed to override it.
 

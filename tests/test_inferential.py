@@ -52,6 +52,31 @@ def test_clear_gap_is_a_prioritize_signal():
     assert association_signal(fit["ci_low"], fit["ci_high"], 0.02) == "prioritize"
 
 
+def test_small_samples_cannot_see_a_two_point_gap():
+    from inferential.power import minimum_detectable_effect
+
+    assert minimum_detectable_effect(40, 40, 0.3) > 0.02
+    assert minimum_detectable_effect(20000, 20000, 0.3) < 0.02
+
+
+def test_one_stratum_can_flip_the_sign():
+    from inferential.engine import leave_one_stratum_out
+
+    y = np.concatenate([
+        _counts(240, 400),
+        _counts(80, 400),
+        _counts(4, 40),
+        _counts(20, 40),
+    ])
+    treat = np.concatenate([
+        np.ones(400), np.zeros(400), np.ones(40), np.zeros(40),
+    ]).astype(int)
+    stratum = np.array(["A"] * 800 + ["B"] * 80)
+    out = leave_one_stratum_out(y, treat, stratum, min_cell=20)
+    assert out["checked"] is True
+    assert out["sign_flip"] is True
+
+
 def test_nullification_bias_is_the_distance_from_zero_to_the_bound():
     from inferential.engine import nullification_bias
 
@@ -157,6 +182,16 @@ def test_registered_studies_on_a_fixture():
         assert gap["estimate"]["adjusted_risk_difference"] > 0.02
         assert gap["decision"]["verdict"] == "prioritize"
         assert gap["decision"]["causal_claim"] is False
+        assert gap["stability"]["sign_flip"] is False
+        assert "minimum_detectable_effect" in gap["power"]
+
+        from decisions.policy import next_action
+
+        policy = next_action(db)
+        assert policy["decision"] == "investigate"
+        assert policy["causal_claim"] is False
+        assert "lost sales" in policy["does_not_mean"].lower()
+        assert policy["refused"][0]["verdict"] == "do_not_claim"
 
         advance = by_id["advance_selection"]
         assert advance["ok"]
@@ -182,3 +217,6 @@ def test_inferential_api_shape():
     assert body["discipline"] == "inferential_engineering"
     assert body["not"] == "llm_inference_gateway"
     assert len(body["studies"]) == 2
+    nxt = client.get("/api/v1/decision/next", headers={"X-API-Key": "dev-nexus-key"})
+    assert nxt.status_code == 200
+    assert nxt.json()["causal_claim"] is False

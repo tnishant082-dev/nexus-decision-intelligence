@@ -151,7 +151,7 @@ Separate from the LLM gateway above. Two pre-specified studies run on the wareho
 - **Warehouse late gap** — category-adjusted late rate at the highest late-revenue warehouse versus the rest of the network. A `prioritize` verdict ranks investigation. It is not an effect of moving orders.
 - **Advance selection** — late rate on advance shipments. The interval is computed, then the verdict is `do_not_claim`, because `is_advance` is chosen when delay risk is already high.
 
-`GET /api/v1/inferential/board`. Practical threshold is 2 percentage points. Method: [`docs/inferential-engineering.md`](./docs/inferential-engineering.md).
+`GET /api/v1/inferential/board`. Practical threshold is 2 percentage points. A ranking also has to pass 80% power and leave-one-stratum-out. `GET /api/v1/decision/next` returns one investigate-or-hold and refuses advance shipping as an effect. Method: [`docs/inferential-engineering.md`](./docs/inferential-engineering.md).
 
 ---
 

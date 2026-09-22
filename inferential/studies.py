@@ -19,9 +19,11 @@ import duckdb
 from inferential.engine import (
     association_signal,
     evalue_risk_ratio,
+    leave_one_stratum_out,
     nullification_bias,
     stratified_risk_difference,
 )
+from inferential.power import design_power
 
 DB = Path(__file__).resolve().parents[1] / "data-engineering" / "warehouse" / "nexus.duckdb"
 
@@ -143,6 +145,7 @@ def _warehouse_late_gap(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         frame["category_name"],
         min_cell=MIN_CELL,
     )
+    stability = leave_one_stratum_out(frame["is_late"], treat, frame["category_name"], min_cell=MIN_CELL)
     card = _card(
         study_id="warehouse_late_gap",
         title=f"Mix-adjusted late rate at {warehouse} versus the rest of the network",
@@ -171,6 +174,7 @@ def _warehouse_late_gap(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         },
         fit=fit,
         override_verdict=None,
+        stability=stability,
         action_for={
             "prioritize": (
                 f"Investigate {warehouse} before spending expedite budget. "
@@ -182,6 +186,13 @@ def _warehouse_late_gap(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
             ),
             "do_not_prioritize": (
                 f"{warehouse} is not later than the rest of the network after category adjustment."
+            ),
+            "underpowered": (
+                f"Do not open a program at {warehouse}. "
+                "At 80% power this extract cannot see a 2 percentage-point late-rate gap."
+            ),
+            "unstable": (
+                f"Do not rank {warehouse} yet. Removing one product category flips the sign of the gap."
             ),
         },
     )
@@ -205,6 +216,9 @@ def _advance_selection(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         frame["is_advance"],
         frame["warehouse_name"],
         min_cell=MIN_CELL,
+    )
+    stability = leave_one_stratum_out(
+        frame["is_late"], frame["is_advance"], frame["warehouse_name"], min_cell=MIN_CELL
     )
     return _card(
         study_id="advance_selection",
@@ -232,6 +246,7 @@ def _advance_selection(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         },
         fit=fit,
         override_verdict="do_not_claim",
+        stability=stability,
         action_for={
             "do_not_claim": (
                 "Do not change advance-shipping policy from this contrast. "
@@ -249,6 +264,7 @@ def _card(
     fit: dict,
     override_verdict: str | None,
     action_for: dict[str, str],
+    stability: dict | None = None,
 ) -> dict[str, Any]:
     if not fit.get("ok"):
         return {
@@ -272,8 +288,24 @@ def _card(
     else:
         sample_note = None
 
-    verdict = override_verdict or signal
-    reason = _reason(verdict, override_verdict, signal, sample_note)
+    power = design_power(
+        fit["n_treated"],
+        fit["n_control"],
+        fit["p_control"],
+        MINIMUM_PRACTICAL_EFFECT,
+    )
+    stability = stability or {"checked": False, "sign_flip": False}
+    if override_verdict:
+        verdict = override_verdict
+    elif sample_note:
+        verdict = "hold"
+    elif signal == "prioritize" and stability.get("sign_flip"):
+        verdict = "unstable"
+    elif signal == "hold" and not power["powered_for_practical_effect"]:
+        verdict = "underpowered"
+    else:
+        verdict = signal
+    reason = _reason(verdict, override_verdict, signal, sample_note, power, stability)
     shift = fit["naive_risk_difference"] - fit["adjusted_risk_difference"]
     crude_evalue = evalue_risk_ratio(fit["p_treated"], fit["p_control"])
     crude_evalue["applies_to"] = "crude arm rates, not the stratified risk difference"
@@ -298,6 +330,8 @@ def _card(
             "estimator",
             "uncertainty",
             "sensitivity",
+            "power",
+            "stability",
             "decision",
         ],
         "estimand": estimand,
@@ -305,14 +339,18 @@ def _card(
         "estimate": _public_estimate(fit),
         "statistical_signal": signal,
         "sensitivity": sensitivity,
+        "power": power,
+        "stability": stability,
         "decision": {
             "verdict": verdict,
             "overrides_signal": override_verdict is not None,
             "minimum_practical_effect": MINIMUM_PRACTICAL_EFFECT,
             "minimum_practical_effect_pp": _pp(MINIMUM_PRACTICAL_EFFECT),
             "rule": (
-                "Prioritize only when the entire 95% interval sits above the practical threshold "
-                "and identification does not forbid a claim. Otherwise hold or refuse."
+                "Prioritize only when the entire 95% interval sits above the practical threshold, "
+                "leave-one-stratum-out does not flip the sign, and identification allows a ranking. "
+                "A hold on an underpowered contrast is reported as underpowered. "
+                "A selected treatment is do_not_claim even when the interval is large."
             ),
             "reason": reason,
             "action": action_for.get(verdict, "Hold the action."),
@@ -360,14 +398,33 @@ def _pp(value: float | None) -> float | None:
     return round(100.0 * float(value), 2)
 
 
-def _reason(verdict: str, override: str | None, signal: str, sample_note: str | None) -> str:
+def _reason(
+    verdict: str,
+    override: str | None,
+    signal: str,
+    sample_note: str | None,
+    power: dict | None = None,
+    stability: dict | None = None,
+) -> str:
     if override == "do_not_claim":
         base = (
             f"The interval's own signal is '{signal}', and the decision is still do_not_claim. "
             "Identification fails: the focal flag is selected, so significance is not an effect."
         )
     elif verdict == "prioritize":
-        base = "The mix-adjusted 95% interval lies entirely above the practical threshold."
+        base = "The mix-adjusted 95% interval lies entirely above the practical threshold, and no single stratum flips the sign."
+    elif verdict == "unstable":
+        worst = (stability or {}).get("worst_stratum")
+        base = (
+            "The interval clears the practical threshold, but removing one stratum flips the sign. "
+            f"The contrast is too brittle to rank. Worst stratum: {worst}."
+        )
+    elif verdict == "underpowered":
+        mde = (power or {}).get("minimum_detectable_effect_pp")
+        base = (
+            f"The interval does not clear 2 percentage points, and the 80% minimum detectable effect "
+            f"is {mde} pp. The extract cannot support that ranking."
+        )
     elif verdict == "do_not_prioritize":
         base = "The mix-adjusted 95% interval lies entirely below the negative practical threshold."
     else:

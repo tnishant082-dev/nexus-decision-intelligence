@@ -9,6 +9,12 @@ Only items that are still actually missing.
 3. Chunking experiments with measured recall on a larger policy corpus.
 4. Optional NetworkX/Neo4j live rebuild job that **replaces** the committed 41/112 snapshot after a measured run.
 
+## Shipped in 1.6
+
+- Design power and leave-one-stratum-out on every inferential study.
+- `prioritize` is withheld when one category flips the sign (`unstable`) or the extract cannot see a 2 pp gap (`underpowered`).
+- `GET /api/v1/decision/next` and the Decision Board lead with one action. Advance shipping stays refused.
+
 ## Shipped in 1.5
 
 - Inferential engineering (`inferential/`): estimand, identification, stratified risk difference, nullification bias, and an action verdict.

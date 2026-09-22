@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from decisions.economics import carrier_exceptions, value_at_stake, warehouse_exceptions
+from decisions.policy import next_action
 from inferential.studies import claim_summary
 
 
@@ -15,6 +16,21 @@ def build_brief() -> str:
     lines = [
         f"# NEXUS decision brief",
         f"Generated `{datetime.now(timezone.utc).isoformat()}` from the local DuckDB extract.",
+        "",
+        "## Next action",
+    ]
+    policy = next_action()
+    if policy.get("ok"):
+        lines.append(
+            f"- **{policy['decision']}** {policy.get('warehouse')}: {policy.get('action')} "
+            f"Gap {policy.get('adjusted_risk_difference_pp')} pp. {policy.get('means')} "
+            f"Does not mean: {policy.get('does_not_mean')} Extract {policy.get('extract_window')}."
+        )
+        if policy.get("refused"):
+            lines.append(f"- Refused: {policy['refused'][0].get('action')}")
+    else:
+        lines.append(f"- Next action unavailable: {policy.get('error')}")
+    lines += [
         "",
         "## Value at stake (proxies, not GAAP)",
         f"- Revenue **${v['revenue']:,.0f}**; **{v['late_revenue_share_pct']}%** of it sits on late lines (${v['late_revenue']:,.0f}).",

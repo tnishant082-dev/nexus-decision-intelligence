@@ -146,7 +146,28 @@ with tabs[0]:
 
 with tabs[1]:
     st.subheader("Decision Board")
-    st.caption("Rank exceptions by dollars, run linear what-ifs, write a Monday brief, accept/reject actions.")
+    st.caption("One next action. Rankings that fail power or stratum stability stay on hold.")
+    from decisions.policy import next_action
+
+    policy = next_action()
+    if policy.get("ok"):
+        st.markdown(f"**{policy['decision'].upper()}** — {policy.get('action')}")
+        gap = policy.get("adjusted_risk_difference_pp")
+        st.caption(
+            f"{policy.get('warehouse')}: adjusted late-rate gap {gap} pp "
+            f"(95% CI {policy.get('ci_low_pp')} to {policy.get('ci_high_pp')}). "
+            f"Verdict {policy.get('verdict')}."
+        )
+        st.caption(
+            f"{policy.get('metric')} — {policy.get('means')} "
+            f"Does not mean: {policy.get('does_not_mean')} "
+            f"Extract {policy.get('extract_window')}."
+        )
+        refused = policy.get("refused") or []
+        if refused:
+            st.caption(f"Refused: {refused[0].get('action')}")
+    else:
+        st.warning(policy.get("error") or "Next action is unavailable until the warehouse is built.")
     from decisions.economics import carrier_exceptions, warehouse_exceptions
     from decisions.scenarios import close_late_gap, cut_expedite, list_warehouses
     from decisions.brief import build_brief
